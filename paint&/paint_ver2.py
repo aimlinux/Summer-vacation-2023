@@ -16,7 +16,7 @@ button2_text = "21"
 button3_text = "21"
 button4_text = "21"
 
-TOOLBAR_OPTIONS = {
+TOOLBAR_OPTIONS = { 
     "font" : "main_font, 15",
     "bg" : "#00ced1",
     "fg" : "#00334d"
