@@ -81,9 +81,11 @@ class Application(tk.Frame):
         toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
         
-        start_button = tk.Button(bg_frame, text="はじめる", font=(main_font, 20), bg=title_btn_bg, width=30)
+        start_button = tk.Button(bg_frame, text="はじめる", font=(main_font, 20), bg=title_btn_bg, 
+                                width=30, relief="raised", borderwidth=5)
         start_button.pack(side=tk.TOP, pady=(450, 50), padx=(750, 150)) # 「fill="x"」：水平方向に埋める
-        exit_button = tk.Button(bg_frame, text="終了する", font=(main_font, 20), bg=title_btn_bg, width=30)
+        exit_button = tk.Button(bg_frame, text="終了する", font=(main_font, 20), bg=title_btn_bg, 
+                                width=30, relief="raised", borderwidth=5)
         exit_button.pack(side=tk.TOP, padx=(750, 150))
 
 
