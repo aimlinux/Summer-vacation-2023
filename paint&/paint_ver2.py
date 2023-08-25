@@ -60,7 +60,7 @@ class Application(tk.Frame):
         pw_main = tk.PanedWindow(self.master, bg=main_pw_bg, orient="vertical")
         pw_main.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
         # メインフレーム作成
-        fm_main = tk.Frame(pw_main, bd=10, bg=main_pw_bg, relief="ridge")
+        fm_main = tk.Frame(pw_main, bd=5, bg=main_pw_bg, relief="ridge", borderwidth=10)
         pw_main.add(fm_main)
         
         # 画像ファイルのパスを指定して、BackgroundFrameを作成
@@ -82,7 +82,7 @@ class Application(tk.Frame):
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
         
         start_button = tk.Button(bg_frame, text="はじめる", font=(main_font, 20), bg=title_btn_bg, 
-                                width=30, relief="raised", borderwidth=5)
+                                width=30, relief="raised", borderwidth=5) # reliefによって影を表現
         start_button.pack(side=tk.TOP, pady=(450, 50), padx=(750, 150)) # 「fill="x"」：水平方向に埋める
         exit_button = tk.Button(bg_frame, text="終了する", font=(main_font, 20), bg=title_btn_bg, 
                                 width=30, relief="raised", borderwidth=5)
