@@ -10,11 +10,12 @@ main_fm_bg = "#ffffff"
 main_pw_bg = "#ffe4e1"
 
 title_btn_bg = "#00ced1"
+introduction_btn_bg = "#ffffff"
 
-button1_text = "21"
-button2_text = "21"
-button3_text = "21"
-button4_text = "21"
+button1_text = "タイトルへ"
+button2_text = "オプション"
+button3_text = "aimlinux"
+button4_text = "aimlinux"
 
 TOOLBAR_OPTIONS = { 
     "font" : "main_font, 15",
@@ -87,6 +88,9 @@ class Application(tk.Frame):
         exit_button = tk.Button(bg_frame, text="終了する", font=(main_font, 20), bg=title_btn_bg, 
                                 width=30, relief="raised", borderwidth=5)
         exit_button.pack(side=tk.TOP, padx=(750, 150))
+        
+        introduction_button = tk.Button(bg_frame, text="このゲームについて", font=(main_font, 18), bg=introduction_btn_bg, width=30, relief="raised", borderwidth=3)
+        introduction_button.pack(side=tk.TOP, padx=(30, 800), pady=(40, 0))
 
 
 
