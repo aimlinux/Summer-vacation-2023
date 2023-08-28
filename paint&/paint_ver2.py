@@ -1,7 +1,12 @@
 import tkinter as tk
 from tkinter import PhotoImage
+from tkinter import ttk
+import PySimpleGUI as sg
+import atexit
+import sys 
+import os
 
-
+forced_exit = True
 
 
 main_font = "Arial"
@@ -23,6 +28,9 @@ TOOLBAR_OPTIONS = {
     "fg" : "#00334d"
 }
 
+
+#各ウィンドウのカウント
+count_title = False
 
 
 # BackgroundFrameを作成
@@ -55,6 +63,9 @@ class Application(tk.Frame):
     
     def create_widgets(self):
         
+        global count_title
+        count_title = True
+        
         global pw_main, fm_main
         
         # メインウィンドウ作成
@@ -86,12 +97,49 @@ class Application(tk.Frame):
                                 width=30, relief="raised", borderwidth=5) # reliefによって影を表現
         start_button.pack(side=tk.TOP, pady=(450, 50), padx=(750, 150)) # 「fill="x"」：水平方向に埋める
         exit_button = tk.Button(bg_frame, text="終了する", font=(main_font, 20), bg=title_btn_bg, 
-                                width=30, relief="raised", borderwidth=5)
+                                width=30, relief="raised", borderwidth=5, command=self.exit_App)
         exit_button.pack(side=tk.TOP, padx=(750, 150))
         
         introduction_button = tk.Button(bg_frame, text="このゲームについて", font=(main_font, 18), bg=introduction_btn_bg, width=30, relief="raised", borderwidth=3)
         introduction_button.pack(side=tk.TOP, padx=(30, 800), pady=(40, 0))
 
+
+
+    #アプリケーションが終了されたとき
+    def exit_App(self):
+        global forced_exit
+        forced_exit = False
+        
+        if count_title == True:
+            self.master.quit()
+
+
+#アプリケーションが強制的に終了されたとき
+def goodbye():
+    if forced_exit == True:
+        popup = sg.popup_ok_cancel('アプリケーションを終了しますか？', font=(main_font, 16), text_color='#000000', background_color=main_fm_bg)
+        print(popup)
+        
+        if popup == "OK":
+            exit_message = "App Exit"
+            #messagebox.showinfo("App Exit", "アプリケーションを終了しました。")
+            print(exit_message)
+            pass
+        elif popup == "Cancel":
+            restart_message = "continue" 
+            # 「continue」を引数と捨て再起動関数を実行
+            restart(restart_message)
+
+#再起動
+def restart(restart_message):
+    if restart_message == "continue":
+        print("continue... ")
+    #Restart python script itself
+    os.execv(sys.executable, ['python'] + sys.argv)
+    
+
+#pythonプログラムが終了したことを取得してgoodbye関数を実行
+atexit.register(goodbye)
 
 
 
