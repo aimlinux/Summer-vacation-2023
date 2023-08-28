@@ -2,16 +2,22 @@ import tkinter as tk
 from tkinter import PhotoImage
 from tkinter import ttk
 import PySimpleGUI as sg
+import PIL
+from PIL import Image, ImageTk
 import atexit
 import sys 
 import os
 
+
+#強制終了されたかどうか
 forced_exit = True
 
 
 main_font = "Arial"
 
-main_fm_bg = "#ffffff"
+title_fm_bg = "#ffffff"
+choice_fm_bg = "#214090"
+choice_pw_bg = "#214090"
 main_pw_bg = "#ffe4e1"
 
 title_btn_bg = "#00ced1"
@@ -66,22 +72,23 @@ class Application(tk.Frame):
         global count_title
         count_title = True
         
-        global pw_main, fm_main
+        global pw_title, fm_title, bg_frame
         
         # メインウィンドウ作成
-        pw_main = tk.PanedWindow(self.master, bg=main_pw_bg, orient="vertical")
-        pw_main.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
+        pw_title = tk.PanedWindow(self.master, bg=main_pw_bg, orient="vertical")
+        pw_title.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
         # メインフレーム作成
-        fm_main = tk.Frame(pw_main, bd=5, bg=main_pw_bg, relief="ridge", borderwidth=10)
-        pw_main.add(fm_main)
+        fm_title = tk.Frame(pw_title, bd=5, bg=main_pw_bg, relief="ridge", borderwidth=10)
+        pw_title.add(fm_title)
         
         # 画像ファイルのパスを指定して、BackgroundFrameを作成
-        bg_image_path = "path_to_your_image.png"
-        bg_frame = BackgroundFrame(fm_main, bg_image=bg_image_path, bg="#ffffff")
-        bg_frame.pack(fill="both", expand=True)
+        # bg_image_path = "path_to_your_image.png"
+        # bg_frame = BackgroundFrame(fm_title, bg_image=bg_image_path, bg="#ffffff")
+        # bg_frame.pack(fill="both", expand=True)
+        bg_frame = fm_title
         
         # ツールバー作成
-        fm_toolbar = tk.Frame(bg_frame, bg=main_fm_bg)
+        fm_toolbar = tk.Frame(bg_frame, bg=title_fm_bg)
         fm_toolbar.pack(anchor="nw")
 
         toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS)
@@ -94,7 +101,7 @@ class Application(tk.Frame):
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
         
         start_button = tk.Button(bg_frame, text="はじめる", font=(main_font, 20), bg=title_btn_bg, 
-                                width=30, relief="raised", borderwidth=5) # reliefによって影を表現
+                                width=30, relief="raised", borderwidth=5, command=self.start_App) # reliefによって影を表現
         start_button.pack(side=tk.TOP, pady=(450, 50), padx=(750, 150)) # 「fill="x"」：水平方向に埋める
         exit_button = tk.Button(bg_frame, text="終了する", font=(main_font, 20), bg=title_btn_bg, 
                                 width=30, relief="raised", borderwidth=5, command=self.exit_App)
@@ -102,6 +109,106 @@ class Application(tk.Frame):
         
         introduction_button = tk.Button(bg_frame, text="このゲームについて", font=(main_font, 18), bg=introduction_btn_bg, width=30, relief="raised", borderwidth=3)
         introduction_button.pack(side=tk.TOP, padx=(30, 800), pady=(40, 0))
+
+
+    #アプリケーションが始まった時
+    def start_App(self):
+        
+        pw_title.destroy()
+        fm_title.destroy()
+        global count_title
+        count_title = False
+        
+        fm_choice = tk.Frame(self.master, bg=choice_pw_bg, bd=5, relief="ridge", borderwidth=10)
+        #fm_choice.grid(row=0, column=0, sticky="nsew")]
+        fm_choice.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
+        
+        # -------- gridによって配置する --------
+        style = ttk.Style()
+        style.configure("Listbox", font=("Helvetica", 16))  # リストのフォントサイズを大きく
+        style.configure("TButton", font=("Helvetica", 16))  # ボタンのフォントサイズを大きく
+        
+        # ラベルを追加
+        label = tk.Label(fm_choice, text="お手本にするイラストを選択してください", font=("Helvetica", 30), padx=70, pady=55)
+        label.grid(row=1, column=0, columnspan=2, sticky="nsew")
+                
+        self.listbox = tk.Listbox(fm_choice, selectbackground="lightblue", font=("Helvetica", 25), height=5)  # リストの高さを調整
+        self.listbox.grid(row=2, column=0, padx=20, pady=20, rowspan=3, sticky="ns")
+        
+        item_1 = "動物"
+        item_2 = "植物"
+        item_3 = "その他"
+        button_list_1 = ["馬", "牛", "サル", "a", "3", "s", "e", "as", "ds", "sdgds", "馬", "牛", "サ", "a", "3", "s", "e", "as", "ds", "sdgds", "馬", "牛", "ル", "a", "3", "s", "e", "as", "ds", "sdgds"]
+        
+        self.listbox.insert(tk.END, item_1)
+        self.listbox.insert(tk.END, item_2)
+        self.listbox.insert(tk.END, item_3)
+        
+        self.listbox.select_set(0)  # 最初のアイテムを選択状態にする
+        #listbox.event_generate("<<ListboxSelect>>")  # 選択イベントを発生させて更新
+
+        self.button_frame = tk.Frame(fm_choice, width=100)
+        self.button_frame.grid(row=2, column=1, padx=20, pady=20, sticky="nsew")
+
+        self.button_dict = {
+            item_1: [
+                [ttk.Button(self.button_frame, text=f"{button_list_1[row*5+col+1-1]}", command=lambda num=row*5+col+1: self.button_click(num)) for col in range(5)] for row in range(2)
+            ],
+            item_2: [
+                [ttk.Button(self.button_frame, text=f"{button_list_1[row*5+col+1-1]}", command=lambda num=row*5+col+1: self.button_click(num)) for col in range(10, 15)] for row in range(2)
+            ],
+            item_3: [
+                [ttk.Button(self.button_frame, text=f"{button_list_1[row*5+col+1-1]}", command=lambda num=row*5+col+1: self.button_click(num)) for col in range(20, 25)] for row in range(2)
+            ]
+        }
+        self.button_list = [button for button_row in self.button_dict.values() for row in button_row for button in row]
+
+        self.update_button_visibility("")
+
+        self.listbox.bind("<<ListboxSelect>>", self.update_buttons)
+
+        for row in range(2):
+            self.button_frame.grid_rowconfigure(row, weight=1)
+        for col in range(5):
+            self.button_frame.grid_columnconfigure(col, weight=1)
+
+        # 画像の表示
+        self.image = Image.open("paint&/image/image_1.jpg")  # 画像のパスを指定
+        image_width = 500
+        self.image = self.image.resize((image_width, int(image_width/1280*800)))
+
+        photo = ImageTk.PhotoImage(self.image)
+        self.image_label = tk.Label(fm_choice, image=photo, bg="red")
+        self.image_label.grid(row=4, column=1, columnspan=2, padx=20, pady=20, sticky="nsew")
+        self.image_label.image = photo
+
+        self.update_buttons(None)  # 初期選択アイテムに対するボタンを表示
+
+
+    def update_buttons(self, event):
+        selected_item = self.listbox.get(self.listbox.curselection())
+        self.update_button_visibility(selected_item)
+
+    def update_button_visibility(self, selected_item):
+        for button in self.button_list:
+            button.grid_forget()
+        if selected_item in self.button_dict:
+            for row, button_row in enumerate(self.button_dict[selected_item]):
+                for col, button in enumerate(button_row):
+                    button.grid(row=row, column=col, padx=10, pady=10, sticky="nsew")
+
+    def button_click(self, button_number):
+        print(f"Button {button_number} clicked!")
+        # 画像の表示
+        image_path = f"paint&/image/image_{button_number}.jpg"  # 各ボタンに対応する画像ファイル名を指定
+        self.image = Image.open(image_path)
+        image_width = 500  # マージンを考慮して調整
+        self.image = self.image.resize((image_width, int(image_width*800/1280)))
+
+        photo = ImageTk.PhotoImage(self.image)
+        self.image_label.config(image=photo)
+        self.image_label.image = photo
+
 
 
 
@@ -117,7 +224,7 @@ class Application(tk.Frame):
 #アプリケーションが強制的に終了されたとき
 def goodbye():
     if forced_exit == True:
-        popup = sg.popup_ok_cancel('アプリケーションを終了しますか？', font=(main_font, 16), text_color='#000000', background_color=main_fm_bg)
+        popup = sg.popup_ok_cancel('アプリケーションを終了しますか？', font=(main_font, 12), text_color='#000000', background_color=main_pw_bg)
         print(popup)
         
         if popup == "OK":
@@ -129,6 +236,8 @@ def goodbye():
             restart_message = "continue" 
             # 「continue」を引数と捨て再起動関数を実行
             restart(restart_message)
+    else: 
+        pass
 
 #再起動
 def restart(restart_message):
