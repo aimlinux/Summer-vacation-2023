@@ -16,11 +16,12 @@ forced_exit = True
 main_font = "Arial"
 
 title_fm_bg = "#ffffff"
-choice_fm_bg = "#214090"
-choice_pw_bg = "#214090"
+choice_fm_bg = "#ffe4e1"
+choice_pw_bg = "#ffe4e1"
 main_pw_bg = "#ffe4e1"
 
 title_btn_bg = "#00ced1"
+choice_btn_bg = "#f21049"
 introduction_btn_bg = "#ffffff"
 
 button1_text = "タイトルへ"
@@ -131,7 +132,7 @@ class Application(tk.Frame):
         # ラベルを追加
         label = tk.Label(fm_choice, text="お手本にするイラストを選択してください", font=("Helvetica", 30), padx=70, pady=55)
         label.grid(row=1, column=0, columnspan=2, sticky="nsew")
-                
+        
         self.listbox = tk.Listbox(fm_choice, selectbackground="lightblue", font=("Helvetica", 25), height=5)  # リストの高さを調整
         self.listbox.grid(row=2, column=0, padx=20, pady=20, rowspan=3, sticky="ns")
         
@@ -182,6 +183,13 @@ class Application(tk.Frame):
         self.image_label.grid(row=4, column=1, columnspan=2, padx=20, pady=20, sticky="nsew")
         self.image_label.image = photo
 
+        #決定・戻るボタンの配置
+        return_title_button = tk.Button(fm_choice, text="戻る", bg=choice_btn_bg, font=(main_font, 15), height=2, width=2, command=self.return_title)
+        return_title_button.grid(row=6, column=0, columnspan=1, padx=(50, 200), pady=20, sticky="nsew")
+        
+        decided_button = tk.Button(fm_choice, text="決定", bg=choice_btn_bg, font=(main_font, 15), height=2, width=2)
+        decided_button.grid(row=6, column=1, columnspan=1, padx=(550, 100), pady=20, sticky="nsew")
+
         self.update_buttons(None)  # 初期選択アイテムに対するボタンを表示
 
 
@@ -209,6 +217,11 @@ class Application(tk.Frame):
         self.image_label.config(image=photo)
         self.image_label.image = photo
 
+
+
+    # タイトルへ戻る
+    def return_title(self):
+        pass
 
 
 
@@ -260,9 +273,9 @@ screen_height = main_window.winfo_screenheight()
 
 window_width = 1280
 window_height = 800
-x = (screen_width // 2) - (window_width // 2)
-y = (screen_height // 3) - (window_height // 3)
-
+x = (screen_width // 2) - (window_width // 2) 
+#y = (screen_height // 3) - (window_height // 3)
+y = 2
 
 myapp = Application(master=main_window)
 myapp.master.title("paintApp")
