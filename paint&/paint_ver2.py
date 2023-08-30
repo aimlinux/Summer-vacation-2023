@@ -56,7 +56,7 @@ class BackgroundFrame(tk.Frame):
     def __init__(self, master=None, bg_image=None, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         
-        bg_image_path = "paint&/image/aimlinux.png"
+        bg_image_path = "paint&/image/fd.png"
         
         if bg_image:
             self.bg_image = PhotoImage(file=bg_image_path)
