@@ -8,6 +8,8 @@ import PySimpleGUI as sg
 import PIL
 from PIL import Image, ImageTk
 import atexit
+import time
+from time import sleep
 import sys 
 import os
 
@@ -129,6 +131,8 @@ class Application(tk.Frame):
         
         pw_title.destroy()
         fm_title.destroy()
+        time.sleep(0.1)
+        
         global count_title
         count_title = False
         global count_choice
@@ -291,12 +295,13 @@ class Application(tk.Frame):
             
             global difficulty_window
             difficulty_window.destroy()
+            time.sleep(0.5)
             
-            global paint_start_window
-            paint_start_window = tk.Toplevel(bg=choice_fm_bg, bd=5)
-            paint_start_window.geometry(difficulty_window_size)
-            paint_start_window.title("難易度選択")
-            paint_start_window.lift() # 他のウィンドウより前面に固定
+            global game_start_window
+            game_start_window = tk.Toplevel(bg=choice_fm_bg, bd=5)
+            game_start_window.geometry(difficulty_window_size)
+            game_start_window.title("これで決定？")
+            game_start_window.lift() # 他のウィンドウより前面に固定
             
         else:
             pass
