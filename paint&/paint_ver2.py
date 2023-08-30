@@ -1,4 +1,7 @@
 import tkinter as tk
+from tkinter import filedialog 
+from tkinter import messagebox
+from tkinter import scrolledtext 
 from tkinter import PhotoImage
 from tkinter import ttk
 import PySimpleGUI as sg
@@ -282,9 +285,21 @@ class Application(tk.Frame):
         
     def difficulty_decision(self, difficulty):
         
-        print()
-        global difficulty_window
-        difficulty_window.destroy()
+        last_difficulty = difficulty
+        if last_photo and last_difficulty:
+            print(f"{last_photo} : {last_difficulty}")
+            
+            global difficulty_window
+            difficulty_window.destroy()
+            
+            global paint_start_window
+            paint_start_window = tk.Toplevel(bg=choice_fm_bg, bd=5)
+            paint_start_window.geometry(difficulty_window_size)
+            paint_start_window.title("難易度選択")
+            paint_start_window.lift() # 他のウィンドウより前面に固定
+            
+        else:
+            pass
         
 
 
