@@ -21,7 +21,7 @@ choice_pw_bg = "#ffe4e1"
 main_pw_bg = "#ffe4e1"
 
 title_btn_bg = "#00ced1"
-choice_btn_bg = "#f21049"
+choice_btn_bg = "#00ced1"
 introduction_btn_bg = "#ffffff"
 
 button1_text = "タイトルへ"
@@ -38,6 +38,7 @@ TOOLBAR_OPTIONS = {
 
 #各ウィンドウのカウント
 count_title = False
+count_choice = False
 
 
 # BackgroundFrameを作成
@@ -83,10 +84,10 @@ class Application(tk.Frame):
         pw_title.add(fm_title)
         
         # 画像ファイルのパスを指定して、BackgroundFrameを作成
-        # bg_image_path = "path_to_your_image.png"
-        # bg_frame = BackgroundFrame(fm_title, bg_image=bg_image_path, bg="#ffffff")
-        # bg_frame.pack(fill="both", expand=True)
-        bg_frame = fm_title
+        bg_image_path = "path_to_your_image.png"
+        bg_frame = BackgroundFrame(fm_title, bg_image=bg_image_path, bg="#ffffff")
+        bg_frame.pack(fill="both", expand=True)
+        # bg_frame = fm_title
         
         # ツールバー作成
         fm_toolbar = tk.Frame(bg_frame, bg=title_fm_bg)
@@ -119,6 +120,10 @@ class Application(tk.Frame):
         fm_title.destroy()
         global count_title
         count_title = False
+        global count_choice
+        count_choice = True
+        
+        global fm_choice
         
         fm_choice = tk.Frame(self.master, bg=choice_pw_bg, bd=5, relief="ridge", borderwidth=10)
         #fm_choice.grid(row=0, column=0, sticky="nsew")]
@@ -130,7 +135,7 @@ class Application(tk.Frame):
         style.configure("TButton", font=("Helvetica", 16))  # ボタンのフォントサイズを大きく
         
         # ラベルを追加
-        label = tk.Label(fm_choice, text="お手本にするイラストを選択してください", font=("Helvetica", 30), padx=70, pady=55)
+        label = tk.Label(fm_choice, text="お手本にするイラストを選択してください", font=("Helvetica", 30), bg=choice_fm_bg, padx=70, pady=55)
         label.grid(row=1, column=0, columnspan=2, sticky="nsew")
         
         self.listbox = tk.Listbox(fm_choice, selectbackground="lightblue", font=("Helvetica", 25), height=5)  # リストの高さを調整
@@ -148,7 +153,7 @@ class Application(tk.Frame):
         self.listbox.select_set(0)  # 最初のアイテムを選択状態にする
         #listbox.event_generate("<<ListboxSelect>>")  # 選択イベントを発生させて更新
 
-        self.button_frame = tk.Frame(fm_choice, width=100)
+        self.button_frame = tk.Frame(fm_choice, width=100, bg="#ffff8e", relief="ridge", borderwidth=2)
         self.button_frame.grid(row=2, column=1, padx=20, pady=20, sticky="nsew")
 
         self.button_dict = {
@@ -179,7 +184,7 @@ class Application(tk.Frame):
         self.image = self.image.resize((image_width, int(image_width/1280*800)))
 
         photo = ImageTk.PhotoImage(self.image)
-        self.image_label = tk.Label(fm_choice, image=photo, bg="red")
+        self.image_label = tk.Label(fm_choice, image=photo, bg=choice_fm_bg)
         self.image_label.grid(row=4, column=1, columnspan=2, padx=20, pady=20, sticky="nsew")
         self.image_label.image = photo
 
@@ -221,7 +226,14 @@ class Application(tk.Frame):
 
     # タイトルへ戻る
     def return_title(self):
-        pass
+        
+        if count_choice == True:
+            fm_choice.destroy()
+        else: 
+            pass
+        
+        self.create_widgets()
+        
 
 
 
@@ -236,20 +248,20 @@ class Application(tk.Frame):
 
 #アプリケーションが強制的に終了されたとき
 def goodbye():
-    if forced_exit == True:
-        popup = sg.popup_ok_cancel('アプリケーションを終了しますか？', font=(main_font, 12), text_color='#000000', background_color=main_pw_bg)
-        print(popup)
+    # if forced_exit == True:
+    #     popup = sg.popup_ok_cancel('アプリケーションを終了しますか？', font=(main_font, 12), text_color='#000000', background_color=main_pw_bg)
+    #     print(popup)
         
-        if popup == "OK":
-            exit_message = "App Exit"
-            #messagebox.showinfo("App Exit", "アプリケーションを終了しました。")
-            print(exit_message)
-            pass
-        elif popup == "Cancel":
-            restart_message = "continue" 
-            # 「continue」を引数と捨て再起動関数を実行
-            restart(restart_message)
-    else: 
+    #     if popup == "OK":
+    #         exit_message = "App Exit"
+    #         #messagebox.showinfo("App Exit", "アプリケーションを終了しました。")
+    #         print(exit_message)
+    #         pass
+    #     elif popup == "Cancel":
+    #         restart_message = "continue" 
+    #         # 「continue」を引数と捨て再起動関数を実行
+    #         restart(restart_message)
+    # else: 
         pass
 
 #再起動
@@ -279,5 +291,5 @@ y = 2
 
 myapp = Application(master=main_window)
 myapp.master.title("paintApp")
-myapp.master.geometry(f"{window_width}x{window_height}+{x}+{y}")
+myapp.master.geometry(f"{window_width}x{window_height-10}+{x}+{y}")
 myapp.mainloop()
