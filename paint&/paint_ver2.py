@@ -9,11 +9,13 @@ import sys
 import os
 
 
-#強制終了されたかどうか
-forced_exit = True
+
+forced_exit = True # 強制終了されたかどうか
+
+last_photo = None # お手本のイラストが選択されているかどうか
 
 
-main_font = "Arial"
+main_font = "Helvetica"
 
 title_fm_bg = "#ffffff"
 choice_fm_bg = "#ffe4e1"
@@ -35,8 +37,11 @@ TOOLBAR_OPTIONS = {
     "fg" : "#00334d"
 }
 
+# 各ウィンドウのサイズ
+difficulty_window_size = "500x600+500+100"
+warning_window_size = "600x140+500+400"
 
-#各ウィンドウのカウント
+# 各ウィンドウのカウント
 count_title = False
 count_choice = False
 
@@ -70,6 +75,9 @@ class Application(tk.Frame):
     
     
     def create_widgets(self):
+        
+        global last_photo
+        last_photo = None # お手本のイラストの選択を初期化
         
         global count_title
         count_title = True
@@ -189,10 +197,12 @@ class Application(tk.Frame):
         self.image_label.image = photo
 
         #決定・戻るボタンの配置
-        return_title_button = tk.Button(fm_choice, text="戻る", bg=choice_btn_bg, font=(main_font, 15), height=2, width=2, command=self.return_title)
+        return_title_button = tk.Button(fm_choice, text="戻る", bg=choice_btn_bg, font=(main_font, 15), height=2, width=2, 
+                                        relief="raised", borderwidth=5, command=self.return_title)
         return_title_button.grid(row=6, column=0, columnspan=1, padx=(50, 200), pady=20, sticky="nsew")
         
-        decided_button = tk.Button(fm_choice, text="決定", bg=choice_btn_bg, font=(main_font, 15), height=2, width=2)
+        decided_button = tk.Button(fm_choice, text="決定", bg=choice_btn_bg, font=(main_font, 15), height=2, width=2, 
+                                    relief="raised", borderwidth=5, command=self.difficulty)
         decided_button.grid(row=6, column=1, columnspan=1, padx=(550, 100), pady=20, sticky="nsew")
 
         self.update_buttons(None)  # 初期選択アイテムに対するボタンを表示
@@ -221,8 +231,70 @@ class Application(tk.Frame):
         photo = ImageTk.PhotoImage(self.image)
         self.image_label.config(image=photo)
         self.image_label.image = photo
+        
+        #最終的な決定
+        global last_photo
+        last_photo = button_number
 
 
+
+    # 難易度を選ぶ
+    def difficulty(self):
+        global difficulty_window
+        
+        if not last_photo:
+            difficulty_window = tk.Toplevel(bg=choice_fm_bg, bd=5)
+            difficulty_window.geometry(warning_window_size)
+            difficulty_window.title("warning")
+            difficulty_window.lift() # 他のウィンドウより前面に固定
+            
+            label = tk.Label(difficulty_window, text="お手本のイラストが選択されていません", bg=choice_fm_bg, font=(main_font, 20))
+            label.pack(side=tk.TOP, padx=(0, 0), pady=(10, 10))
+            button = tk.Button(difficulty_window, text="OK", bg=choice_btn_bg, font=(main_font, 14), width=10, 
+                                            relief="raised", borderwidth=5, command=self.exit_warning)
+            button.pack(side=tk.TOP, padx=(0, 0), pady=(10, 10))
+            
+        else:
+            difficulty_window = tk.Toplevel(bg=choice_fm_bg, bd=5)
+            difficulty_window.geometry(difficulty_window_size)
+            difficulty_window.title("難易度選択")
+            difficulty_window.lift() # 他のウィンドウより前面に固定
+
+            label = tk.Label(difficulty_window, text="-- 難易度を選択してください --", bg=choice_fm_bg, font=(main_font, 20))
+            label.pack(side=tk.TOP, padx=(0, 0), pady=(40, 20))
+            
+            button_1 = tk.Button(difficulty_window, text="初級", bg=choice_btn_bg, font=(main_font, 15), width=18, 
+                                            relief="raised", borderwidth=5, command=lambda: self.difficulty_decision("button_1"))
+            button_1.pack(side=tk.TOP, padx=(0, 0), pady=(30, 12))
+            text_label_1 = tk.Label(difficulty_window, text="お手本を見る時間：30秒以内\nペイントする時間：60秒以内", bg=choice_fm_bg, font=(main_font, 12))
+            text_label_1.pack(side=tk.TOP, padx=(0, 0))
+            button_2 = tk.Button(difficulty_window, text="中級", bg=choice_btn_bg, font=(main_font, 15), width=18, 
+                                            relief="raised", borderwidth=5, command=lambda: self.difficulty_decision("button_2"))
+            button_2.pack(side=tk.TOP, padx=(0, 0), pady=(40, 20))
+            text_label_2 = tk.Label(difficulty_window, text="お手本を見る時間：20秒以内\nペイントする時間：40秒以内", bg=choice_fm_bg, font=(main_font, 12))
+            text_label_2.pack(side=tk.TOP, padx=(0, 0))
+            button_3 = tk.Button(difficulty_window, text="上級", bg=choice_btn_bg, font=(main_font, 15), width=18, 
+                                            relief="raised", borderwidth=5, command=lambda: self.difficulty_decision("button_3"))
+            button_3.pack(side=tk.TOP, padx=(0, 0), pady=(40, 20))
+            text_label_3 = tk.Label(difficulty_window, text="お手本を見る時間：10秒以内\nペイントする時間：20秒以内", bg=choice_fm_bg, font=(main_font, 12))
+            text_label_3.pack(side=tk.TOP, padx=(0, 0))
+            
+        
+    def difficulty_decision(self, difficulty):
+        
+        print()
+        global difficulty_window
+        difficulty_window.destroy()
+        
+
+
+    # 注意ウィンドウを消す
+    def exit_warning(self):
+        
+        difficulty_window.destroy()
+        return 0
+    
+    
 
     # タイトルへ戻る
     def return_title(self):
