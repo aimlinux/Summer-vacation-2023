@@ -45,6 +45,7 @@ TOOLBAR_OPTIONS = {
 # 各ウィンドウのサイズ
 difficulty_window_size = "500x600+500+100"
 warning_window_size = "600x140+500+400"
+game_start_window_size = "800x200+300+200"
 
 # 各ウィンドウのカウント
 count_title = False
@@ -159,7 +160,8 @@ class Application(tk.Frame):
         item_1 = "動物"
         item_2 = "植物"
         item_3 = "その他"
-        button_list_1 = ["馬", "牛", "サル", "a", "3", "s", "e", "as", "ds", "sdgds", "馬", "牛", "サ", "a", "3", "s", "e", "as", "ds", "sdgds", "馬", "牛", "ル", "a", "3", "s", "e", "as", "ds", "sdgds"]
+        global button_list_thing
+        button_list_thing = ["馬", "牛", "サル", "a", "3", "s", "e", "as", "ds", "sdgds", "馬", "牛", "サ", "a", "3", "s", "e", "as", "ds", "sdgds", "馬", "牛", "ル", "a", "3", "s", "e", "as", "ds", "sdgds"]
         
         self.listbox.insert(tk.END, item_1)
         self.listbox.insert(tk.END, item_2)
@@ -173,13 +175,13 @@ class Application(tk.Frame):
 
         self.button_dict = {
             item_1: [
-                [ttk.Button(self.button_frame, text=f"{button_list_1[row*5+col+1-1]}", command=lambda num=row*5+col+1: self.button_click(num)) for col in range(5)] for row in range(2)
+                [ttk.Button(self.button_frame, text=f"{button_list_thing[row*5+col+1-1]}", command=lambda num=row*5+col+1: self.button_click(num)) for col in range(5)] for row in range(2)
             ],
             item_2: [
-                [ttk.Button(self.button_frame, text=f"{button_list_1[row*5+col+1-1]}", command=lambda num=row*5+col+1: self.button_click(num)) for col in range(10, 15)] for row in range(2)
+                [ttk.Button(self.button_frame, text=f"{button_list_thing[row*5+col+1-1]}", command=lambda num=row*5+col+1: self.button_click(num)) for col in range(10, 15)] for row in range(2)
             ],
             item_3: [
-                [ttk.Button(self.button_frame, text=f"{button_list_1[row*5+col+1-1]}", command=lambda num=row*5+col+1: self.button_click(num)) for col in range(20, 25)] for row in range(2)
+                [ttk.Button(self.button_frame, text=f"{button_list_thing[row*5+col+1-1]}", command=lambda num=row*5+col+1: self.button_click(num)) for col in range(20, 25)] for row in range(2)
             ]
         }
         self.button_list = [button for button_row in self.button_dict.values() for row in button_row for button in row]
@@ -295,13 +297,29 @@ class Application(tk.Frame):
             
             global difficulty_window
             difficulty_window.destroy()
-            time.sleep(0.5)
+            time.sleep(0.2)
             
             global game_start_window
             game_start_window = tk.Toplevel(bg=choice_fm_bg, bd=5)
-            game_start_window.geometry(difficulty_window_size)
+            game_start_window.geometry(game_start_window_size)
             game_start_window.title("これで決定？")
             game_start_window.lift() # 他のウィンドウより前面に固定
+            
+            painting_model = button_list_thing[last_photo-1]
+            print(painting_model)
+            if last_difficulty == "button_1":
+                painting_difficulty = "初級"
+            elif last_difficulty == "button_2":
+                painting_difficulty = "中級"
+            elif last_difficulty == "button_3":
+                painting_difficulty = "上級"
+            
+            label = tk.Label(game_start_window, text=f"お手本のイラストは\"{painting_model}\"で難易度\"{painting_difficulty}\"でゲームをスタートしますか？",
+                            bg=choice_fm_bg, font=(main_font, 17))
+            label.pack(side=tk.TOP, padx=(0, 0), pady=(20, 10))
+            label = tk.Label(game_start_window, text="「スタート」ボタンを押すとゲームがスタートし、\nお手本のイラストが見れるようになります。",
+                            bg=choice_fm_bg, font=(main_font, 14))
+            label.pack(side=tk.TOP, padx=(0, 0), pady=(0, 20))
             
         else:
             pass
