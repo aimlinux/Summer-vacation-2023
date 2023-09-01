@@ -321,6 +321,13 @@ class Application(tk.Frame):
                             bg=choice_fm_bg, font=(main_font, 14))
             label.pack(side=tk.TOP, padx=(0, 0), pady=(0, 20))
             
+            return_title_button = tk.Button(game_start_window, text="戻る", bg=choice_btn_bg, font=(main_font, 14), width=10,
+                                        relief="raised", borderwidth=5, command=self.return_choice)
+            return_title_button.pack(side=tk.LEFT, padx=(250, 10))
+            decided_button = tk.Button(game_start_window, text="スタート", bg=choice_btn_bg, font=(main_font, 14), width=10,
+                                    relief="raised", borderwidth=5)
+            decided_button.pack(side=tk.LEFT, padx=(100, 10))
+
         else:
             pass
         
@@ -328,15 +335,12 @@ class Application(tk.Frame):
 
     # 注意ウィンドウを消す
     def exit_warning(self):
-        
         difficulty_window.destroy()
         return 0
     
     
-
     # タイトルへ戻る
     def return_title(self):
-        
         if count_choice == True:
             fm_choice.destroy()
         else: 
@@ -344,16 +348,22 @@ class Application(tk.Frame):
         
         self.create_widgets()
         
+        
+    # イラスト選択へ戻る
+    def return_choice(self):
+        game_start_window.destroy()
+        return 0
 
 
-
-    #アプリケーションが終了されたとき
+    # アプリケーションが終了されたとき
     def exit_App(self):
         global forced_exit
         forced_exit = False
         
         if count_title == True:
             self.master.quit()
+        else: 
+            pass
 
 
 #アプリケーションが強制的に終了されたとき
