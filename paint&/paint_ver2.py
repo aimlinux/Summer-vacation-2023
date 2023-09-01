@@ -209,7 +209,7 @@ class Application(tk.Frame):
         intensity = 30 # 大きいほどモザイクが荒く
         self.image = self.image.resize((round(self.image.width / intensity), round(self.image.height / intensity)))
         self.image = self.image.resize((original.width,original.height),resample=Image.NEAREST) # 最近傍補間
-        
+        #self.image = self.image.resize((original.width, original.height), resample=Image.BILINEAR) #双線形補間
         photo = ImageTk.PhotoImage(self.image)
         self.image_label = tk.Label(fm_choice, image=photo, bg=choice_fm_bg)
         self.image_label.grid(row=4, column=1, columnspan=2, padx=20, pady=20, sticky="nsew")
@@ -251,7 +251,7 @@ class Application(tk.Frame):
         intensity = 30 # 大きいほどモザイクが荒く
         self.image = self.image.resize((round(self.image.width / intensity), round(self.image.height / intensity)))
         self.image = self.image.resize((original.width,original.height),resample=Image.NEAREST) # 最近傍補間
-        
+        #self.image = self.image.resize((original.width, original.height), resample=Image.BILINEAR) #双線形補間
         photo = ImageTk.PhotoImage(self.image)
         self.image_label.config(image=photo)
         self.image_label.image = photo
