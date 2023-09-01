@@ -55,6 +55,7 @@ game_start_window_size = "800x200+300+200"
 count_title = False
 count_choice = False
 count_see_model = False
+count_illustration = False
 
 
 # BackgroundFrameを作成
@@ -360,7 +361,7 @@ class Application(tk.Frame):
         game_start_window.destroy()
 
         fm_choice.destroy()
-        time.sleep(0.1)
+        time.sleep(0.8)
         
         global count_choice
         count_choice = False
@@ -412,14 +413,14 @@ class Application(tk.Frame):
         self.count_label.pack(side=tk.LEFT, padx=(520, 0), pady=(20, 20))
         
         skip_button = tk.Button(fm_see_model, text="スキップする", bg=see_model_btn_bg, font=(main_font, 18), width=16,
-                                        relief="raised", borderwidth=5)
+                                        relief="raised", borderwidth=5, command=lambda: self.drawing_illustration(skip_button = 1))
         skip_button.pack(side=tk.LEFT, padx=(100, 0), pady=(20, 20))
             
         self.update_timer()
         
     #制限時間をカウントして表示する
     def update_timer(self):
-        if self.count_time > 0:
+        if self.count_time >= 0:
             self.count_time = self.count_time - 1
             if self.count_time <= 10:
                 self.timer_bg = "red"
@@ -428,6 +429,26 @@ class Application(tk.Frame):
         # Update every 1000ms (1 second)
         self.master.after(1000, self.update_timer)
         
+        if self.count_time == -1:
+            skip_button = 0
+            self.drawing_illustration(skip_button)
+        
+
+    #イラストをペイント
+    def drawing_illustration(self, skip_button):
+        if skip_button == 1:
+            skip_on = "Yes"
+        elif skip_button == 0:
+            skip_on = "No"
+        print(f"skip_button : " + str(skip_on))
+        
+        pw_see_model.destroy()
+        time.sleep(0.1)
+        
+        global count_see_model
+        count_see_model = False
+        global count_illustration
+        count_illustration = True
 
     # 注意ウィンドウを消す
     def exit_warning(self):
@@ -499,8 +520,8 @@ screen_height = main_window.winfo_screenheight()
 window_width = 1280
 window_height = 800
 x = (screen_width // 2) - (window_width // 2) 
-#y = (screen_height // 3) - (window_height // 3)
-y = 2
+y = (screen_height // 3) - (window_height // 3)
+#y = 2
 
 myapp = Application(master=main_window)
 myapp.master.title("paintApp")
