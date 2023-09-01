@@ -5,6 +5,7 @@ from tkinter import scrolledtext
 from tkinter import PhotoImage
 from tkinter import ttk
 import PySimpleGUI as sg
+import cv2
 import PIL
 from PIL import Image, ImageTk
 import atexit
@@ -22,13 +23,16 @@ last_photo = None # お手本のイラストが選択されているかどうか
 
 main_font = "Helvetica"
 
+main_pw_bg = "#ffe4e1"
 title_fm_bg = "#ffffff"
 choice_fm_bg = "#ffe4e1"
 choice_pw_bg = "#ffe4e1"
-main_pw_bg = "#ffe4e1"
+see_model_pw_bg = "#ffe4e1"
+see_model_fm_bg = "#ffe4e1"
 
 title_btn_bg = "#00ced1"
 choice_btn_bg = "#00ced1"
+see_model_btn_bg = "#00ced1"
 introduction_btn_bg = "#ffffff"
 
 button1_text = "タイトルへ"
@@ -50,6 +54,8 @@ game_start_window_size = "800x200+300+200"
 # 各ウィンドウのカウント
 count_title = False
 count_choice = False
+count_see_model = False
+count_illustration = False
 
 
 # BackgroundFrameを作成
@@ -199,7 +205,12 @@ class Application(tk.Frame):
         self.image = Image.open("paint&/image/image_1.jpg")  # 画像のパスを指定
         image_width = 500
         self.image = self.image.resize((image_width, int(image_width/1280*800)))
-
+        # モザイク処理
+        original = self.image # 元の画像のサイズを記憶
+        intensity = 30 # 大きいほどモザイクが荒く
+        self.image = self.image.resize((round(self.image.width / intensity), round(self.image.height / intensity)))
+        self.image = self.image.resize((original.width,original.height),resample=Image.NEAREST) # 最近傍補間
+        #self.image = self.image.resize((original.width, original.height), resample=Image.BILINEAR) #双線形補間
         photo = ImageTk.PhotoImage(self.image)
         self.image_label = tk.Label(fm_choice, image=photo, bg=choice_fm_bg)
         self.image_label.grid(row=4, column=1, columnspan=2, padx=20, pady=20, sticky="nsew")
@@ -236,7 +247,12 @@ class Application(tk.Frame):
         self.image = Image.open(image_path)
         image_width = 500  # マージンを考慮して調整
         self.image = self.image.resize((image_width, int(image_width*800/1280)))
-
+        # モザイク処理
+        original = self.image # 元の画像のサイズを記憶
+        intensity = 30 # 大きいほどモザイクが荒く
+        self.image = self.image.resize((round(self.image.width / intensity), round(self.image.height / intensity)))
+        self.image = self.image.resize((original.width,original.height),resample=Image.NEAREST) # 最近傍補間
+        #self.image = self.image.resize((original.width, original.height), resample=Image.BILINEAR) #双線形補間
         photo = ImageTk.PhotoImage(self.image)
         self.image_label.config(image=photo)
         self.image_label.image = photo
@@ -289,8 +305,10 @@ class Application(tk.Frame):
             text_label_3.pack(side=tk.TOP, padx=(0, 0))
             
         
+    # 難易度を決定
     def difficulty_decision(self, difficulty):
         
+        global last_difficulty
         last_difficulty = difficulty
         if last_photo and last_difficulty:
             print(f"{last_photo} : {last_difficulty}")
@@ -325,13 +343,112 @@ class Application(tk.Frame):
                                         relief="raised", borderwidth=5, command=self.return_choice)
             return_title_button.pack(side=tk.LEFT, padx=(250, 10))
             decided_button = tk.Button(game_start_window, text="スタート", bg=choice_btn_bg, font=(main_font, 14), width=10,
-                                    relief="raised", borderwidth=5)
+                                        relief="raised", borderwidth=5, command=self.see_model)
             decided_button.pack(side=tk.LEFT, padx=(100, 10))
-
+            
         else:
             pass
         
+        
+    # イラスト選択へ戻る
+    def return_choice(self):
+        game_start_window.destroy()
+        return 0
+    
+        
+    # イラストのお手本を表示
+    def see_model(self):
+        game_start_window.destroy()
 
+        fm_choice.destroy()
+        time.sleep(0.8)
+        
+        global count_choice
+        count_choice = False
+        global count_see_model
+        count_see_model = True
+        
+        global pw_see_model
+        pw_see_model = tk.PanedWindow(self.master, bg=see_model_pw_bg, orient="vertical")
+        pw_see_model.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
+        fm_see_model = tk.Frame(pw_see_model, bd=5, bg=see_model_pw_bg, relief="ridge", borderwidth=10)
+        pw_see_model.add(fm_see_model)
+        
+        # ツールバー作成
+        fm_toolbar = tk.Frame(fm_see_model, bg=see_model_fm_bg)
+        fm_toolbar.pack(anchor="nw")
+
+        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS)
+        toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
+        toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
+        toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
+        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
+        toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
+        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS)
+        toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
+        
+        label = tk.Label(fm_see_model, text="制限時間内にイラストを覚えよう", bg=see_model_fm_bg, font=(main_font, 25))
+        label.pack(side=tk.TOP, padx=(0, 0), pady=(20, 0))
+        
+        # お手本の画像の表示
+        self.image = Image.open(f"paint&/image/image_{last_photo}.jpg")  # 画像のパスを指定
+        image_width = 820
+        self.image = self.image.resize((image_width, int(image_width/1280*800)))
+
+        photo = ImageTk.PhotoImage(self.image)
+        self.image_label = tk.Label(fm_see_model, image=photo, bg="#000000")
+        self.image_label.pack(side=tk.TOP, padx=(0, 0), pady=(20, 0))
+        self.image_label.image = photo
+
+        # 難易度によって制限時間を決定
+        if last_difficulty == "button_1":
+            self.count_time = 30 + 1
+        elif last_difficulty == "button_2":
+            self.count_time = 20 + 1
+        elif last_difficulty == "button_3":
+            self.count_time = 10 + 1
+
+        self.timer_bg = "#191970"
+        self.count_label = tk.Label(fm_see_model, text=f"残り {self.count_time} 秒", fg=self.timer_bg, bg=see_model_fm_bg, font=(main_font, 30))
+        self.count_label.pack(side=tk.LEFT, padx=(520, 0), pady=(20, 20))
+        
+        skip_button = tk.Button(fm_see_model, text="スキップする", bg=see_model_btn_bg, font=(main_font, 18), width=16,
+                                        relief="raised", borderwidth=5, command=lambda: self.drawing_illustration(skip_button = 1))
+        skip_button.pack(side=tk.LEFT, padx=(100, 0), pady=(20, 20))
+            
+        self.update_timer()
+        
+    #制限時間をカウントして表示する
+    def update_timer(self):
+        if self.count_time >= 0:
+            self.count_time = self.count_time - 1
+            if self.count_time <= 10:
+                self.timer_bg = "red"
+            self.count_label.config(text=f"残り {self.count_time} 秒", fg=self.timer_bg)
+        
+        # Update every 1000ms (1 second)
+        self.master.after(1000, self.update_timer)
+        
+        if self.count_time == -1:
+            skip_button = 0
+            self.drawing_illustration(skip_button)
+        
+
+    #イラストをペイント
+    def drawing_illustration(self, skip_button):
+        if skip_button == 1:
+            skip_on = "Yes"
+        elif skip_button == 0:
+            skip_on = "No"
+        print(f"skip_button : " + str(skip_on))
+        
+        pw_see_model.destroy()
+        time.sleep(0.1)
+        
+        global count_see_model
+        count_see_model = False
+        global count_illustration
+        count_illustration = True
 
     # 注意ウィンドウを消す
     def exit_warning(self):
@@ -343,16 +460,13 @@ class Application(tk.Frame):
     def return_title(self):
         if count_choice == True:
             fm_choice.destroy()
+        elif count_see_model == True:
+            pw_see_model.destroy
         else: 
             pass
         
         self.create_widgets()
         
-        
-    # イラスト選択へ戻る
-    def return_choice(self):
-        game_start_window.destroy()
-        return 0
 
 
     # アプリケーションが終了されたとき
@@ -406,8 +520,8 @@ screen_height = main_window.winfo_screenheight()
 window_width = 1280
 window_height = 800
 x = (screen_width // 2) - (window_width // 2) 
-#y = (screen_height // 3) - (window_height // 3)
-y = 2
+y = (screen_height // 3) - (window_height // 3)
+#y = 2
 
 myapp = Application(master=main_window)
 myapp.master.title("paintApp")
