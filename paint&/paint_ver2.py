@@ -383,7 +383,7 @@ def goodbye():
     #         restart(restart_message)
     # else: 
         pass
-
+        
 #再起動
 def restart(restart_message):
     if restart_message == "continue":
