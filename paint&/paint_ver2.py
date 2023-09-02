@@ -11,7 +11,7 @@ from PIL import Image, ImageTk
 import atexit
 import time
 from time import sleep
-import sys 
+import sys  
 import os
 
 
