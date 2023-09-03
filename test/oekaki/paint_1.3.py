@@ -1,8 +1,9 @@
-import tkinter
+import tkinter as tk
 from tkinter.colorchooser import askcolor
 from tkinter import filedialog
 from tkinter import messagebox
 from tkinter import ttk
+import math
 
 class FancyScribble:
 
@@ -75,42 +76,32 @@ class FancyScribble:
                 messagebox.showerror("保存エラー", str(e))
 
     def create_window(self):
-        window = tkinter.Tk()
+        window = tk.Tk()
         window.title("Fancy Scribble")
 
-        self.canvas = tkinter.Canvas(window, bg=self.background_color, width=800, height=600)
-        self.canvas.pack(fill=tkinter.BOTH, expand=True)
+        self.canvas = tk.Canvas(window, bg=self.background_color, width=800, height=600)
+        self.canvas.pack(fill=tk.BOTH, expand=True)
 
         self.canvas.bind("<ButtonPress-1>", self.on_pressed)
         self.canvas.bind("<B1-Motion>", self.on_dragged)
         self.canvas.bind("<ButtonRelease-1>", self.on_released)
 
-        controls_frame = tkinter.Frame(window)
-        controls_frame.pack(side=tkinter.BOTTOM, fill=tkinter.X)
+        controls_frame = tk.Frame(window)
+        controls_frame.pack(side=tk.BOTTOM, fill=tk.X)
 
-        color_button = tkinter.Button(controls_frame, text="ペンの色を変更", command=self.change_pen_color)
-        color_button.pack(side=tkinter.LEFT)
+        # 丸いボタンを描画
+        radius = 20
+        button_x = 40
+        button_y = 30
+        self.canvas.create_oval(button_x - radius, button_y - radius, button_x + radius, button_y + radius,
+                                fill="lightblue", outline=self.pen_color, width=2)
+        circle_button = tk.Button(window, text="丸", command=lambda: self.change_pen_shape("circle"))
+        circle_button.place(x=10, y=10)
 
-        background_button = tkinter.Button(controls_frame, text="背景色を変更", command=self.change_background_color)
-        background_button.pack(side=tkinter.LEFT)
-
-        pen_width_scale = tkinter.Scale(controls_frame, from_=1, to=10, label="ペンの太さ", orient=tkinter.HORIZONTAL,
-                                        command=self.change_pen_width)
-        pen_width_scale.set(self.pen_width)
-        pen_width_scale.pack(side=tkinter.LEFT)
-
-        pen_shape_label = tkinter.Label(controls_frame, text="ペンの形状")
-        pen_shape_label.pack(side=tkinter.LEFT)
-        pen_shape_options = ["circle", "rectangle", "line"]
-        pen_shape_menu = tkinter.OptionMenu(controls_frame, tkinter.StringVar(), *pen_shape_options,
-                                            command=self.change_pen_shape)
-        pen_shape_menu.pack(side=tkinter.LEFT)
-
-        clear_button = tkinter.Button(controls_frame, text="クリア", command=self.clear_canvas)
-        clear_button.pack(side=tkinter.LEFT)
-
-        save_button = tkinter.Button(controls_frame, text="保存", command=self.save_canvas)
-        save_button.pack(side=tkinter.LEFT)
+        # ボタンのスタイルを設定
+        style = ttk.Style()
+        style.configure("TButton", padding=10, relief="flat", background="lightblue", font=("Helvetica", 12))
+        ttk.Button(controls_frame, text="背景色を変更", command=self.change_background_color).pack(side=tk.LEFT)
 
         return window
 
