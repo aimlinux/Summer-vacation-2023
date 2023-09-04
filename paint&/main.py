@@ -553,7 +553,7 @@ class Application(tk.Frame):
                                         relief="raised", borderwidth=5, command=self.return_choice)
             return_title_button.pack(side=tk.LEFT, padx=(250, 10))
             decided_button = tk.Button(game_start_window, text="スタート", bg=choice_btn_bg, font=(main_font, 14), width=10,
-                                        relief="raised", borderwidth=5, command=lambda: self.create_animation_window(1))
+                                        relief="raised", borderwidth=5, command=lambda: self.see_model())
             decided_button.pack(side=tk.LEFT, padx=(100, 10))
             
         else:
@@ -568,10 +568,10 @@ class Application(tk.Frame):
         
     # イラストのお手本を表示
     def see_model(self):
-        # game_start_window.destroy()
+        game_start_window.destroy()
 
-        # fm_choice.destroy()
-        # self.master.after(500)
+        fm_choice.destroy()
+        self.master.after(500)
         
         # if animation_finished_judge_1 == True:
         #     #カウントダウンアニメーションの表示（１回目）
