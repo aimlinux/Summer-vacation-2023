@@ -25,15 +25,18 @@ main_font = "Helvetica"
 
 main_pw_bg = "#ffe4e1"
 title_fm_bg = "#ffffff"
-choice_fm_bg = "#ffe4e1"
 choice_pw_bg = "#ffe4e1"
+choice_fm_bg = "#ffe4e1"
 see_model_pw_bg = "#ffe4e1"
 see_model_fm_bg = "#ffe4e1"
+illustration_pw_bg = "#ffe4e1"
+illustration_fm_bg = "#ffe4e1"
 
 title_btn_bg = "#00ced1"
 choice_btn_bg = "#00ced1"
 see_model_btn_bg = "#00ced1"
 introduction_btn_bg = "#ffffff"
+illustration_btn_bg = "#00ced1"
 
 button1_text = "タイトルへ"
 button2_text = "オプション"
@@ -354,7 +357,7 @@ class Application(tk.Frame):
     def return_choice(self):
         game_start_window.destroy()
         return 0
-    
+
         
     # イラストのお手本を表示
     def see_model(self):
@@ -367,6 +370,9 @@ class Application(tk.Frame):
         count_choice = False
         global count_see_model
         count_see_model = True
+        
+        global skip_on
+        skip_on = "NULL"
         
         global pw_see_model
         pw_see_model = tk.PanedWindow(self.master, bg=see_model_pw_bg, orient="vertical")
@@ -420,22 +426,26 @@ class Application(tk.Frame):
         
     #制限時間をカウントして表示する
     def update_timer(self):
-        if self.count_time >= 0:
-            self.count_time = self.count_time - 1
-            if self.count_time <= 10:
-                self.timer_bg = "red"
-            self.count_label.config(text=f"残り {self.count_time} 秒", fg=self.timer_bg)
-        
-        # Update every 1000ms (1 second)
-        self.master.after(1000, self.update_timer)
-        
-        if self.count_time == -1:
-            skip_button = 0
-            self.drawing_illustration(skip_button)
+        if skip_on == "NULL":
+            if self.count_time >= 0:
+                self.count_time = self.count_time - 1
+                if self.count_time <= 10:
+                    self.timer_bg = "red"
+                self.count_label.config(text=f"残り {self.count_time} 秒", fg=self.timer_bg)
+            
+            if self.count_time == -1:
+                skip_button = 0
+                self.drawing_illustration(skip_button)
+            else:
+                # Update every 1000ms (1 second)
+                self.master.after(1000, self.update_timer)
+
         
 
     #イラストをペイント
     def drawing_illustration(self, skip_button):
+        
+        global skip_on
         if skip_button == 1:
             skip_on = "Yes"
         elif skip_button == 0:
@@ -449,6 +459,50 @@ class Application(tk.Frame):
         count_see_model = False
         global count_illustration
         count_illustration = True
+        
+        global pw_illustration
+        pw_illustration = tk.PanedWindow(self.master, bg=illustration_pw_bg, orient="vertical")
+        pw_illustration.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
+        fm_illustration = tk.Frame(pw_illustration, bd=5, bg=illustration_pw_bg, relief="ridge", borderwidth=10)
+        pw_illustration.add(fm_illustration)
+        
+        # ツールバー作成
+        fm_toolbar = tk.Frame(fm_illustration, bg=illustration_fm_bg)
+        fm_toolbar.pack(anchor="nw")
+
+        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS)
+        toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
+        toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
+        toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
+        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
+        toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
+        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS)
+        toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
+        
+        label = tk.Label(fm_illustration, text="制限時間内にイラストを描こう", bg=illustration_fm_bg, font=(main_font, 25))
+        label.pack(side=tk.TOP, padx=(0, 0), pady=(20, 0))
+        
+        # x = window_width - 50
+        # y = window_height - 120
+        x = 820 # お手本の写真と合わせる
+        y = x / 1280 * 820
+        self.canvas = tk.Canvas(fm_illustration, bg="#fff", width=x, height=y)
+        self.canvas.pack(side=tk.TOP, padx=(20, 20), pady=(20, 20))
+        
+        # 難易度によって制限時間を決定
+        if last_difficulty == "button_1":
+            self.count_draw_time = 60 + 1
+        elif last_difficulty == "button_2":
+            self.count_draw_time = 40 + 1
+        elif last_difficulty == "button_3":
+            self.count_draw_time = 20 + 1
+        
+        self.timer_draw_bg = "#191970"
+        self.count_draw_label = tk.Label(fm_illustration, text=f"残り {self.count_draw_time} 秒", fg=self.timer_draw_bg, bg=illustration_fm_bg, font=(main_font, 30))
+        self.count_draw_label.pack(side=tk.LEFT, padx=(520, 0), pady=(20, 20))
+        skip_draw_button = tk.Button(fm_illustration, text="これで完成！！", bg=illustration_btn_bg, font=(main_font, 18), width=16,
+                                        relief="raised", borderwidth=5)
+        skip_draw_button.pack(side=tk.LEFT, padx=(100, 0), pady=(20, 20))
 
     # 注意ウィンドウを消す
     def exit_warning(self):
