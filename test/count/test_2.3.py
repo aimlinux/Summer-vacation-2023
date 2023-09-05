@@ -22,7 +22,7 @@ class AnimationCountdownWindow:
 
         # ペインウィンドウの作成
         pw_window = tk.PanedWindow(self.master, bg="#ffe4e1", orient="vertical", 
-                                   bd=5, relief="ridge", borderwidth=10)
+                                    bd=5, relief="ridge", borderwidth=10)
         pw_window.pack(expand=True, fill=tk.BOTH)
 
         # MatplotlibのFigureを作成

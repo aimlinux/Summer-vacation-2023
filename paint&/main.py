@@ -68,6 +68,10 @@ count_illustration = False
 # カウントダウンアニメーションウィンドウのカウント
 # animation_finished_judge_1 = True
 
+#一度きりのイベント
+the_only_1 = True
+
+
 # BackgroundFrameを作成
 class BackgroundFrame(tk.Frame):
     def __init__(self, master=None, bg_image=None, *args, **kwargs):
@@ -84,180 +88,6 @@ class BackgroundFrame(tk.Frame):
             # self.canvas.create_image(0, 0, image=self.bg_image, anchor="nw")
             # self.canvas.pack(fill="both", expand=True)
             
-
-
-
-# カウントダウンのアニメーション
-# class AnimationCountdownWindow:
-#     def __init__(self, master, animation_countdown_number, callback_function):
-#         self.master = master
-        
-#         self.callback_function = callback_function # コールバック関数を保持
-        
-#         self.master.title("")
-#         # 画面の幅と高さを取得
-#         screen_width = master.winfo_screenwidth()
-#         screen_height = master.winfo_screenheight()
-#         window_width = 1280
-#         window_height = 800
-#         x = (screen_width // 2) - (window_width // 2) 
-#         y = (screen_height // 3) - (window_height // 3)
-#         self.master.geometry(f"{window_width}x{window_height-10}+{x}+{y}")
-
-#         # ペインウィンドウの作成
-#         pw_window = tk.PanedWindow(self.master, bg="#ffe4e1", orient="vertical", 
-#                                     bd=5, relief="ridge", borderwidth=10)
-#         pw_window.pack(expand=True, fill=tk.BOTH)
-
-#         # MatplotlibのFigureを作成
-#         self.fig = Figure(figsize=(12, 8), dpi=100, facecolor=main_pw_bg)
-#         self.ax = self.fig.add_subplot(111)
-#         self.ax.set_aspect('equal')
-#         self.ax.axis('off')
-
-#         # 初期フォントサイズ
-#         self.initial_font_size = 400
-
-#         # アニメーションの初期化
-#         self.font_size = self.initial_font_size
-#         self.font_name = "Yu Gothic"
-#         self.font_weight = "bold"
-#         self.font = (self.font_name, self.font_size, self.font_weight)
-#         self.num_text = 5
-
-#         self.t1 = self.ax.text(0.5, 0.5, str(self.num_text), ha='center', va='center',
-#                                 fontdict={'fontname': self.font_name, 'fontsize': self.font_size, 'fontweight': self.font_weight})
-
-#         def init():
-#             return self.t1,
-
-#         def update(num):
-#             if self.num_text == 5:
-#                 if self.font_size == 20:
-#                     self.num_text = 4
-#                     self.font_size = self.initial_font_size
-#                     r = rand.random()
-#                     g = rand.random()
-#                     b = rand.random()
-#                     new_color = (r, g, b)
-#                     self.t1.set_color(new_color)
-#                 else:
-#                     if self.font_size == self.initial_font_size:
-#                         r = rand.random()
-#                         g = rand.random()
-#                         b = rand.random()
-#                         new_color = (r, g, b)
-#                         self.t1.set_color(new_color)
-#                     self.font_size = self.font_size - 5
-#                     self.t1.set_fontsize(self.font_size)
-#                     self.t1.set_text(str(self.num_text))
-
-#             elif self.num_text == 4:
-#                 if self.font_size == 20:
-#                     self.num_text = 3
-#                     self.font_size = self.initial_font_size
-#                     r = rand.random()
-#                     g = rand.random()
-#                     b = rand.random()
-#                     new_color = (r, g, b)
-#                     self.t1.set_color(new_color)
-#                 else:
-#                     if self.font_size == self.initial_font_size:
-#                         r = rand.random()
-#                         g = rand.random()
-#                         b = rand.random()
-#                         new_color = (r, g, b)
-#                         self.t1.set_color(new_color)
-#                     self.font_size = self.font_size - 5
-#                     self.t1.set_fontsize(self.font_size)
-#                     self.t1.set_text(str(self.num_text))
-
-#             elif self.num_text == 3:
-#                 if self.font_size == 20:
-#                     self.num_text = 2
-#                     self.font_size = self.initial_font_size
-#                     r = rand.random()
-#                     g = rand.random()
-#                     b = rand.random()
-#                     new_color = (r, g, b)
-#                     self.t1.set_color(new_color)
-#                 else:
-#                     if self.font_size == self.initial_font_size:
-#                         r = rand.random()
-#                         g = rand.random()
-#                         b = rand.random()
-#                         new_color = (r, g, b)
-#                         self.t1.set_color(new_color)
-#                     self.font_size = self.font_size - 5
-#                     self.t1.set_fontsize(self.font_size)
-#                     self.t1.set_text(str(self.num_text))
-
-#             elif self.num_text == 2:
-#                 if self.font_size == 20:
-#                     self.num_text = 1
-#                     self.font_size = self.initial_font_size
-#                     r = rand.random()
-#                     g = rand.random()
-#                     b = rand.random()
-#                     new_color = (r, g, b)
-#                     self.t1.set_color(new_color)
-#                 else:
-#                     if self.font_size == self.initial_font_size:
-#                         r = rand.random()
-#                         g = rand.random()
-#                         b = rand.random()
-#                         new_color = (r, g, b)
-#                         self.t1.set_color(new_color)
-#                     self.font_size = self.font_size - 5
-#                     self.t1.set_fontsize(self.font_size)
-#                     self.t1.set_text(str(self.num_text))
-
-#             elif self.num_text == 1:
-#                 if self.font_size == 20:
-#                     self.num_text = "スタート"
-#                     self.font_size = self.initial_font_size
-#                     r = rand.random()
-#                     g = rand.random()
-#                     b = rand.random()
-#                     new_color = (r, g, b)
-#                     self.t1.set_color(new_color)
-#                 else:
-#                     if self.font_size == self.initial_font_size:
-#                         r = rand.random()
-#                         g = rand.random()
-#                         b = rand.random()
-#                         new_color = (r, g, b)
-#                         self.t1.set_color(new_color)
-#                     self.font_size = self.font_size - 5
-#                     self.t1.set_fontsize(self.font_size)
-#                     self.t1.set_text(str(self.num_text))
-
-#             elif self.num_text == "スタート":
-#                 if self.font_size == 0:
-#                     # カウント終了
-#                     if animation_countdown_number == 1:
-#                         self.master.after(200, self.callback_function) # 200ミリ秒後にコールバック関数を呼び出す
-                        
-#                 else:
-#                     if self.font_size == self.initial_font_size:
-#                         r = rand.random()
-#                         g = rand.random()
-#                         b = rand.random()
-#                         new_color = (r, g, b)
-#                         self.t1.set_color(new_color)
-#                     self.font_size = self.font_size - 4
-#                     self.t1.set_fontsize(self.font_size)
-#                     self.t1.set_text(str(self.num_text))
-
-#             return self.t1,
-
-#         # MatplotlibのFigureをTkinterウィンドウに埋め込む
-#         self.canvas = FigureCanvasTkAgg(self.fig, master=self.master)
-#         self.canvas_widget = self.canvas.get_tk_widget()
-#         #self.canvas_widget.pack()
-#         pw_window.add(self.canvas_widget)
-
-#         self.ani = animation.FuncAnimation(self.fig, update, init_func=init, interval=7, frames=10)
 
 
 
@@ -553,7 +383,7 @@ class Application(tk.Frame):
                                         relief="raised", borderwidth=5, command=self.return_choice)
             return_title_button.pack(side=tk.LEFT, padx=(250, 10))
             decided_button = tk.Button(game_start_window, text="スタート", bg=choice_btn_bg, font=(main_font, 14), width=10,
-                                        relief="raised", borderwidth=5, command=lambda: self.see_model())
+                                        relief="raised", borderwidth=5, command=lambda: self.countdown_animation_1())
             decided_button.pack(side=tk.LEFT, padx=(100, 10))
             
         else:
@@ -565,18 +395,187 @@ class Application(tk.Frame):
         game_start_window.destroy()
         return 0
 
-        
-    # イラストのお手本を表示
-    def see_model(self):
+
+# -------- カウントダウンアニメーション１ --------
+    def countdown_animation_1(self):
+
         game_start_window.destroy()
 
         fm_choice.destroy()
         self.master.after(500)
         
-        # if animation_finished_judge_1 == True:
-        #     #カウントダウンアニメーションの表示（１回目）
-        #     animation_countdown_number = 1
-        #     self.create_animation_window(animation_countdown_number)
+        global pw_window
+        # ペインウィンドウの作成
+        pw_window = tk.PanedWindow(self.master, bg="#ffe4e1", orient="vertical", 
+                                    bd=5, relief="ridge", borderwidth=10)
+        pw_window.pack(expand=True, fill=tk.BOTH)
+
+        # MatplotlibのFigureを作成
+        self.fig = Figure(figsize=(12, 8), dpi=100, facecolor=main_pw_bg)
+        self.ax = self.fig.add_subplot(111)
+        self.ax.set_aspect('equal')
+        self.ax.axis('off')
+
+        # 初期フォントサイズ
+        self.initial_font_size = 400
+
+        # アニメーションの初期化
+        self.font_size = self.initial_font_size
+        self.font_name = "Yu Gothic"
+        self.font_weight = "bold"
+        self.font = (self.font_name, self.font_size, self.font_weight)
+        self.num_text = 3
+
+        self.t1 = self.ax.text(0.5, 0.5, str(self.num_text), ha='center', va='center',
+                                fontdict={'fontname': self.font_name, 'fontsize': self.font_size, 'fontweight': self.font_weight})
+
+        def init():
+            return self.t1,
+
+        def update(num):
+            if self.num_text == 5:
+                if self.font_size == 20:
+                    self.num_text = 4
+                    self.font_size = self.initial_font_size
+                    r = rand.random()
+                    g = rand.random()
+                    b = rand.random()
+                    new_color = (r, g, b)
+                    self.t1.set_color(new_color)
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 5
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            elif self.num_text == 4:
+                if self.font_size == 20:
+                    self.num_text = 3
+                    self.font_size = self.initial_font_size
+                    r = rand.random()
+                    g = rand.random()
+                    b = rand.random()
+                    new_color = (r, g, b)
+                    self.t1.set_color(new_color)
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 5
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            elif self.num_text == 3:
+                if self.font_size == 20:
+                    self.num_text = 2
+                    self.font_size = self.initial_font_size
+                    r = rand.random()
+                    g = rand.random()
+                    b = rand.random()
+                    new_color = (r, g, b)
+                    self.t1.set_color(new_color)
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 5
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            elif self.num_text == 2:
+                if self.font_size == 20:
+                    self.num_text = 1
+                    self.font_size = self.initial_font_size
+                    r = rand.random()
+                    g = rand.random()
+                    b = rand.random()
+                    new_color = (r, g, b)
+                    self.t1.set_color(new_color)
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 5
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            elif self.num_text == 1:
+                if self.font_size == 20:
+                    self.num_text = "スタート"
+                    self.font_size = self.initial_font_size
+                    r = rand.random()
+                    g = rand.random()
+                    b = rand.random()
+                    new_color = (r, g, b)
+                    self.t1.set_color(new_color)
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 5
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            elif self.num_text == "スタート":
+                if self.font_size == 0:
+                    # カウント終了
+                    self.master.after(400, self.To_see_model)  # 400ミリ秒後にウィンドウを閉じる
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 4
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            return self.t1,
+
+        # MatplotlibのFigureをTkinterウィンドウに埋め込む
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.master)
+        self.canvas_widget = self.canvas.get_tk_widget()
+        #self.canvas_widget.pack()
+        pw_window.add(self.canvas_widget)
+
+        self.ani = animation.FuncAnimation(self.fig, update, init_func=init, interval=7, frames=10)
+
+
+    # see_modelの為に
+    def To_see_model(self):
+        global the_only
+        if the_only == True:
+            the_only = False
+            pw_window.destroy()
+            self.see_model()
+            
+        
+    # イラストのお手本を表示
+    def see_model(self):
+        
+        # game_start_window.destroy()
+        # fm_choice.destroy()
+        # self.master.after(500)
+        
+        # pw_window.destroy()
         
         global count_choice
         count_choice = False
@@ -631,7 +630,7 @@ class Application(tk.Frame):
         self.count_label.pack(side=tk.LEFT, padx=(520, 0), pady=(20, 20))
         
         skip_button = tk.Button(fm_see_model, text="スキップする", bg=see_model_btn_bg, font=(main_font, 18), width=16,
-                                        relief="raised", borderwidth=5, command=lambda: self.drawing_illustration(skip_button = 1))
+                                        relief="raised", borderwidth=5, command=lambda: self.countdown_animation_2(skip_button = 1))
         skip_button.pack(side=tk.LEFT, padx=(100, 0), pady=(20, 20))
             
         self.update_timer()
@@ -647,12 +646,175 @@ class Application(tk.Frame):
             
             if self.count_time == -1:
                 skip_button = 0
-                self.drawing_illustration(skip_button)
+                self.countdown_animation_2(skip_button)
             else:
                 # Update every 1000ms (1 second)
                 self.master.after(1000, self.update_timer)
 
+
+
+# -------- カウントダウンアニメーション２ --------
+    def countdown_animation_2(self, skip_button):
+
+        game_start_window.destroy()
+
+        fm_choice.destroy()
+        self.master.after(500)
         
+        global pw_window
+        # ペインウィンドウの作成
+        pw_window = tk.PanedWindow(self.master, bg="#ffe4e1", orient="vertical", 
+                                    bd=5, relief="ridge", borderwidth=10)
+        pw_window.pack(expand=True, fill=tk.BOTH)
+
+        # MatplotlibのFigureを作成
+        self.fig = Figure(figsize=(12, 8), dpi=100, facecolor=main_pw_bg)
+        self.ax = self.fig.add_subplot(111)
+        self.ax.set_aspect('equal')
+        self.ax.axis('off')
+
+        # 初期フォントサイズ
+        self.initial_font_size = 400
+
+        # アニメーションの初期化
+        self.font_size = self.initial_font_size
+        self.font_name = "Yu Gothic"
+        self.font_weight = "bold"
+        self.font = (self.font_name, self.font_size, self.font_weight)
+        self.num_text = 3
+
+        self.t1 = self.ax.text(0.5, 0.5, str(self.num_text), ha='center', va='center',
+                                fontdict={'fontname': self.font_name, 'fontsize': self.font_size, 'fontweight': self.font_weight})
+
+        def init():
+            return self.t1,
+
+        def update(num):
+            if self.num_text == 5:
+                if self.font_size == 20:
+                    self.num_text = 4
+                    self.font_size = self.initial_font_size
+                    r = rand.random()
+                    g = rand.random()
+                    b = rand.random()
+                    new_color = (r, g, b)
+                    self.t1.set_color(new_color)
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 5
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            elif self.num_text == 4:
+                if self.font_size == 20:
+                    self.num_text = 3
+                    self.font_size = self.initial_font_size
+                    r = rand.random()
+                    g = rand.random()
+                    b = rand.random()
+                    new_color = (r, g, b)
+                    self.t1.set_color(new_color)
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 5
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            elif self.num_text == 3:
+                if self.font_size == 20:
+                    self.num_text = 2
+                    self.font_size = self.initial_font_size
+                    r = rand.random()
+                    g = rand.random()
+                    b = rand.random()
+                    new_color = (r, g, b)
+                    self.t1.set_color(new_color)
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 5
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            elif self.num_text == 2:
+                if self.font_size == 20:
+                    self.num_text = 1
+                    self.font_size = self.initial_font_size
+                    r = rand.random()
+                    g = rand.random()
+                    b = rand.random()
+                    new_color = (r, g, b)
+                    self.t1.set_color(new_color)
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 5
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            elif self.num_text == 1:
+                if self.font_size == 20:
+                    self.num_text = "スタート"
+                    self.font_size = self.initial_font_size
+                    r = rand.random()
+                    g = rand.random()
+                    b = rand.random()
+                    new_color = (r, g, b)
+                    self.t1.set_color(new_color)
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 5
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            elif self.num_text == "スタート":
+                if self.font_size == 0:
+                    # カウント終了
+                    self.master.after(400, self.To_see_model)  # 400ミリ秒後にウィンドウを閉じる
+                else:
+                    if self.font_size == self.initial_font_size:
+                        r = rand.random()
+                        g = rand.random()
+                        b = rand.random()
+                        new_color = (r, g, b)
+                        self.t1.set_color(new_color)
+                    self.font_size = self.font_size - 4
+                    self.t1.set_fontsize(self.font_size)
+                    self.t1.set_text(str(self.num_text))
+
+            return self.t1,
+
+        # MatplotlibのFigureをTkinterウィンドウに埋め込む
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self.master)
+        self.canvas_widget = self.canvas.get_tk_widget()
+        #self.canvas_widget.pack()
+        pw_window.add(self.canvas_widget)
+
+        self.ani = animation.FuncAnimation(self.fig, update, init_func=init, interval=7, frames=10)
+
 
     #イラストをペイント
     def drawing_illustration(self, skip_button):
