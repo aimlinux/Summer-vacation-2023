@@ -70,6 +70,7 @@ count_illustration = False
 
 #一度きりのイベント
 the_only_1 = True
+the_only_2 = True
 
 
 # BackgroundFrameを作成
@@ -249,8 +250,10 @@ class Application(tk.Frame):
         original = self.image # 元の画像のサイズを記憶
         intensity = 30 # 大きいほどモザイクが荒く
         self.image = self.image.resize((round(self.image.width / intensity), round(self.image.height / intensity)))
-        self.image = self.image.resize((original.width,original.height),resample=Image.NEAREST) # 最近傍補間
-        #self.image = self.image.resize((original.width, original.height), resample=Image.BILINEAR) #双線形補間
+        # self.image = self.image.resize((original.width,original.height),resample=Image.NEAREST) # 最近傍補間
+        #上が非推奨らしいので、、
+        self.image = self.image.resize((original.width, original.height), resample=Image.Resampling.NEAREST)  # または Image.Dither.NONE
+        # self.image = self.image.resize((original.width, original.height), resample=Image.BILINEAR) #双線形補間
         photo = ImageTk.PhotoImage(self.image)
         self.image_label = tk.Label(fm_choice, image=photo, bg=choice_fm_bg)
         self.image_label.grid(row=4, column=1, columnspan=2, padx=20, pady=20, sticky="nsew")
@@ -291,8 +294,10 @@ class Application(tk.Frame):
         original = self.image # 元の画像のサイズを記憶
         intensity = 30 # 大きいほどモザイクが荒く
         self.image = self.image.resize((round(self.image.width / intensity), round(self.image.height / intensity)))
-        self.image = self.image.resize((original.width,original.height),resample=Image.NEAREST) # 最近傍補間
-        #self.image = self.image.resize((original.width, original.height), resample=Image.BILINEAR) #双線形補間
+        # self.image = self.image.resize((original.width,original.height),resample=Image.NEAREST) # 最近傍補間
+        #上が非推奨らしいので、、
+        self.image = self.image.resize((original.width, original.height), resample=Image.Resampling.NEAREST)  # または Image.Dither.NONE
+        # self.image = self.image.resize((original.width, original.height), resample=Image.BILINEAR) #双線形補間
         photo = ImageTk.PhotoImage(self.image)
         self.image_label.config(image=photo)
         self.image_label.image = photo
@@ -536,7 +541,7 @@ class Application(tk.Frame):
             elif self.num_text == "スタート":
                 if self.font_size == 0:
                     # カウント終了
-                    self.master.after(400, self.To_see_model)  # 400ミリ秒後にウィンドウを閉じる
+                    self.master.after(400, self.To_see_model_1)  # 400ミリ秒後にウィンドウを閉じる
                 else:
                     if self.font_size == self.initial_font_size:
                         r = rand.random()
@@ -560,10 +565,10 @@ class Application(tk.Frame):
 
 
     # see_modelの為に
-    def To_see_model(self):
-        global the_only
-        if the_only == True:
-            the_only = False
+    def To_see_model_1(self):
+        global the_only_1
+        if the_only_1 == True:
+            the_only_1 = False
             pw_window.destroy()
             self.see_model()
             
@@ -635,7 +640,7 @@ class Application(tk.Frame):
             
         self.update_timer()
         
-    #制限時間をカウントして表示する
+    # 制限時間をカウントして表示する
     def update_timer(self):
         if skip_on == "NULL":
             if self.count_time >= 0:
@@ -656,10 +661,8 @@ class Application(tk.Frame):
 # -------- カウントダウンアニメーション２ --------
     def countdown_animation_2(self, skip_button):
 
-        game_start_window.destroy()
-
-        fm_choice.destroy()
-        self.master.after(500)
+        pw_see_model.destroy()
+        self.master.after(600)
         
         global pw_window
         # ペインウィンドウの作成
@@ -793,7 +796,7 @@ class Application(tk.Frame):
             elif self.num_text == "スタート":
                 if self.font_size == 0:
                     # カウント終了
-                    self.master.after(400, self.To_see_model)  # 400ミリ秒後にウィンドウを閉じる
+                    self.master.after(50, self.To_see_model_2(skip_button))  # 400ミリ秒後にウィンドウを閉じる
                 else:
                     if self.font_size == self.initial_font_size:
                         r = rand.random()
@@ -815,6 +818,16 @@ class Application(tk.Frame):
 
         self.ani = animation.FuncAnimation(self.fig, update, init_func=init, interval=7, frames=10)
 
+    # see_modelの為に
+    def To_see_model_2(self, skip_button):
+        global the_only_2
+        if the_only_2 == True:
+            the_only_2 = False
+            pw_window.destroy()
+            self.drawing_illustration(skip_button)
+            
+        
+
 
     #イラストをペイント
     def drawing_illustration(self, skip_button):
@@ -826,8 +839,8 @@ class Application(tk.Frame):
             skip_on = "No"
         print(f"skip_button : " + str(skip_on))
         
-        pw_see_model.destroy()
-        time.sleep(0.1)
+        global skip_on_draw
+        skip_on_draw = "NULL"
         
         global count_see_model
         count_see_model = False
@@ -875,8 +888,42 @@ class Application(tk.Frame):
         self.count_draw_label = tk.Label(fm_illustration, text=f"残り {self.count_draw_time} 秒", fg=self.timer_draw_bg, bg=illustration_fm_bg, font=(main_font, 30))
         self.count_draw_label.pack(side=tk.LEFT, padx=(520, 0), pady=(20, 20))
         skip_draw_button = tk.Button(fm_illustration, text="これで完成！！", bg=illustration_btn_bg, font=(main_font, 18), width=16,
-                                        relief="raised", borderwidth=5)
+                                        relief="raised", borderwidth=5, command=lambda: self.scoring(skip_button_draw = 1))
         skip_draw_button.pack(side=tk.LEFT, padx=(100, 0), pady=(20, 20))
+        
+        self.update_draw_timer()
+        
+    # 制限時間をカウントして表示する
+    def update_draw_timer(self):
+        if skip_on_draw == "NULL":
+            if self.count_draw_time >= 0:
+                self.count_draw_time = self.count_draw_time - 1
+                if self.count_draw_time <= 10:
+                    self.timer_draw_bg = "red"
+                self.count_draw_label.config(text=f"残り {self.count_draw_time} 秒", fg=self.timer_draw_bg)
+
+            if self.count_draw_time == -1:
+                skip_button_draw = 0
+                self.scoring(skip_button_draw)
+            else:
+                # Update every 1000ms (1 second)
+                self.master.after(1000, self.update_draw_timer)
+
+
+    # scoring
+    def scoring(self, skip_button_draw):
+        
+        global skip_on_draw
+        if skip_button_draw == 1:
+            skip_on_draw = "Yes"
+        elif skip_button_draw == 0:
+            skip_on_draw = "No"
+        print(f"skip_button_draw : " + str(skip_on_draw))
+        
+        print("mia")
+        pass
+
+
 
     # 注意ウィンドウを消す
     def exit_warning(self):
