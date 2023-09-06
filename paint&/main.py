@@ -35,12 +35,15 @@ see_model_pw_bg = "#ffe4e1"
 see_model_fm_bg = "#ffe4e1"
 illustration_pw_bg = "#ffe4e1"
 illustration_fm_bg = "#ffe4e1"
+scoring_pw_bg = "#ffe4e1"
+scoring_fm_bg = "#ffe4e1"
 
 title_btn_bg = "#00ced1"
 choice_btn_bg = "#00ced1"
 see_model_btn_bg = "#00ced1"
 introduction_btn_bg = "#ffffff"
 illustration_btn_bg = "#00ced1"
+scoring_btn_bg = "#00ced1"
 
 button1_text = "タイトルへ"
 button2_text = "オプション"
@@ -57,6 +60,7 @@ TOOLBAR_OPTIONS = {
 difficulty_window_size = "500x600+500+100"
 warning_window_size = "600x140+500+400"
 game_start_window_size = "800x200+300+200"
+scoring_sub_window_size = "600x200+500+320"
 
 # 各ウィンドウのカウント
 count_title = False
@@ -920,8 +924,58 @@ class Application(tk.Frame):
             skip_on_draw = "No"
         print(f"skip_button_draw : " + str(skip_on_draw))
         
-        print("mia")
-        pass
+        pw_illustration.destroy()
+        
+        global count_illustration
+        count_illustration = False
+        global count_scoring
+        count_scoring = True
+        
+        global pw_scoring
+        pw_scoring = tk.PanedWindow(self.master, bg=scoring_pw_bg, orient="vertical")
+        pw_scoring.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
+        fm_scoring = tk.Frame(pw_scoring, bd=5, bg=scoring_pw_bg, relief="ridge", borderwidth=10)
+        pw_scoring.add(fm_scoring)
+        
+        self.master.after(500)
+        
+        #採点中ウィンドウの表示
+        if skip_on != "NULL" and skip_on_draw != "NULL":
+            scoring_sub_window = tk.Toplevel(bg=scoring_fm_bg, bd=5)
+            scoring_sub_window.geometry(scoring_sub_window_size)
+            scoring_sub_window.title("warning")
+            scoring_sub_window.lift() # 他のウィンドウより前面に固定
+            
+            initial_scoring_sub_text = "採点中"
+            scoring_sub_text = initial_scoring_sub_text
+            initial_scoring_sub_fg = "#191970"
+            scoring_sub_fg = initial_scoring_sub_fg
+            label = tk.Label(scoring_sub_window, text=scoring_sub_text, bg=scoring_fm_bg, fg=scoring_sub_fg, font=(main_font, 48))
+            label.pack(side=tk.TOP, padx=(0, 0), pady=(35, 10))
+            
+            for i in range(10):
+                
+                
+                self.master.after(200)
+        
+        # ツールバー作成
+        fm_toolbar = tk.Frame(fm_scoring, bg=scoring_fm_bg)
+        fm_toolbar.pack(anchor="nw")
+
+        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS)
+        toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
+        toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
+        toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
+        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
+        toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
+        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS)
+        toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
+        
+
+                
+                
+        
+
 
 
 
