@@ -5,6 +5,7 @@ from tkinter import scrolledtext
 from tkinter import PhotoImage
 from tkinter import ttk
 import PySimpleGUI as sg
+import pyautogui as pg # スクショ撮影用
 import cv2
 import PIL
 from PIL import Image, ImageTk
@@ -47,7 +48,7 @@ scoring_btn_bg = "#00ced1"
 
 button1_text = "タイトルへ"
 button2_text = "オプション"
-button3_text = "aimlinux"
+button3_text = "ランキング"
 button4_text = "aimlinux"
 
 TOOLBAR_OPTIONS = { 
@@ -82,7 +83,7 @@ class BackgroundFrame(tk.Frame):
     def __init__(self, master=None, bg_image=None, *args, **kwargs):
         super().__init__(master, *args, **kwargs)
         
-        bg_image_path = "paint&/image/fd.png"
+        bg_image_path = "./image/fd.png"
         
         if bg_image:
             self.bg_image = PhotoImage(file=bg_image_path)
@@ -105,31 +106,6 @@ class Application(tk.Frame):
 
         self.create_widgets()
         # self.animation_window = None
-        
-        
-    # def create_animation_window(self, animation_countdown_number):
-    #     # アニメーションが終了したときに呼び出されるコールバック関数
-    #     if animation_countdown_number == 1:
-    #         global animation_countdown_number_a
-    #         animation_countdown_number_a = 1
-    #         game_start_window.destroy()
-    #         fm_choice.destroy()
-    #         self.master.after(1000)
-        
-    #     def animation_finished_callback():
-    #         # アニメーション終了後の処理をここに記述
-    #         self.animation_window.master.withdraw()
-            
-    #         if not self.master:
-    #             print("fuk")
-            
-    #         if animation_countdown_number_a == 1:
-    #             print(1)
-    #             self.see_model()
-        
-    #     self.animation_window = AnimationCountdownWindow(self.master, animation_countdown_number, animation_finished_callback)
-            
-    
     
     def create_widgets(self):
         
@@ -247,7 +223,7 @@ class Application(tk.Frame):
             self.button_frame.grid_columnconfigure(col, weight=1)
 
         # 画像の表示
-        self.image = Image.open("paint&/image/image_1.jpg")  # 画像のパスを指定
+        self.image = Image.open("./image/image_1.jpg")  # 画像のパスを指定
         image_width = 500
         self.image = self.image.resize((image_width, int(image_width/1280*800)))
         # モザイク処理
@@ -290,7 +266,7 @@ class Application(tk.Frame):
     def button_click(self, button_number):
         print(f"Button {button_number} clicked!")
         # 画像の表示
-        image_path = f"paint&/image/image_{button_number}.jpg"  # 各ボタンに対応する画像ファイル名を指定
+        image_path = f"./image/image_{button_number}.jpg"  # 各ボタンに対応する画像ファイル名を指定
         self.image = Image.open(image_path)
         image_width = 500  # マージンを考慮して調整
         self.image = self.image.resize((image_width, int(image_width*800/1280)))
@@ -617,7 +593,7 @@ class Application(tk.Frame):
         label.pack(side=tk.TOP, padx=(0, 0), pady=(20, 0))
         
         # お手本の画像の表示
-        self.image = Image.open(f"paint&/image/image_{last_photo}.jpg")  # 画像のパスを指定
+        self.image = Image.open(f"./image/image_{last_photo}.jpg")  # 画像のパスを指定
         image_width = 820
         self.image = self.image.resize((image_width, int(image_width/1280*800)))
 
@@ -917,12 +893,31 @@ class Application(tk.Frame):
     # scoring
     def scoring(self, skip_button_draw):
         
+        global count_change_scoring_sub
+        count_change_scoring_sub = 12
+        
         global skip_on_draw
         if skip_button_draw == 1:
             skip_on_draw = "Yes"
         elif skip_button_draw == 0:
             skip_on_draw = "No"
         print(f"skip_button_draw : " + str(skip_on_draw))
+        
+        # canvasの縦横座標を取得
+        canvas_width = self.canvas.winfo_width()
+        canvas_height = self.canvas.winfo_height()
+        canvas_x = self.canvas.winfo_x()
+        canvas_y = self.canvas.winfo_y()
+        print(f"{canvas_width} x {canvas_height} + {canvas_x} + {canvas_y}")      
+        #スクショ撮影
+        top = 260
+        left = 552
+        width = 835
+        height = 540
+        global illustration_number
+        illustration_number = 12
+        pg.screenshot(f'./illustration_image/illustration_{str(illustration_number)}.png', region=(left, top, width, height))
+        
         
         pw_illustration.destroy()
         
@@ -939,6 +934,7 @@ class Application(tk.Frame):
         
         self.master.after(500)
         
+        global scoring_sub_window
         #採点中ウィンドウの表示
         if skip_on != "NULL" and skip_on_draw != "NULL":
             scoring_sub_window = tk.Toplevel(bg=scoring_fm_bg, bd=5)
@@ -947,16 +943,19 @@ class Application(tk.Frame):
             scoring_sub_window.lift() # 他のウィンドウより前面に固定
             
             initial_scoring_sub_text = "採点中"
-            scoring_sub_text = initial_scoring_sub_text
-            initial_scoring_sub_fg = "#191970"
-            scoring_sub_fg = initial_scoring_sub_fg
-            label = tk.Label(scoring_sub_window, text=scoring_sub_text, bg=scoring_fm_bg, fg=scoring_sub_fg, font=(main_font, 48))
-            label.pack(side=tk.TOP, padx=(0, 0), pady=(35, 10))
+            self.scoring_sub_text = initial_scoring_sub_text
+            # ランダムにRGBを作成
+            red = rand.randint(0, 255)
+            green = rand.randint(0, 255)
+            blue = rand.randint(0, 255)
+            color_code = "#{:02X}{:02X}{:02X}".format(red, green, blue)
+            initial_scoring_sub_fg = color_code
+            self.scoring_sub_fg = initial_scoring_sub_fg
+            self.scoring_sub_label = tk.Label(scoring_sub_window, text=self.scoring_sub_text, bg=scoring_fm_bg, fg=self.scoring_sub_fg, font=(main_font, 48))
+            self.scoring_sub_label.pack(side=tk.TOP, padx=(0, 0), pady=(35, 10))
             
-            for i in range(10):
-                
-                
-                self.master.after(200)
+            self.change_scoring_sub_text()
+            
         
         # ツールバー作成
         fm_toolbar = tk.Frame(fm_scoring, bg=scoring_fm_bg)
@@ -972,11 +971,38 @@ class Application(tk.Frame):
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
         
 
-                
-                
         
-
-
+                
+    # 採点中のウィンドウのアニメーション
+    def change_scoring_sub_text(self):
+        global count_change_scoring_sub
+        if count_change_scoring_sub % 4 == 0:
+            self.scoring_sub_text = "採点中"
+        elif count_change_scoring_sub % 4 == 3:
+            self.scoring_sub_text = "採点中."
+        elif count_change_scoring_sub % 4 == 2:
+            self.scoring_sub_text = "採点中.."
+        elif count_change_scoring_sub % 4 == 1:
+            self.scoring_sub_text = "採点中..."
+        self.scoring_sub_text
+        # ランダムにRGBを作成
+        red = rand.randint(0, 255)
+        green = rand.randint(0, 255)
+        blue = rand.randint(0, 255)
+        color_code = "#{:02X}{:02X}{:02X}".format(red, green, blue)
+        self.scoring_sub_fg = color_code
+        self.scoring_sub_label.config(text=self.scoring_sub_text, fg=self.scoring_sub_fg)
+        
+        count_change_scoring_sub = count_change_scoring_sub - 1
+        if count_change_scoring_sub > 0:
+            self.master.after(800, self.change_scoring_sub_text)
+        else:
+            print("rei")
+            global scoring_sub_window
+            scoring_sub_window.destroy()
+            return 0
+        
+        
 
 
     # 注意ウィンドウを消す
