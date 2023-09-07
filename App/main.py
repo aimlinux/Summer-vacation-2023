@@ -5,10 +5,12 @@ from tkinter import scrolledtext
 from tkinter import PhotoImage
 from tkinter import ttk
 import PySimpleGUI as sg
-import pyautogui as pg # スクショ撮影用
+#import pyautogui as pg # スクショ撮影用
+# 併用するとtkinterのウィンドウが小さくなる（pgモジュールのコードが原因らしい）
 import cv2
 import PIL
 from PIL import Image, ImageTk
+from PIL import ImageGrab # pgが使えないため
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.animation as animation
@@ -916,8 +918,9 @@ class Application(tk.Frame):
         height = 540
         global illustration_number
         illustration_number = 12
-        pg.screenshot(f'./illustration_image/illustration_{str(illustration_number)}.png', region=(left, top, width, height))
-        
+        # pg.screenshot(f'./illustration_image/illustration_{str(illustration_number)}.png', region=(left, top, width, height))
+        screen_shot = ImageGrab.grab()
+        screen_shot.save(f'./illustration_image/illustration_{str(illustration_number)}.png')
         
         pw_illustration.destroy()
         
