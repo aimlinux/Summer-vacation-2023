@@ -22,6 +22,9 @@ import sys
 import os 
 
 
+# ペイントされた回数をカウントするためのファイル
+count_filename = './count.txt'
+
 
 forced_exit = True # 強制終了されたかどうか
 
@@ -918,7 +921,7 @@ class Application(tk.Frame):
         height = 540
         global illustration_number
         illustration_number = 12
-        # pg.screenshot(f'./illustration_image/illustration_{str(illustration_number)}.png', region=(left, top, width, height))
+        # pg.screenshot(f'./illustration_image/illustration_{str(illustration_number)}.png', region=(left, top, width, height)) # pgを使ってのスクショは？
         screen_shot = ImageGrab.grab()
         screen_shot.save(f'./illustration_image/illustration_{str(illustration_number)}.png')
         
