@@ -909,21 +909,31 @@ class Application(tk.Frame):
         print(f"skip_button_draw : " + str(skip_on_draw))
         
         # canvasの縦横座標を取得
-        canvas_width = self.canvas.winfo_width()
-        canvas_height = self.canvas.winfo_height()
-        canvas_x = self.canvas.winfo_x()
-        canvas_y = self.canvas.winfo_y()
-        print(f"{canvas_width} x {canvas_height} + {canvas_x} + {canvas_y}")      
+        # canvas_width = self.canvas.winfo_width()
+        # canvas_height = self.canvas.winfo_height()
+        # canvas_x = self.canvas.winfo_x()
+        # canvas_y = self.canvas.winfo_y()
+        # print(f"{canvas_width} x {canvas_height} + {canvas_x} + {canvas_y}")      
         #スクショ撮影
-        top = 260
-        left = 552
-        width = 835
-        height = 540
         global illustration_number
         illustration_number = 12
+        # top = 260
+        # left = 552
+        # width = 835
+        # height = 540
         # pg.screenshot(f'./illustration_image/illustration_{str(illustration_number)}.png', region=(left, top, width, height)) # pgを使ってのスクショは？
         screen_shot = ImageGrab.grab()
         screen_shot.save(f'./illustration_image/illustration_{str(illustration_number)}.png')
+        # トリミング
+        image = Image.open(f'./illustration_image/illustration_{str(illustration_number)}.png')
+        left = 452
+        upper = 238
+        right = 1487
+        lower = 906
+        im_crop = image.crop((left, upper, right, lower))
+        im_crop.save(f'./illustration_image/illustration_{str(illustration_number)}.png')
+        
+        
         
         pw_illustration.destroy()
         
@@ -945,7 +955,7 @@ class Application(tk.Frame):
         if skip_on != "NULL" and skip_on_draw != "NULL":
             scoring_sub_window = tk.Toplevel(bg=scoring_fm_bg, bd=5)
             scoring_sub_window.geometry(scoring_sub_window_size)
-            scoring_sub_window.title("warning")
+            scoring_sub_window.title("scoring")
             scoring_sub_window.lift() # 他のウィンドウより前面に固定
             
             initial_scoring_sub_text = "採点中"
