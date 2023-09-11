@@ -5,8 +5,7 @@ from tkinter import scrolledtext
 from tkinter import PhotoImage
 from tkinter import ttk
 import PySimpleGUI as sg
-#import pyautogui as pg # スクショ撮影用
-# 併用するとtkinterのウィンドウが小さくなる（pgモジュールのコードが原因らしい）
+#import pyautogui as pg # スクショ撮影用 併用するとtkinterのウィンドウが小さくなる（pgモジュールのコードが原因らしい）
 import cv2
 import PIL
 from PIL import Image, ImageTk
@@ -14,6 +13,8 @@ from PIL import ImageGrab # pgが使えないため
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.animation as animation
+import skimage
+from skimage.metrics import structural_similarity as compare_ssim
 import random as rand
 import atexit
 import time
@@ -334,6 +335,13 @@ class Application(tk.Frame):
             text_label_3 = tk.Label(difficulty_window, text="お手本を見る時間：10秒以内\nペイントする時間：20秒以内", bg=choice_fm_bg, font=(main_font, 12))
             text_label_3.pack(side=tk.TOP, padx=(0, 0))
             
+
+    # 注意ウィンドウを消す
+    def exit_warning(self):
+        difficulty_window.destroy()
+        return 0
+
+        
         
     # 難易度を決定
     def difficulty_decision(self, difficulty):
@@ -407,7 +415,7 @@ class Application(tk.Frame):
         self.ax.axis('off')
 
         # 初期フォントサイズ
-        self.initial_font_size = 400
+        self.initial_font_size = 300
 
         # アニメーションの初期化
         self.font_size = self.initial_font_size
@@ -662,7 +670,7 @@ class Application(tk.Frame):
         self.ax.axis('off')
 
         # 初期フォントサイズ
-        self.initial_font_size = 400
+        self.initial_font_size = 300
 
         # アニメーションの初期化
         self.font_size = self.initial_font_size
@@ -852,14 +860,30 @@ class Application(tk.Frame):
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
         
         label = tk.Label(fm_illustration, text="制限時間内にイラストを描こう", bg=illustration_fm_bg, font=(main_font, 25))
-        label.pack(side=tk.TOP, padx=(0, 0), pady=(20, 0))
+        label.pack(side=tk.TOP, padx=(0, 0), pady=(10, 0))
         
         # x = window_width - 50
         # y = window_height - 120
         x = 820 # お手本の写真と合わせる
         y = x / 1280 * 820
         self.canvas = tk.Canvas(fm_illustration, bg="#fff", width=x, height=y)
-        self.canvas.pack(side=tk.TOP, padx=(20, 20), pady=(20, 20))
+        self.canvas.pack(side=tk.TOP, padx=(20, 20), pady=(10, 0))
+        
+        self.canvas.bind("<ButtonPress-1>", self.on_pressed)
+        self.canvas.bind("<B1-Motion>", self.on_dragged)
+        self.canvas.bind("<ButtonPress-2>",self.click1)
+        self.canvas.bind("<ButtonPress-3>",self.click2)
+        
+        COLORS = ["black", "white", "blue", "pink", "green","red"]
+        self.color = tk.StringVar()                    
+        self.color.set(COLORS[0])                             
+        b = tk.OptionMenu(fm_illustration, self.color, *COLORS) 
+        b.pack(side = tk.LEFT, padx=(200, 10), pady=(0, 0))
+        
+        self.width = tk.Scale(fm_illustration, from_ = 1, to = 10,
+                                orient = tk.HORIZONTAL) 
+        self.width.set(3)                                       
+        self.width.pack(side = tk.LEFT, padx=(0, 10), pady=(0, 0))
         
         # 難易度によって制限時間を決定
         if last_difficulty == "button_1":
@@ -871,10 +895,10 @@ class Application(tk.Frame):
         
         self.timer_draw_bg = "#191970"
         self.count_draw_label = tk.Label(fm_illustration, text=f"残り {self.count_draw_time} 秒", fg=self.timer_draw_bg, bg=illustration_fm_bg, font=(main_font, 30))
-        self.count_draw_label.pack(side=tk.LEFT, padx=(520, 0), pady=(20, 20))
+        self.count_draw_label.pack(side=tk.LEFT, padx=(150, 0), pady=(0, 20))
         skip_draw_button = tk.Button(fm_illustration, text="これで完成！！", bg=illustration_btn_bg, font=(main_font, 18), width=16,
                                         relief="raised", borderwidth=5, command=lambda: self.scoring(skip_button_draw = 1))
-        skip_draw_button.pack(side=tk.LEFT, padx=(100, 0), pady=(20, 20))
+        skip_draw_button.pack(side=tk.LEFT, padx=(100, 0), pady=(0, 20))
         
         self.update_draw_timer()
         
@@ -895,6 +919,31 @@ class Application(tk.Frame):
                 self.master.after(1000, self.update_draw_timer)
 
 
+    def on_pressed(self, event):
+        self.sx = event.x
+        self.sy = event.y
+        self.canvas.create_oval(self.sx, self.sy, event.x, event.y,
+                                outline = self.color.get(),
+                                width = self.width.get())
+
+    def on_dragged(self, event):
+        self.canvas.create_line(self.sx, self.sy, event.x, event.y,
+                            fill = self.color.get(),
+                            width = self.width.get())
+        self.sx = event.x
+        self.sy = event.y
+
+    def click1(self,event):
+        self.canvas.create_oval(self.sx-20,self.sy-20,self.sx+20,self.sy+20,
+                            fill = self.color.get(),
+                            width = self.width.get())
+
+    def click2(self,event):
+            self.canvas.create_oval(self.sx-40,self.sy-30,self.sx+40,self.sy+30,
+                            fill = self.color.get(),
+                            width = self.width.get())
+            
+            
     # scoring
     def scoring(self, skip_button_draw):
         
@@ -908,6 +957,7 @@ class Application(tk.Frame):
             skip_on_draw = "No"
         print(f"skip_button_draw : " + str(skip_on_draw))
         
+        # --------- スクリーンショット -------
         # canvasの縦横座標を取得
         # canvas_width = self.canvas.winfo_width()
         # canvas_height = self.canvas.winfo_height()
@@ -927,14 +977,13 @@ class Application(tk.Frame):
         # トリミング
         image = Image.open(f'./illustration_image/illustration_{str(illustration_number)}.png')
         left = 452
-        upper = 238
+        upper = 215
         right = 1487
-        lower = 906
+        lower = 883
         im_crop = image.crop((left, upper, right, lower))
         im_crop.save(f'./illustration_image/illustration_{str(illustration_number)}.png')
         
-        
-        
+
         pw_illustration.destroy()
         
         global count_illustration
@@ -986,8 +1035,48 @@ class Application(tk.Frame):
         toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
         
-
+        #画像の類似度を比較
+        image1_path = f'./image/image_{last_photo}.jpg'
+        image2_path = f'./illustration_image/illustration_{str(illustration_number)}.png'
+        similar = self.calculate_similarity(image1_path, image2_path)
+        if similar == 10:
+            print("Error")
+        else:
+            print(f"画像の類似度 : {similar:.2%}")
         
+        
+        
+        
+        
+        # ランキングに登録
+        self.master.after(400, )
+        
+        
+    #画像の類似度を比較する関関数
+    def calculate_similarity(self, image1_path, image2_path):
+        # 画像読み込み
+        image1 = cv2.imread(image1_path)
+        image2 = cv2.imread(image2_path)
+        # 画像を同じサイズにリサイズ
+        new_size = (400, 400)  # 新しいサイズを設定
+        image1 = cv2.resize(image1, new_size)
+        image2 = cv2.resize(image2, new_size)
+
+        # 画像をグレースケールに変換
+        gray_image1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+        gray_image2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+        
+        #画像のサイズが一致するか確認
+        if gray_image1.shape != gray_image2.shape:
+            #raise ValueError("Input images must have the same dimensions.")
+            return 10
+        
+        # 画像の類似度を計算
+        similarity = compare_ssim(gray_image1, gray_image2)
+        
+        return similarity
+                
+                
                 
     # 採点中のウィンドウのアニメーション
     def change_scoring_sub_text(self):
@@ -1019,13 +1108,6 @@ class Application(tk.Frame):
             return 0
         
         
-
-
-    # 注意ウィンドウを消す
-    def exit_warning(self):
-        difficulty_window.destroy()
-        return 0
-    
     
     # タイトルへ戻る
     def return_title(self):

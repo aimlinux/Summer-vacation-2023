@@ -6,10 +6,10 @@ from skimage import img_as_float
 from skimage.metrics import structural_similarity as ssim
 from skimage.color import rgb2gray
 
-image = plt.imread('test/AI/image/picture_1.png')
+image = plt.imread('./image/test_1.png')
 fig, ax = plt.subplots(figsize=(5,5),dpi=100)
 ax.imshow(image)
-plt.savefig("test/AI/image/test_2.png",dpi=130)
+plt.savefig("./image/test_2.png",dpi=130)
 plt.show()
 
 

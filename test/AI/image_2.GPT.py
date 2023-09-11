@@ -1,3 +1,4 @@
+import skimage
 from skimage.metrics import structural_similarity as compare_ssim
 import cv2
 
@@ -27,8 +28,8 @@ def calculate_similarity(image1_path, image2_path):
     return similarity
 
 if __name__ == "__main__":
-    image1_path = "test/AI/image/animal_wani2.jpg"  # 1つ目の画像ファイルのパス（お手本）
-    image2_path = "test/AI/image/scr_2.png"  # 2つ目の画像ファイルのパス
+    image1_path = "./image/animal_wani2.jpg"  # 1つ目の画像ファイルのパス（お手本）
+    image2_path = "./image/scr_2.png"  # 2つ目の画像ファイルのパス
     
     similarity_percentage = calculate_similarity(image1_path, image2_path)
     if similarity_percentage == 10:
