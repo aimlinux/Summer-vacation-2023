@@ -17,6 +17,7 @@ import skimage
 from skimage.metrics import structural_similarity as compare_ssim
 import random as rand
 import atexit
+import webbrowser
 import time
 from time import sleep
 import sys  
@@ -34,10 +35,10 @@ last_photo = None # お手本のイラストが選択されているかどうか
 
 main_font = "Helvetica"
 
-main_pw_bg = "#ffe4e1"
-title_fm_bg = "#ffffff"
-choice_pw_bg = "#ffe4e1"
-choice_fm_bg = "#ffe4e1"
+main_pw_bg = "#1AE0A3"
+title_fm_bg = "#1AE0A3"
+choice_pw_bg = "#1AE0A3"
+choice_fm_bg = "#1AE0A3"
 see_model_pw_bg = "#ffe4e1"
 see_model_fm_bg = "#ffe4e1"
 illustration_pw_bg = "#ffe4e1"
@@ -45,10 +46,14 @@ illustration_fm_bg = "#ffe4e1"
 scoring_pw_bg = "#ffe4e1"
 scoring_fm_bg = "#ffe4e1"
 
-title_btn_bg = "#00ced1"
-choice_btn_bg = "#00ced1"
+credit_bg = "#1AE0A3"
+link_bg = "#1AE0A3"
+link_fg = "#191970"
+
+title_btn_bg = "#7FDBF0"
+choice_btn_bg = "#7CF3CE"
 see_model_btn_bg = "#00ced1"
-introduction_btn_bg = "#ffffff"
+introduction_btn_bg = "#fff0f5"
 illustration_btn_bg = "#00ced1"
 scoring_btn_bg = "#00ced1"
 
@@ -68,6 +73,7 @@ difficulty_window_size = "500x600+500+100"
 warning_window_size = "600x140+500+400"
 game_start_window_size = "800x200+300+200"
 scoring_sub_window_size = "600x200+500+320"
+credit_window_size = "500x700+400+100"
 
 
 #一度きりのイベント
@@ -133,13 +139,13 @@ class Application(tk.Frame):
         fm_toolbar = tk.Frame(bg_frame, bg=title_fm_bg)
         fm_toolbar.pack(anchor="nw")
 
-        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS)
+        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS, command=lambda: self.return_title("pw_title"))
         toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
         toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
         toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
-        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS)
+        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
         
         start_button = tk.Button(bg_frame, text="はじめる", font=(main_font, 20), bg=title_btn_bg, 
@@ -235,7 +241,7 @@ class Application(tk.Frame):
 
         #決定・戻るボタンの配置
         return_title_button = tk.Button(fm_choice, text="戻る", bg=choice_btn_bg, font=(main_font, 15), height=2, width=2, 
-                                        relief="raised", borderwidth=5, command=self.return_title)
+                                        relief="raised", borderwidth=5, command=lambda: self.return_title("fm_choice"))
         return_title_button.grid(row=6, column=0, columnspan=1, padx=(50, 200), pady=20, sticky="nsew")
         
         decided_button = tk.Button(fm_choice, text="決定", bg=choice_btn_bg, font=(main_font, 15), height=2, width=2, 
@@ -365,9 +371,9 @@ class Application(tk.Frame):
                             bg=choice_fm_bg, font=(main_font, 14))
             label.pack(side=tk.TOP, padx=(0, 0), pady=(0, 20))
             
-            return_title_button = tk.Button(game_start_window, text="戻る", bg=choice_btn_bg, font=(main_font, 14), width=10,
+            return_choice_button = tk.Button(game_start_window, text="戻る", bg=choice_btn_bg, font=(main_font, 14), width=10,
                                         relief="raised", borderwidth=5, command=self.return_choice)
-            return_title_button.pack(side=tk.LEFT, padx=(250, 10))
+            return_choice_button.pack(side=tk.LEFT, padx=(250, 10))
             decided_button = tk.Button(game_start_window, text="スタート", bg=choice_btn_bg, font=(main_font, 14), width=10,
                                         relief="raised", borderwidth=5, command=lambda: self.countdown_animation_1())
             decided_button.pack(side=tk.LEFT, padx=(100, 10))
@@ -570,13 +576,13 @@ class Application(tk.Frame):
         fm_toolbar = tk.Frame(fm_see_model, bg=see_model_fm_bg)
         fm_toolbar.pack(anchor="nw")
 
-        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS)
+        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS, command=lambda: self.return_title("else"))
         toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
         toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
         toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
-        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS)
+        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
         
         label = tk.Label(fm_see_model, text="制限時間内にイラストを覚えよう", bg=see_model_fm_bg, font=(main_font, 25))
@@ -823,13 +829,13 @@ class Application(tk.Frame):
         fm_toolbar = tk.Frame(fm_illustration, bg=illustration_fm_bg)
         fm_toolbar.pack(anchor="nw")
 
-        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS)
+        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS, command=lambda: self.return_title("else"))
         toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
         toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
         toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
-        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS)
+        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
         
         label = tk.Label(fm_illustration, text="制限時間内にイラストを描こう", bg=illustration_fm_bg, font=(main_font, 25))
@@ -923,7 +929,7 @@ class Application(tk.Frame):
     def scoring(self, skip_button_draw):
         
         global count_change_scoring_sub
-        count_change_scoring_sub = 12
+        count_change_scoring_sub = 8 # 「採点中」の文字のアニメーションの繰り返し回数
         
         global skip_on_draw
         if skip_button_draw == 1:
@@ -958,6 +964,31 @@ class Application(tk.Frame):
         im_crop = image.crop((left, upper, right, lower))
         im_crop.save(f'./illustration_image/illustration_{str(illustration_number)}.png')
         
+        self.master.after(500)
+        
+        global scoring_sub_window
+        #採点中ウィンドウの表示
+        if skip_on != "NULL" and skip_on_draw != "NULL":
+            scoring_sub_window = tk.Toplevel(bg=scoring_fm_bg, bd=5)
+            scoring_sub_window.geometry(scoring_sub_window_size)
+            scoring_sub_window.title("scoring")
+            scoring_sub_window.lift() # 他のウィンドウより前面に固定
+            
+            initial_scoring_sub_text = "採点中"
+            self.scoring_sub_text = initial_scoring_sub_text
+            # ランダムにRGBを作成
+            red = rand.randint(0, 255)
+            green = rand.randint(0, 255)
+            blue = rand.randint(0, 255)
+            color_code = "#{:02X}{:02X}{:02X}".format(red, green, blue)
+            initial_scoring_sub_fg = color_code
+            self.scoring_sub_fg = initial_scoring_sub_fg
+            self.scoring_sub_label = tk.Label(scoring_sub_window, text=self.scoring_sub_text, bg=scoring_fm_bg, fg=self.scoring_sub_fg, font=(main_font, 48))
+            self.scoring_sub_label.pack(side=tk.TOP, padx=(0, 0), pady=(35, 10))
+            
+            self.change_scoring_sub_text()
+        
+        
         pw_illustration.destroy()
         
         
@@ -967,42 +998,18 @@ class Application(tk.Frame):
         fm_scoring = tk.Frame(pw_scoring, bd=5, bg=scoring_pw_bg, relief="ridge", borderwidth=10)
         pw_scoring.add(fm_scoring)
         
-        self.master.after(500)
-        
-        global scoring_sub_window
-        #採点中ウィンドウの表示
-        #if skip_on != "NULL" and skip_on_draw != "NULL":
-        scoring_sub_window = tk.Toplevel(bg=scoring_fm_bg, bd=5)
-        scoring_sub_window.geometry(scoring_sub_window_size)
-        scoring_sub_window.title("scoring")
-        scoring_sub_window.lift() # 他のウィンドウより前面に固定
-        
-        initial_scoring_sub_text = "採点中"
-        self.scoring_sub_text = initial_scoring_sub_text
-        # ランダムにRGBを作成
-        red = rand.randint(0, 255)
-        green = rand.randint(0, 255)
-        blue = rand.randint(0, 255)
-        color_code = "#{:02X}{:02X}{:02X}".format(red, green, blue)
-        initial_scoring_sub_fg = color_code
-        self.scoring_sub_fg = initial_scoring_sub_fg
-        self.scoring_sub_label = tk.Label(scoring_sub_window, text=self.scoring_sub_text, bg=scoring_fm_bg, fg=self.scoring_sub_fg, font=(main_font, 48))
-        self.scoring_sub_label.pack(side=tk.TOP, padx=(0, 0), pady=(35, 10))
-        
-        self.change_scoring_sub_text()
-
 
         # ツールバー作成
         fm_toolbar = tk.Frame(fm_scoring, bg=scoring_fm_bg)
         fm_toolbar.pack(anchor="nw")
 
-        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS)
+        toolbar_button1 = tk.Button(fm_toolbar, text=button1_text, **TOOLBAR_OPTIONS, command=lambda: self.return_title("else"))
         toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
         toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
         toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
-        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS)
+        toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
         
         #画像の類似度を比較
@@ -1089,11 +1096,11 @@ class Application(tk.Frame):
         name_ranking_button = tk.Button(fm_scoring_text_right, text="ランキングを見る", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
                                         relief="raised", borderwidth=5)
         name_ranking_button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
-        button = tk.Button(fm_scoring_text_right, text="もういちどチャレンジ", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
+        button = tk.Button(fm_scoring_text_right, text="イラストダウンロード", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
                                         relief="raised", borderwidth=5)
         button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
         button = tk.Button(fm_scoring_text_right, text="タイトルへ戻る", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
-                                        relief="raised", borderwidth=5, command=self.return_title)
+                                        relief="raised", borderwidth=5, command=lambda: self.return_title("else"))
         button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
         
         
@@ -1149,7 +1156,6 @@ class Application(tk.Frame):
         if count_change_scoring_sub > 0:
             self.master.after(800, self.change_scoring_sub_text)
         else:
-            global end_scoring_sub_text
             end_scoring_sub_text = "rei"
             print(end_scoring_sub_text)
             global scoring_sub_window
@@ -1159,11 +1165,77 @@ class Application(tk.Frame):
         
     
     # タイトルへ戻る
-    def return_title(self):
-        pw_scoring.destroy()
-        self.create_widgets()
+    def return_title(self, lala):
         
-
+        if lala == "fm_choice":
+            fm_choice.destroy()
+            self.create_widgets()
+        elif lala == "pw_title":
+            pw_title.destroy()
+            self.create_widgets()
+        elif lala == "else": # ややこしくなるので再起動
+            self.master.destroy()
+            #Restart python script itself
+            os.execv(sys.executable, ['python'] + sys.argv)
+        else:
+            print("Error")
+        
+        
+    # クレジット
+    def credit(self):
+        
+        global credit_window
+        credit_window = tk.Toplevel(bg=credit_bg, bd=5)
+        credit_window.geometry(credit_window_size)
+        credit_window.title("credit")
+        credit_window.lift() # 他のウィンドウより前面に固定
+        
+        global github_link, kousen_link
+        programmer_name = "aa"
+        github_owner = "aimlinux"
+        github_link = "https://github.com/aimlinux/Summer-vacation-2023/blob/main/App/main.py"
+        kousen_link = "https://www.yonago-k.ac.jp/"
+        used_library = "Tkinter, PySimpleGUI, openai, pyautogui, BytesIO, os, logging, speech_recognition, pyaudio, simpleaudio, wave, json, pyttsx3, time, random, sys, atexit, webbrowser, requests"
+        
+        label = tk.Label(credit_window, text=f"作成者 : {programmer_name}", bg=credit_bg, font=(main_font, 22))
+        label.pack(side=tk.TOP, pady=(50, 0))
+        label = tk.Label(credit_window, text=f"Githubリンク : {github_owner}", bg=link_bg, fg=link_fg, 
+                        font=(main_font, 22), cursor="hand2")
+        label.pack(side=tk.TOP, pady=(30, 0))
+        label.bind("<Button-1>", lambda e: self.open_github_link())
+        label = tk.Label(credit_window, text=f"米子高専ホームページ", bg=link_bg, fg=link_fg, 
+                        font=(main_font, 22), cursor="hand2")
+        label.pack(side=tk.TOP, pady=(30, 0))
+        label.bind("<Button-1>", lambda e: self.open_kousen_link())
+        label = tk.Label(credit_window, text="python使用ライブラリ", bg=credit_bg, font=(main_font, 18))
+        label.pack(side=tk.TOP, pady=(30, 20))
+        #オブジェクト配置初期はstateの値を変更できるようにしなければならない
+        self.text_new_question_sub1 = scrolledtext.ScrolledText(credit_window, width=40, height=6, font=(main_font, 20), bg="#fff", state="normal")
+        self.text_new_question_sub1.pack(side=tk.TOP)
+        self.text_new_question_sub1.insert(tk.END, used_library)
+        #stateの値を変更できないよう（normalからtk.DISABLED）に設定
+        self.text_new_question_sub1.config(state=tk.DISABLED)
+        start_button = tk.Button(credit_window, text="とじる", font=(main_font, 20), bg=title_btn_bg, command=self.exit_credit)
+        start_button.pack(side=tk.TOP, padx=(20, 20), pady=(30, 0))
+        
+        return 0
+    
+    #webブラウザでgithubリンクを開く
+    def open_github_link(self):
+        webbrowser.open_new(github_link)
+        return 0
+    
+    #webブラウザで米子高専ホームページを開く
+    def open_kousen_link(self):
+        webbrowser.open_new(kousen_link)
+        return 0
+        
+    #credit_windowから戻る
+    def exit_credit(self):
+        global credit_window
+        credit_window.destroy()
+    
+    
 
     # アプリケーションが終了されたとき
     def exit_App(self):
