@@ -55,7 +55,7 @@ scoring_btn_bg = "#00ced1"
 button1_text = "タイトルへ"
 button2_text = "オプション"
 button3_text = "ランキング"
-button4_text = "aimlinux"
+button4_text = "クレジット"
 
 TOOLBAR_OPTIONS = { 
     "font" : "main_font, 15",
@@ -1020,8 +1020,8 @@ class Application(tk.Frame):
             self.scoring_sub_label.pack(side=tk.TOP, padx=(0, 0), pady=(35, 10))
             
             self.change_scoring_sub_text()
-            
-        
+
+
         # ツールバー作成
         fm_toolbar = tk.Frame(fm_scoring, bg=scoring_fm_bg)
         fm_toolbar.pack(anchor="nw")
@@ -1043,14 +1043,94 @@ class Application(tk.Frame):
             print("Error")
         else:
             print(f"画像の類似度 : {similar:.2%}")
+            #print(similar)
         
         
+        # 結果画面の表示
+        fm_scoring_image = tk.Frame(fm_scoring, bg=scoring_fm_bg, bd=10, relief="ridge", borderwidth=10)
+        fm_scoring_image.pack(side=tk.TOP, padx=(20, 20), pady=(20, 0))
+        fm_scoring_image_upper = tk.Frame(fm_scoring_image, bg=scoring_fm_bg)
+        fm_scoring_image_upper.pack(side=tk.TOP, pady=(0, 0))
+        fm_scoring_image_lower = tk.Frame(fm_scoring_image, bg=scoring_fm_bg)
+        fm_scoring_image_lower.pack(side=tk.TOP, pady=(0, 0))
+        
+        label = tk.Label(fm_scoring_image_upper, text="お手本のイラスト", fg="black", bg=scoring_fm_bg, font=(main_font, 26))
+        label.pack(side=tk.LEFT, padx=(50, 60), pady=(20, 0))
+        label = tk.Label(fm_scoring_image_upper, text="あなたのイラスト", fg="black", bg=scoring_fm_bg, font=(main_font, 26))
+        label.pack(side=tk.LEFT, padx=(60, 50), pady=(20, 0))
+        
+        # お手本の画像の表示
+        image = Image.open(f"./image/image_{last_photo}.jpg")  # 画像のパスを指定
+        image_width = 400
+        image = image.resize((image_width, int(image_width/1280*800)))
+        photo = ImageTk.PhotoImage(image)
+        image_label = tk.Label(fm_scoring_image_lower, image=photo, bg="#000000")
+        image_label.pack(side=tk.LEFT, padx=(50, 30), pady=(20, 20))
+        image_label.image = photo
+        
+        # ペイントした画像の表示
+        image = Image.open(f"./illustration_image/illustration_12.png")  # 画像のパスを指定
+        image_width = 400
+        image = image.resize((image_width, int(image_width/1280*800)))
+        photo = ImageTk.PhotoImage(image)
+        image_label = tk.Label(fm_scoring_image_lower, image=photo, bg="#000000")
+        image_label.pack(side=tk.LEFT, padx=(30, 50), pady=(20, 20))
+        image_label.image = photo
+        
+        fm_scoring_text_left = tk.Frame(fm_scoring, bg=scoring_fm_bg)
+        fm_scoring_text_left.pack(side=tk.LEFT, padx=(150, 100), pady=(10, 0))
+        fm_scoring_text_right = tk.Frame(fm_scoring, bg=scoring_fm_bg)
+        fm_scoring_text_right.pack(side=tk.RIGHT, padx=(100, 100),  pady=(10, 0))
+        
+        # 難易度によってテキストを決定
+        if last_difficulty == "button_1":
+            difficulty_text = "初級"
+        elif last_difficulty == "button_2":
+            difficulty_text = "中級"
+        elif last_difficulty == "button_3":
+            difficulty_text = "上級"
+        # 現在のランクを決定
+        rank = "1"
+        # 類似度の感想を決定
+        re = similar * 100
+        if 0 <= re < 40:
+            similar_comment = "いまいちだね、、"
+            similar_comment_fg = "#4682d4"
+            mark = "..."
+        elif 40 <= re < 70:
+            similar_comment = "可もなく不可もなく？"
+            similar_comment_fg = "#2f2f4f"
+            mark = "..."
+        elif 70 <= re <= 100:
+            similar_comment = "素晴らしい才能！！"
+            similar_comment_fg = "#ff00ff"
+            mark = " !!"
+        score_label = tk.Label(fm_scoring_text_left, text=f"類似度 : {similar:.2%}{mark}", bg=scoring_fm_bg, fg="#493563", font=(main_font, 24))
+        score_label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 0))
+        score_label = tk.Label(fm_scoring_text_left, text=f"{similar_comment}", bg=scoring_fm_bg, fg=similar_comment_fg, font=(main_font, 24))
+        score_label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 0))
+        ranking_label = tk.Label(fm_scoring_text_left, text=f"ランキング({difficulty_text}) : {rank}位", bg=scoring_fm_bg, fg="#493563", font=(main_font, 23))
+        ranking_label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 0))
+        name_ranking_button = tk.Button(fm_scoring_text_left, text="ランキングに名前を登録", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
+                                        relief="raised", borderwidth=5)
+        name_ranking_button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
+        
+        name_ranking_button = tk.Button(fm_scoring_text_right, text="ランキングを見る", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
+                                        relief="raised", borderwidth=5)
+        name_ranking_button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
+        button = tk.Button(fm_scoring_text_right, text="もういちどチャレンジ", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
+                                        relief="raised", borderwidth=5)
+        button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
+        button = tk.Button(fm_scoring_text_right, text="タイトルへ戻る", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
+                                        relief="raised", borderwidth=5)
+        button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
         
         
         
         # ランキングに登録
-        self.master.after(400, )
-        
+        self.master.after(400)
+            
+            
         
     #画像の類似度を比較する関関数
     def calculate_similarity(self, image1_path, image2_path):
@@ -1102,7 +1182,9 @@ class Application(tk.Frame):
         if count_change_scoring_sub > 0:
             self.master.after(800, self.change_scoring_sub_text)
         else:
-            print("rei")
+            global end_scoring_sub_text
+            end_scoring_sub_text = "rei"
+            print(end_scoring_sub_text)
             global scoring_sub_window
             scoring_sub_window.destroy()
             return 0
