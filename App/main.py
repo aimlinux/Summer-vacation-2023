@@ -18,20 +18,53 @@ from skimage.metrics import structural_similarity as compare_ssim
 import random as rand
 import atexit
 import webbrowser
+import logging
 import time
-from time import sleep
 import sys  
 import os 
 
 
+
+# -------- Logの各設定 --------
+#logの出力名を設定
+logger = logging.getLogger('Log')
+#logLevelを設定
+logger.setLevel(10)
+#logをコンソール出力するための設定
+sh = logging.StreamHandler()
+logger.addHandler(sh)
+#logのファイル出力先設定
+fh = logging.FileHandler('./log/test.log')
+logger.addHandler(fh)
+#全てのフォーマットオプションとその役割
+# %(asctime)s	実行時刻
+# %(filename)s	ファイル名
+# %(funcName)s	行番号
+# %(levelname)s	ログの定義
+# %(lineno)d	ログレベル名
+# %(message)s	ログメッセージ
+# %(module)s	モジュール名
+# %(name)s	関数名
+# %(process)d	プロセスID
+# %(thread)d	スレッドID
+formatter = logging.Formatter('%(asctime)s --- process : %(process)d --- message : %(message)s')
+fh.setFormatter(formatter)
+sh.setFormatter(formatter)
+
+
 # ペイントされた回数をカウントするためのファイル
 count_filename = './count.txt'
-
-
+with open(count_filename, encoding="UTF-8") as f:
+    f_text = f.read()
+with open(count_filename, mode='w') as f: # 書き込みで開いて、初期からスタート
+    if not f_text:
+        f.write("0")
+    else:
+        f.write(f_text)
+    
+    
 forced_exit = True # 強制終了されたかどうか
-
 last_photo = None # お手本のイラストが選択されているかどうか
-
 
 main_font = "Helvetica"
 
@@ -111,6 +144,9 @@ class Application(tk.Frame):
         # self.animation_window = None
     
     def create_widgets(self):
+        
+        # Logファイルに記録を残す
+        logger.log(100, "App Start")
         
         global last_photo
         last_photo = None # お手本のイラストの選択を初期化
@@ -939,30 +975,33 @@ class Application(tk.Frame):
         print(f"skip_button_draw : " + str(skip_on_draw))
         
         # --------- スクリーンショット -------
-        # canvasの縦横座標を取得
-        # canvas_width = self.canvas.winfo_width()
-        # canvas_height = self.canvas.winfo_height()
-        # canvas_x = self.canvas.winfo_x()
-        # canvas_y = self.canvas.winfo_y()
-        # print(f"{canvas_width} x {canvas_height} + {canvas_x} + {canvas_y}")      
-        #スクショ撮影
-        global illustration_number
-        illustration_number = 12
+        # 保存先を決定
+        with open(count_filename, encoding="UTF-8") as f:
+            f_text = f.read()
+        illustration_number = int(f_text) + 1
+        illustration_filename = f'./illustration_image/illustration_{str(illustration_number)}.png'
+        
+        with open(count_filename, mode='w') as f: 
+                f.write(str(illustration_number))
+                
+        logger.log(100, f'SaveFile : ./illustration_image/illustration_{str(illustration_number)}.png')
+                
+        # スクショ撮影
         # top = 260
         # left = 552
         # width = 835
         # height = 540
-        # pg.screenshot(f'./illustration_image/illustration_{str(illustration_number)}.png', region=(left, top, width, height)) # pgを使ってのスクショは？
+        # pg.screenshot(illustration_filename, region=(left, top, width, height)) # pgを使ってのスクショは？
         screen_shot = ImageGrab.grab()
-        screen_shot.save(f'./illustration_image/illustration_{str(illustration_number)}.png')
+        screen_shot.save(illustration_filename)
         # トリミング
-        image = Image.open(f'./illustration_image/illustration_{str(illustration_number)}.png')
+        image = Image.open(illustration_filename)
         left = 452
         upper = 215
         right = 1487
         lower = 883
         im_crop = image.crop((left, upper, right, lower))
-        im_crop.save(f'./illustration_image/illustration_{str(illustration_number)}.png')
+        im_crop.save(illustration_filename)
         
         self.master.after(500)
         
@@ -988,7 +1027,7 @@ class Application(tk.Frame):
             
             self.change_scoring_sub_text()
         
-        
+
         pw_illustration.destroy()
         
         
@@ -1014,7 +1053,7 @@ class Application(tk.Frame):
         
         #画像の類似度を比較
         image1_path = f'./image/image_{last_photo}.jpg'
-        image2_path = f'./illustration_image/illustration_{str(illustration_number)}.png'
+        image2_path = illustration_filename
         similar = self.calculate_similarity(image1_path, image2_path)
         if similar == 10:
             print("Error")
@@ -1046,7 +1085,7 @@ class Application(tk.Frame):
         image_label.image = photo
         
         # ペイントした画像の表示
-        image = Image.open(f"./illustration_image/illustration_12.png")  # 画像のパスを指定
+        image = Image.open(illustration_filename)  # 画像のパスを指定
         image_width = 400
         image = image.resize((image_width, int(image_width/1280*800)))
         photo = ImageTk.PhotoImage(image)
