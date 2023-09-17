@@ -69,15 +69,6 @@ warning_window_size = "600x140+500+400"
 game_start_window_size = "800x200+300+200"
 scoring_sub_window_size = "600x200+500+320"
 
-# 各ウィンドウのカウント
-count_title = False
-count_choice = False
-count_see_model = False
-count_illustration = False
-
-
-# カウントダウンアニメーションウィンドウのカウント
-# animation_finished_judge_1 = True
 
 #一度きりのイベント
 the_only_1 = True
@@ -118,8 +109,10 @@ class Application(tk.Frame):
         global last_photo
         last_photo = None # お手本のイラストの選択を初期化
         
-        global count_title
-        count_title = True
+        global the_only_1, the_only_2
+        the_only_1 = True
+        the_only_2 = True
+        
         
         global pw_title, fm_title, bg_frame
         
@@ -166,12 +159,7 @@ class Application(tk.Frame):
         pw_title.destroy()
         fm_title.destroy()
         time.sleep(0.1)
-        
-        global count_title
-        count_title = False
-        global count_choice
-        count_choice = True
-        
+
         global fm_choice
         
         fm_choice = tk.Frame(self.master, bg=choice_pw_bg, bd=5, relief="ridge", borderwidth=10)
@@ -569,17 +557,6 @@ class Application(tk.Frame):
     # イラストのお手本を表示
     def see_model(self):
         
-        # game_start_window.destroy()
-        # fm_choice.destroy()
-        # self.master.after(500)
-        
-        # pw_window.destroy()
-        
-        global count_choice
-        count_choice = False
-        global count_see_model
-        count_see_model = True
-        
         global skip_on
         skip_on = "NULL"
         
@@ -648,7 +625,8 @@ class Application(tk.Frame):
             else:
                 # Update every 1000ms (1 second)
                 self.master.after(1000, self.update_timer)
-
+        else:
+            return 0
 
 
 # -------- カウントダウンアニメーション２ --------
@@ -835,11 +813,6 @@ class Application(tk.Frame):
         global skip_on_draw
         skip_on_draw = "NULL"
         
-        global count_see_model
-        count_see_model = False
-        global count_illustration
-        count_illustration = True
-        
         global pw_illustration
         pw_illustration = tk.PanedWindow(self.master, bg=illustration_pw_bg, orient="vertical")
         pw_illustration.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
@@ -917,6 +890,8 @@ class Application(tk.Frame):
             else:
                 # Update every 1000ms (1 second)
                 self.master.after(1000, self.update_draw_timer)
+        else:
+            return 0
 
 
     def on_pressed(self, event):
@@ -983,13 +958,8 @@ class Application(tk.Frame):
         im_crop = image.crop((left, upper, right, lower))
         im_crop.save(f'./illustration_image/illustration_{str(illustration_number)}.png')
         
-
         pw_illustration.destroy()
         
-        global count_illustration
-        count_illustration = False
-        global count_scoring
-        count_scoring = True
         
         global pw_scoring
         pw_scoring = tk.PanedWindow(self.master, bg=scoring_pw_bg, orient="vertical")
@@ -1001,25 +971,25 @@ class Application(tk.Frame):
         
         global scoring_sub_window
         #採点中ウィンドウの表示
-        if skip_on != "NULL" and skip_on_draw != "NULL":
-            scoring_sub_window = tk.Toplevel(bg=scoring_fm_bg, bd=5)
-            scoring_sub_window.geometry(scoring_sub_window_size)
-            scoring_sub_window.title("scoring")
-            scoring_sub_window.lift() # 他のウィンドウより前面に固定
-            
-            initial_scoring_sub_text = "採点中"
-            self.scoring_sub_text = initial_scoring_sub_text
-            # ランダムにRGBを作成
-            red = rand.randint(0, 255)
-            green = rand.randint(0, 255)
-            blue = rand.randint(0, 255)
-            color_code = "#{:02X}{:02X}{:02X}".format(red, green, blue)
-            initial_scoring_sub_fg = color_code
-            self.scoring_sub_fg = initial_scoring_sub_fg
-            self.scoring_sub_label = tk.Label(scoring_sub_window, text=self.scoring_sub_text, bg=scoring_fm_bg, fg=self.scoring_sub_fg, font=(main_font, 48))
-            self.scoring_sub_label.pack(side=tk.TOP, padx=(0, 0), pady=(35, 10))
-            
-            self.change_scoring_sub_text()
+        #if skip_on != "NULL" and skip_on_draw != "NULL":
+        scoring_sub_window = tk.Toplevel(bg=scoring_fm_bg, bd=5)
+        scoring_sub_window.geometry(scoring_sub_window_size)
+        scoring_sub_window.title("scoring")
+        scoring_sub_window.lift() # 他のウィンドウより前面に固定
+        
+        initial_scoring_sub_text = "採点中"
+        self.scoring_sub_text = initial_scoring_sub_text
+        # ランダムにRGBを作成
+        red = rand.randint(0, 255)
+        green = rand.randint(0, 255)
+        blue = rand.randint(0, 255)
+        color_code = "#{:02X}{:02X}{:02X}".format(red, green, blue)
+        initial_scoring_sub_fg = color_code
+        self.scoring_sub_fg = initial_scoring_sub_fg
+        self.scoring_sub_label = tk.Label(scoring_sub_window, text=self.scoring_sub_text, bg=scoring_fm_bg, fg=self.scoring_sub_fg, font=(main_font, 48))
+        self.scoring_sub_label.pack(side=tk.TOP, padx=(0, 0), pady=(35, 10))
+        
+        self.change_scoring_sub_text()
 
 
         # ツールバー作成
@@ -1115,6 +1085,7 @@ class Application(tk.Frame):
                                         relief="raised", borderwidth=5)
         name_ranking_button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
         
+        
         name_ranking_button = tk.Button(fm_scoring_text_right, text="ランキングを見る", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
                                         relief="raised", borderwidth=5)
         name_ranking_button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
@@ -1122,13 +1093,10 @@ class Application(tk.Frame):
                                         relief="raised", borderwidth=5)
         button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
         button = tk.Button(fm_scoring_text_right, text="タイトルへ戻る", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
-                                        relief="raised", borderwidth=5)
+                                        relief="raised", borderwidth=5, command=self.return_title)
         button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
         
         
-        
-        # ランキングに登録
-        self.master.after(400)
             
             
         
@@ -1150,11 +1118,10 @@ class Application(tk.Frame):
         if gray_image1.shape != gray_image2.shape:
             #raise ValueError("Input images must have the same dimensions.")
             return 10
-        
-        # 画像の類似度を計算
-        similarity = compare_ssim(gray_image1, gray_image2)
-        
-        return similarity
+        else: 
+            # 画像の類似度を計算
+            similarity = compare_ssim(gray_image1, gray_image2)
+            return similarity
                 
                 
                 
@@ -1193,13 +1160,7 @@ class Application(tk.Frame):
     
     # タイトルへ戻る
     def return_title(self):
-        if count_choice == True:
-            fm_choice.destroy()
-        elif count_see_model == True:
-            pw_see_model.destroy
-        else: 
-            pass
-        
+        pw_scoring.destroy()
         self.create_widgets()
         
 
@@ -1208,11 +1169,7 @@ class Application(tk.Frame):
     def exit_App(self):
         global forced_exit
         forced_exit = False
-        
-        if count_title == True:
-            self.master.quit()
-        else: 
-            pass
+        self.master.quit()
 
 
 #アプリケーションが強制的に終了されたとき
