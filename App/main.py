@@ -78,6 +78,8 @@ illustration_pw_bg = "#ffe4e1"
 illustration_fm_bg = "#ffe4e1"
 scoring_pw_bg = "#ffe4e1"
 scoring_fm_bg = "#ffe4e1"
+ranking_pw_bg = "#ffe4e1"
+ranking_fm_bg = "#ffe4e1"
 
 credit_bg = "#1AE0A3"
 link_bg = "#1AE0A3"
@@ -89,6 +91,7 @@ see_model_btn_bg = "#00ced1"
 introduction_btn_bg = "#fff0f5"
 illustration_btn_bg = "#00ced1"
 scoring_btn_bg = "#00ced1"
+ranking_btn_bg = "#00ced1"
 
 button1_text = "タイトルへ"
 button2_text = "オプション"
@@ -104,9 +107,10 @@ TOOLBAR_OPTIONS = {
 # 各ウィンドウのサイズ
 difficulty_window_size = "500x600+500+100"
 warning_window_size = "600x140+500+400"
-game_start_window_size = "800x200+300+200"
+game_start_window_size = "800x200+300+300"
 scoring_sub_window_size = "600x200+500+320"
-credit_window_size = "500x700+400+100"
+credit_window_size = "600x650+500+100"
+no_ranking_window_size = "850x180+360+360"
 
 
 #一度きりのイベント
@@ -130,7 +134,6 @@ class BackgroundFrame(tk.Frame):
             # self.canvas.create_image(0, 0, image=self.bg_image, anchor="nw")
             # self.canvas.pack(fill="both", expand=True)
             
-
 
 
 # アプリケーション（GUI）クラス
@@ -179,7 +182,7 @@ class Application(tk.Frame):
         toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
         toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
         toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
-        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
+        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS, command=lambda: self.ranking("pw_title"))
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
@@ -616,7 +619,7 @@ class Application(tk.Frame):
         toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
         toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
         toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
-        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
+        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS, command=lambda: self.ranking("else"))
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
@@ -869,7 +872,7 @@ class Application(tk.Frame):
         toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
         toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
         toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
-        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
+        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS, command=lambda: self.ranking("else"))
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
@@ -1220,8 +1223,102 @@ class Application(tk.Frame):
             print("Error")
         
         
+
+    # ランキングの表示
+    def ranking(self, ere):
+        
+        # ランキングが開けなかった場合
+        if ere == "else":
+            logger.log(100, "ranking from else")
+            
+            global no_ranking_window
+            no_ranking_window = tk.Toplevel(bg=main_pw_bg, bd=5)
+            no_ranking_window.geometry(no_ranking_window_size)
+            no_ranking_window.title("no_ranking")
+            no_ranking_window.lift() # 他のウィンドウより前面に固定
+            
+            label = tk.Label(no_ranking_window, text="ここでランキングは開けないよ、、\n タイトルに戻るかゲームを終了するとランキングが見れるようになるよ！",
+                                bg=main_pw_bg, font=(main_font, 18))
+            label.pack(side=tk.TOP, padx=(0, 0), pady=(10, 10))
+            button = tk.Button(no_ranking_window, text="OK", bg=ranking_btn_bg, font=(main_font, 16), width=15, 
+                                relief="raised", borderwidth=5, command=self.exit_no_ranking)
+            button.pack(side=tk.TOP, padx=(10, 10), pady=(10, 0))
+            
+            
+        elif ere == "pw_title":
+            logger.log(100, "ranking from title")
+            
+            self.master.after(200, pw_title.destroy)
+            
+            global fm_ranking
+            fm_ranking = tk.Frame(self.master, bg=ranking_pw_bg, bd=5, relief="ridge", borderwidth=10)
+            fm_ranking.pack(expand=True, fill=tk.BOTH, side=tk.LEFT)
+            
+            
+            # リストボックスのスタイルをttkで変更
+            style = ttk.Style()
+            style.configure("Listbox", font=("Helvetica", 14))
+            
+            label = tk.Label(fm_ranking, text="**現在のランキング**", font=(main_font, 32), bg=ranking_fm_bg)
+            label.pack(side=tk.TOP, padx=(0, 0), pady=(40, 40))
+            main_frame = tk.Frame(fm_ranking, bg=ranking_pw_bg, bd=3, relief="ridge", borderwidth=3, highlightbackground="red", highlightthickness=2)
+            main_frame.pack(side=tk.TOP, padx=(20, 20), pady=(0, 30))
+            
+            #左側のフレーム作成
+            left_frame = tk.Frame(main_frame, bg=ranking_pw_bg)
+            left_frame.pack(side=tk.LEFT)
+            label = tk.Label(left_frame, text="~~難易度選択~~", font=(main_font, 20), bg=ranking_fm_bg)
+            label.pack(side=tk.TOP, padx=(40, 10), pady=(20, 8))
+            #リストボックスを格納するフレーム作成
+            listbox_frame = tk.Frame(left_frame, bg="lightblue", bd=5, relief="ridge", borderwidth=5)
+            listbox_frame.pack(side=tk.TOP, padx=(40, 10), pady=(0, 200))
+            self.listbox_ranking = tk.Listbox(listbox_frame, selectbackground="lightblue", font=(main_font, 22), height=5, width=10)
+            self.listbox_ranking.pack()
+            # 戻るボタン
+            return_button = tk.Button(left_frame, text="戻る", bg=ranking_btn_bg, font=(main_font, 20))
+            return_button.pack(side=tk.BOTTOM, padx=(0, 20), pady=(0, 20), ipadx=10, ipady=0)
+            
+            item_1 = "    初級"
+            item_2 = "    中級"
+            item_3 = "    上級"
+            
+            self.listbox_ranking.select_set(0) # 最初のアイテムを選択状態にする
+            self.listbox_ranking.insert(tk.END, item_1)
+            self.listbox_ranking.insert(tk.END, item_2)
+            self.listbox_ranking.insert(tk.END, item_3)
+            
+            # 右上のフレーム作成
+            right_upper_frame = tk.Frame(main_frame, bg="#fffff3", bd=5, relief="ridge", borderwidth=5)
+            right_upper_frame.pack(side=tk.TOP, padx=(30, 50), pady=(20, 0))
+            example_text_1 = "[ランク]"
+            example_text_2 = "[得点]"
+            example_text_3 = "[ニックネーム]"
+            example_text_4 = "[お手本]"
+            see_example_btn_text = "観覧"
+            right_upper_frame_bg = "#fffff3"
+            see_example_btn_bg = "#ffffe4"
+            label = tk.Label(right_upper_frame, text=example_text_1, fg="black", bg=right_upper_frame_bg, font=(main_font, 17))
+            label.pack(side=tk.LEFT, padx=(30, 0), pady=(5, 5))
+            label = tk.Label(right_upper_frame, text=example_text_2, fg="black", bg=right_upper_frame_bg, font=(main_font, 17))
+            label.pack(side=tk.LEFT, padx=(40, 0), pady=(5, 5))
+            label = tk.Label(right_upper_frame, text=example_text_3, fg="black", bg=right_upper_frame_bg, font=(main_font, 17))
+            label.pack(side=tk.LEFT, padx=(40, 0), pady=(5, 5))
+            label = tk.Label(right_upper_frame, text=example_text_4, fg="black", bg=right_upper_frame_bg, font=(main_font, 17))
+            label.pack(side=tk.LEFT, padx=(40, 0), pady=(5, 5))
+            button = tk.Button(right_upper_frame, text=see_example_btn_text, fg="black", bg=see_example_btn_bg, font=(main_font, 15))
+            button.pack(side=tk.LEFT, padx=(40, 30), pady=(5, 5), ipadx=5, ipady=1)
+            
+            
+    # ランキングが開けない注意ウィンドウを閉じる
+    def exit_no_ranking(self):
+        self.master.after(200, no_ranking_window.destroy)
+        
+        
+        
     # クレジット
     def credit(self):
+        
+        logger.log(100, "view credits")
         
         global credit_window
         credit_window = tk.Toplevel(bg=credit_bg, bd=5)
@@ -1236,36 +1333,38 @@ class Application(tk.Frame):
         kousen_link = "https://www.yonago-k.ac.jp/"
         used_library = "Tkinter, PySimpleGUI, openai, pyautogui, BytesIO, os, logging, speech_recognition, pyaudio, simpleaudio, wave, json, pyttsx3, time, random, sys, atexit, webbrowser, requests"
         
-        label = tk.Label(credit_window, text=f"作成者 : {programmer_name}", bg=credit_bg, font=(main_font, 22))
+        label = tk.Label(credit_window, text=f"作成者 : {programmer_name}", bg=credit_bg, font=(main_font, 24))
         label.pack(side=tk.TOP, pady=(50, 0))
         label = tk.Label(credit_window, text=f"Githubリンク : {github_owner}", bg=link_bg, fg=link_fg, 
                         font=(main_font, 22), cursor="hand2")
         label.pack(side=tk.TOP, pady=(30, 0))
         label.bind("<Button-1>", lambda e: self.open_github_link())
         label = tk.Label(credit_window, text=f"米子高専ホームページ", bg=link_bg, fg=link_fg, 
-                        font=(main_font, 22), cursor="hand2")
+                        font=(main_font, 24), cursor="hand2")
         label.pack(side=tk.TOP, pady=(30, 0))
         label.bind("<Button-1>", lambda e: self.open_kousen_link())
-        label = tk.Label(credit_window, text="python使用ライブラリ", bg=credit_bg, font=(main_font, 18))
-        label.pack(side=tk.TOP, pady=(30, 20))
+        label = tk.Label(credit_window, text="python使用ライブラリ : ", bg=credit_bg, font=(main_font, 20))
+        label.pack(side=tk.TOP, pady=(30, 10))
         #オブジェクト配置初期はstateの値を変更できるようにしなければならない
         self.text_new_question_sub1 = scrolledtext.ScrolledText(credit_window, width=40, height=6, font=(main_font, 20), bg="#fff", state="normal")
-        self.text_new_question_sub1.pack(side=tk.TOP)
+        self.text_new_question_sub1.pack(side=tk.TOP, padx=(20, 20))
         self.text_new_question_sub1.insert(tk.END, used_library)
         #stateの値を変更できないよう（normalからtk.DISABLED）に設定
         self.text_new_question_sub1.config(state=tk.DISABLED)
-        start_button = tk.Button(credit_window, text="とじる", font=(main_font, 20), bg=title_btn_bg, command=self.exit_credit)
+        start_button = tk.Button(credit_window, text="とじる", font=(main_font, 22), bg=title_btn_bg, command=self.exit_credit)
         start_button.pack(side=tk.TOP, padx=(20, 20), pady=(30, 0))
         
         return 0
     
     #webブラウザでgithubリンクを開く
     def open_github_link(self):
+        logger.log(100, "view github from credits")
         webbrowser.open_new(github_link)
         return 0
     
     #webブラウザで米子高専ホームページを開く
     def open_kousen_link(self):
+        logger.log(100, "view kosenHP from credits")
         webbrowser.open_new(kousen_link)
         return 0
         
@@ -1276,7 +1375,7 @@ class Application(tk.Frame):
     
     
 
-    # アプリケーションが終了されたとき
+    # アプリケーション終了ボタンが日佐れたとき
     def exit_App(self):
         global forced_exit
         forced_exit = False
@@ -1313,7 +1412,7 @@ def restart(restart_message):
 atexit.register(goodbye)
 
 
-
+# tkinterメインウィンドウを作成
 main_window = tk.Tk()        
 
 # 画面の幅と高さを取得
@@ -1329,4 +1428,5 @@ y = (screen_height // 3) - (window_height // 3)
 myapp = Application(master=main_window)
 myapp.master.title("paintApp")
 myapp.master.geometry(f"{window_width}x{window_height-10}+{x}+{y}")
+myapp.master.lift()
 myapp.mainloop()
