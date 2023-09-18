@@ -1161,7 +1161,8 @@ class Application(tk.Frame):
             else: 
                 aa = "上級"
             info_2 = aa
-            info_3 = last_photo
+            bb = button_list_thing[last_photo - 1]
+            info_3 = bb
             info_4 = f"{similar:.2%}"
             info_5 = "NoName"
             line_contents = f"{info_1}, {info_2}, {info_3}, {info_4}, {info_5}\n"
