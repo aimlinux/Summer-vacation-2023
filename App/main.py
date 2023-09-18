@@ -339,6 +339,7 @@ class Application(tk.Frame):
     def difficulty(self):
         global difficulty_window
         
+        # お手本が選択されていなかった場合
         if not last_photo:
             difficulty_window = tk.Toplevel(bg=choice_fm_bg, bd=5)
             difficulty_window.geometry(warning_window_size)
@@ -381,7 +382,6 @@ class Application(tk.Frame):
     def exit_warning(self):
         difficulty_window.destroy()
         return 0
-
         
         
     # 難易度を決定
@@ -842,7 +842,7 @@ class Application(tk.Frame):
 
         self.ani = animation.FuncAnimation(self.fig, update, init_func=init, interval=7, frames=10)
 
-    # see_modelの為に
+    # drawing_illustrationの為に
     def To_see_model_2(self, skip_button):
         global the_only_2
         if the_only_2 == True:
@@ -1038,9 +1038,7 @@ class Application(tk.Frame):
             
             self.change_scoring_sub_text()
         
-
         pw_illustration.destroy()
-        
         
         global pw_scoring
         pw_scoring = tk.PanedWindow(self.master, bg=scoring_pw_bg, orient="vertical")
@@ -1048,7 +1046,6 @@ class Application(tk.Frame):
         fm_scoring = tk.Frame(pw_scoring, bd=5, bg=scoring_pw_bg, relief="ridge", borderwidth=10)
         pw_scoring.add(fm_scoring)
         
-
         # ツールバー作成
         fm_toolbar = tk.Frame(fm_scoring, bg=scoring_fm_bg)
         fm_toolbar.pack(anchor="nw")
@@ -1189,7 +1186,6 @@ class Application(tk.Frame):
             # 画像の類似度を計算
             similarity = compare_ssim(gray_image1, gray_image2)
             return similarity
-                
                 
                 
     # 採点中のウィンドウのアニメーション
