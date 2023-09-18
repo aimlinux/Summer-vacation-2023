@@ -199,3 +199,17 @@
 2023-09-18 17:04:01,343 --- process : 19196 --- message : SaveFile : ./illustration_image/illustration_21.png
 2023-09-18 17:04:52,007 --- process : 6496 --- message : App Start
 2023-09-18 17:04:55,709 --- process : 6496 --- message : view credits
+2023-09-18 19:50:22,080 --- process : 6552 --- message : App Start
+2023-09-18 19:50:59,491 --- process : 6552 --- message : SaveFile : ./illustration_image/illustration_22.png
+2023-09-18 20:04:00,205 --- process : 9620 --- message : App Start
+2023-09-18 20:04:02,853 --- process : 9620 --- message : ranking from title
+2023-09-18 20:04:09,252 --- process : 16260 --- message : App Start
+2023-09-18 20:04:34,380 --- process : 16260 --- message : SaveFile : ./illustration_image/illustration_23.png
+2023-09-18 20:07:30,310 --- process : 11292 --- message : App Start
+2023-09-18 20:08:15,176 --- process : 11292 --- message : SaveFile : ./illustration_image/illustration_24.png
+2023-09-18 20:11:09,959 --- process : 4944 --- message : App Start
+2023-09-18 20:11:37,080 --- process : 4944 --- message : SaveFile : ./illustration_image/illustration_25.png
+2023-09-18 20:20:34,242 --- process : 6936 --- message : App Start
+2023-09-18 20:21:00,571 --- process : 6936 --- message : SaveFile : ./illustration_image/illustration_26.png
+2023-09-18 20:22:11,198 --- process : 5036 --- message : App Start
+2023-09-18 20:22:13,904 --- process : 5036 --- message : ranking from title

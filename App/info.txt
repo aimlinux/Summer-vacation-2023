@@ -3,3 +3,8 @@
 19,button_3,1,33.00%,NoName
 20,button_3,1,32.89%,NoName
 21,button_1,3,19.64%,NoName
+22,button_2,3,27.74%,NoName
+23, button_3, 1, 33.15%, 株式会社ほのか
+24, button_3, 3, 8.46%, NoName
+25, button_3, 1, 28.80%, ほのか
+26, 上級, 2, 9.64%, rei

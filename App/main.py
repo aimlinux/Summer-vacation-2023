@@ -995,8 +995,7 @@ class Application(tk.Frame):
         with open(count_filename, mode='w') as f: 
                 f.write(str(illustration_number))
                 
-        logger.log(100, f'SaveFile : ./illustration_image/illustration_{str(illustration_number)}.png')
-                
+        logger.log(100, f'SaveFile : {illustration_filename}')
         # スクショ撮影
         # top = 260
         # left = 552
@@ -1150,17 +1149,23 @@ class Application(tk.Frame):
                                         relief="raised", borderwidth=5, command=lambda: self.return_title("else"))
         button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
         
-
         # 「info.txt」に各情報を追記（mode="a"）
         # illustration_number, last_number, usr_name_value, similar*100, last_difficultly
-        with open(info_filename, mode="a") as f:
+        with open(info_filename, encoding='UTF-8', mode="a") as f:
+            global info_1, info_2, info_3, info_4
             info_1 = f"{illustration_number}"
-            info_2 = f"{str(last_difficulty)}"
+            if last_difficulty == "button_1":
+                aa = "初級"
+            elif last_difficulty == "button_2":
+                aa = "中級"
+            else: 
+                aa = "上級"
+            info_2 = aa
             info_3 = last_photo
             info_4 = f"{similar:.2%}"
             info_5 = "NoName"
-            line = f"{info_1},{info_2},{info_3},{info_4},{info_5}\n"
-            f.write(line)
+            line_contents = f"{info_1}, {info_2}, {info_3}, {info_4}, {info_5}\n"
+            f.write(line_contents)
             
             
         
@@ -1221,6 +1226,7 @@ class Application(tk.Frame):
         
     # 名前を入力するウィンドウ
     def enter_name(self):
+        global enter_name_window
         enter_name_window = tk.Toplevel(bg=main_pw_bg, bd=5)
         enter_name_window.geometry(enter_name_window_size)
         enter_name_window.title("enter name")
@@ -1259,23 +1265,21 @@ class Application(tk.Frame):
             self.enter_name()
         # 「info.txt」に名前を含めた情報を上書きする
         else:
-            with open(info_filename, 'r') as f:
-                # １行目だけ読み取る？
-                # lines_count = f.readline()
-                # print("１行目：", lines_count)
-                #各行を順番に読み込む
-                for line in f:
-                    columns = line.strip().split(',')
-                    if len(columns) > 0:
-                        value = columns[0]
-                        if value == 19:
-                            print("一列目：", value)
-                            with open(info_filename, mode='a') as f:
-                                f.write("kk")
-                            break
-                        else:
-                            pass
-                            
+            # ---- 最後の行を消去 ----
+            with open(info_filename, encoding='UTF-8', mode='r') as f:
+                lines = f.readlines()
+            if lines:
+                lines.pop() # 最後の行を消去
+            with open(info_filename, encoding='UTF-8', mode='w') as f:
+                f.writelines(lines)
+            # ---- 書き込み ----
+            with open(info_filename, encoding='UTF-8', mode='a') as f:
+                info_5 = usr_name_value # 名前のみ上書きする
+                line_contents = f"{info_1}, {info_2}, {info_3}, {info_4}, {info_5}\n"
+                f.write(line_contents)
+                
+            self.master.after(200, enter_name_window.destroy)
+            return 0
     
     
     # タイトルへ戻る
