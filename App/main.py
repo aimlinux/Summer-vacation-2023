@@ -52,7 +52,7 @@ fh.setFormatter(formatter)
 sh.setFormatter(formatter)
 
 
-# ペイントされた回数をカウントするためのファイル
+# ペイントされた回数をカウントするためのテキストファイル
 count_filename = './count.txt'
 with open(count_filename, encoding="UTF-8") as f:
     f_text = f.read()
@@ -61,6 +61,13 @@ with open(count_filename, mode='w') as f: # 書き込みで開いて、初期か
         f.write("0")
     else:
         f.write(f_text)
+        
+        
+# 各情報を保存する為のテキストファイル
+info_filename = './info.txt'
+with open(info_filename, encoding="UTF-8") as f:
+    info_text = f.read()    
+    #print(info_text)
     
     
 forced_exit = True # 強制終了されたかどうか
@@ -111,6 +118,7 @@ game_start_window_size = "800x200+300+300"
 scoring_sub_window_size = "600x200+500+320"
 credit_window_size = "600x650+500+100"
 no_ranking_window_size = "850x180+360+360"
+enter_name_window_size = "830x350+360+240"
 
 
 #一度きりのイベント
@@ -1131,7 +1139,7 @@ class Application(tk.Frame):
         ranking_label = tk.Label(fm_scoring_text_left, text=f"ランキング({difficulty_text}) : {rank}位", bg=scoring_fm_bg, fg="#493563", font=(main_font, 23))
         ranking_label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 0))
         name_ranking_button = tk.Button(fm_scoring_text_left, text="ランキングに名前を登録", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
-                                        relief="raised", borderwidth=5)
+                                        relief="raised", borderwidth=5, command=self.enter_name)
         name_ranking_button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
         
         
@@ -1145,7 +1153,17 @@ class Application(tk.Frame):
                                         relief="raised", borderwidth=5, command=lambda: self.return_title("else"))
         button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
         
-        
+
+        # 「info.txt」に各情報を追記（mode="a"）
+        # illustration_number, last_number, usr_name_value, similar*100, last_difficultly
+        with open(info_filename, mode="a") as f:
+            info_1 = f"{illustration_number}"
+            info_2 = f"{str(last_difficulty)}"
+            info_3 = last_photo
+            info_4 = f"{similar:.2%}"
+            info_5 = "NoName"
+            line = f"{info_1},{info_2},{info_3},{info_4},{info_5}\n"
+            f.write(line)
             
             
         
@@ -1176,6 +1194,7 @@ class Application(tk.Frame):
                 
     # 採点中のウィンドウのアニメーション
     def change_scoring_sub_text(self):
+        
         global count_change_scoring_sub
         if count_change_scoring_sub % 4 == 0:
             self.scoring_sub_text = "採点中"
@@ -1204,7 +1223,64 @@ class Application(tk.Frame):
             scoring_sub_window.destroy()
             return 0
         
+    # 名前を入力するウィンドウ
+    def enter_name(self):
+        enter_name_window = tk.Toplevel(bg=main_pw_bg, bd=5)
+        enter_name_window.geometry(enter_name_window_size)
+        enter_name_window.title("enter name")
+        enter_name_window.lift() # 他のウィンドウより前面に固定
         
+        label = tk.Label(enter_name_window, text="ランキングに登録するニックネームを入力してください。",
+                                bg=main_pw_bg, font=(main_font, 22))
+        label.pack(side=tk.TOP, padx=(0, 0), pady=(20, 10))
+        label = tk.Label(enter_name_window, text="※ニックネームは他のユーザーからも見られます。\n 2~10文字で入力して下さい。  [例：ほのか]",
+                                fg="#000080", bg=main_pw_bg, font=(main_font, 18))
+        label.pack(side=tk.TOP, padx=(0, 0), pady=(10, 10))
+        #テキストボックス
+        usr_name = tk.StringVar()
+        name_entry = ttk.Entry(
+            enter_name_window,
+            textvariable=usr_name,
+            width=30,
+            font=(main_font, 25)
+        )
+        name_entry.pack(side=tk.TOP, padx=(10, 10), pady=(10, 10))
+        button = tk.Button(enter_name_window, text="確定する", bg=title_btn_bg, font=(main_font, 22), 
+                            width=10, command=lambda:self.name_confirmed(usr_name))
+        button.pack(side=tk.TOP, padx=(0, 0), pady=(10, 0))
+        
+        return 0
+        
+        
+    # 入力された名前を確定
+    def name_confirmed(self, usr_name):
+        usr_name_value = usr_name.get() # 入力された文字を取得
+        #print(len(usr_name_value))
+        
+        # 文字数が2~10文字に収まっていなかった場合
+        if not 2 <= len(usr_name_value) <= 10:
+            messagebox.showwarning('warning', 'ニックネームは２～１０文字で入力して下さい。')
+            self.enter_name()
+        # 「info.txt」に名前を含めた情報を上書きする
+        else:
+            with open(info_filename, 'r') as f:
+                # １行目だけ読み取る？
+                # lines_count = f.readline()
+                # print("１行目：", lines_count)
+                #各行を順番に読み込む
+                for line in f:
+                    columns = line.strip().split(',')
+                    if len(columns) > 0:
+                        value = columns[0]
+                        if value == 19:
+                            print("一列目：", value)
+                            with open(info_filename, mode='a') as f:
+                                f.write("kk")
+                            break
+                        else:
+                            pass
+                            
+    
     
     # タイトルへ戻る
     def return_title(self, lala):

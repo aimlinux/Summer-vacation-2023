@@ -156,3 +156,42 @@
 2023-09-18 12:24:25,876 --- process : 17200 --- message : App Start
 2023-09-18 12:25:08,929 --- process : 17200 --- message : SaveFile : ./illustration_image/illustration_6.png
 2023-09-18 12:25:53,289 --- process : 1348 --- message : App Start
+2023-09-18 13:59:24,930 --- process : 15064 --- message : App Start
+2023-09-18 14:00:35,113 --- process : 15064 --- message : SaveFile : ./illustration_image/illustration_7.png
+2023-09-18 14:01:54,650 --- process : 17404 --- message : App Start
+2023-09-18 14:08:36,234 --- process : 17404 --- message : SaveFile : ./illustration_image/illustration_8.png
+2023-09-18 14:21:00,751 --- process : 14140 --- message : App Start
+2023-09-18 14:21:45,962 --- process : 14140 --- message : SaveFile : ./illustration_image/illustration_9.png
+2023-09-18 14:24:00,238 --- process : 15280 --- message : App Start
+2023-09-18 14:25:40,478 --- process : 15280 --- message : SaveFile : ./illustration_image/illustration_10.png
+2023-09-18 14:34:54,974 --- process : 21388 --- message : App Start
+2023-09-18 14:35:28,230 --- process : 21388 --- message : SaveFile : ./illustration_image/illustration_11.png
+2023-09-18 14:38:21,459 --- process : 14600 --- message : App Start
+2023-09-18 14:38:48,352 --- process : 14600 --- message : SaveFile : ./illustration_image/illustration_12.png
+2023-09-18 14:42:46,382 --- process : 21036 --- message : App Start
+2023-09-18 14:44:27,874 --- process : 21036 --- message : SaveFile : ./illustration_image/illustration_13.png
+2023-09-18 15:30:41,929 --- process : 20324 --- message : App Start
+2023-09-18 15:39:39,859 --- process : 17632 --- message : App Start
+2023-09-18 15:39:42,760 --- process : 17632 --- message : ranking from title
+2023-09-18 16:02:21,335 --- process : 9876 --- message : App Start
+2023-09-18 16:03:07,923 --- process : 9876 --- message : SaveFile : ./illustration_image/illustration_14.png
+2023-09-18 16:05:30,155 --- process : 19100 --- message : App Start
+2023-09-18 16:05:52,504 --- process : 19100 --- message : SaveFile : ./illustration_image/illustration_15.png
+2023-09-18 16:10:18,956 --- process : 18592 --- message : App Start
+2023-09-18 16:10:39,215 --- process : 18592 --- message : SaveFile : ./illustration_image/illustration_16.png
+2023-09-18 16:23:35,463 --- process : 19964 --- message : App Start
+2023-09-18 16:23:39,118 --- process : 19964 --- message : ranking from title
+2023-09-18 16:23:48,551 --- process : 10632 --- message : App Start
+2023-09-18 16:24:14,095 --- process : 10632 --- message : SaveFile : ./illustration_image/illustration_17.png
+2023-09-18 16:42:20,736 --- process : 19324 --- message : App Start
+2023-09-18 16:42:37,194 --- process : 19324 --- message : SaveFile : ./illustration_image/illustration_18.png
+2023-09-18 16:47:14,706 --- process : 19088 --- message : App Start
+2023-09-18 16:47:33,651 --- process : 19088 --- message : SaveFile : ./illustration_image/illustration_19.png
+2023-09-18 16:48:31,032 --- process : 18868 --- message : App Start
+2023-09-18 16:48:52,155 --- process : 18868 --- message : SaveFile : ./illustration_image/illustration_20.png
+2023-09-18 16:55:34,676 --- process : 19472 --- message : App Start
+2023-09-18 16:55:36,644 --- process : 19472 --- message : ranking from title
+2023-09-18 16:55:58,364 --- process : 20992 --- message : App Start
+2023-09-18 16:56:00,516 --- process : 20992 --- message : view credits
+2023-09-18 16:56:03,385 --- process : 20992 --- message : view github from credits
+2023-09-18 16:56:04,139 --- process : 20992 --- message : view kosenHP from credits
