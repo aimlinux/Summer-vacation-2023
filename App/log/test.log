@@ -195,3 +195,7 @@
 2023-09-18 16:56:00,516 --- process : 20992 --- message : view credits
 2023-09-18 16:56:03,385 --- process : 20992 --- message : view github from credits
 2023-09-18 16:56:04,139 --- process : 20992 --- message : view kosenHP from credits
+2023-09-18 17:02:59,618 --- process : 19196 --- message : App Start
+2023-09-18 17:04:01,343 --- process : 19196 --- message : SaveFile : ./illustration_image/illustration_21.png
+2023-09-18 17:04:52,007 --- process : 6496 --- message : App Start
+2023-09-18 17:04:55,709 --- process : 6496 --- message : view credits
