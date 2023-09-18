@@ -1354,9 +1354,9 @@ class Application(tk.Frame):
             return_button = tk.Button(left_frame, text="戻る", bg=ranking_btn_bg, font=(main_font, 20))
             return_button.pack(side=tk.BOTTOM, padx=(0, 20), pady=(0, 20), ipadx=10, ipady=0)
             
-            item_1 = "    初級"
-            item_2 = "    中級"
-            item_3 = "    上級"
+            item_1 = "     初級"
+            item_2 = "     中級"
+            item_3 = "     上級"
             
             self.listbox_ranking.select_set(0) # 最初のアイテムを選択状態にする
             self.listbox_ranking.insert(tk.END, item_1)
