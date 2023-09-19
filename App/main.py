@@ -1195,7 +1195,7 @@ class Application(tk.Frame):
                 
                 
     # 採点中のウィンドウのアニメーション
-    def change_scoring_sub_text(self):
+    def change_scoring_sub_text(self): 
         
         global count_change_scoring_sub
         if count_change_scoring_sub % 4 == 0:
@@ -1338,7 +1338,7 @@ class Application(tk.Frame):
             
             label = tk.Label(fm_ranking, text="**現在のランキング**", font=(main_font, 32), bg=ranking_fm_bg)
             label.pack(side=tk.TOP, padx=(0, 0), pady=(40, 40))
-            main_frame = tk.Frame(fm_ranking, bg=ranking_pw_bg, bd=3, relief="ridge", borderwidth=3, highlightbackground="red", highlightthickness=2)
+            main_frame = tk.Frame(fm_ranking, bg=ranking_pw_bg, bd=3, relief="ridge", borderwidth=3, highlightbackground="black", highlightthickness=2)
             main_frame.pack(side=tk.TOP, padx=(20, 20), pady=(0, 30))
             
             #左側のフレーム作成
@@ -1355,14 +1355,15 @@ class Application(tk.Frame):
             return_button = tk.Button(left_frame, text="戻る", bg=ranking_btn_bg, font=(main_font, 20))
             return_button.pack(side=tk.BOTTOM, padx=(0, 20), pady=(0, 20), ipadx=10, ipady=0)
             
-            item_1 = "     初級"
-            item_2 = "     中級"
-            item_3 = "     上級"
-            
+            self.item_1 = "     初級"
+            self.item_2 = "     中級"
+            self.item_3 = "     上級"
             self.listbox_ranking.select_set(0) # 最初のアイテムを選択状態にする
-            self.listbox_ranking.insert(tk.END, item_1)
-            self.listbox_ranking.insert(tk.END, item_2)
-            self.listbox_ranking.insert(tk.END, item_3)
+            self.listbox_ranking.insert(tk.END, self.item_1)
+            self.listbox_ranking.insert(tk.END, self.item_2)
+            self.listbox_ranking.insert(tk.END, self.item_3)
+            self.listbox_ranking.bind("<Button-1>", self.on_ranking_difficulty_click)
+            
             
             # 右上のフレーム作成
             right_upper_frame = tk.Frame(main_frame, bg="#fffff3", bd=5, relief="ridge", borderwidth=5)
@@ -1384,6 +1385,32 @@ class Application(tk.Frame):
             label.pack(side=tk.LEFT, padx=(40, 0), pady=(5, 5))
             button = tk.Button(right_upper_frame, text=see_example_btn_text, fg="black", bg=see_example_btn_bg, font=(main_font, 15))
             button.pack(side=tk.LEFT, padx=(40, 30), pady=(5, 5), ipadx=5, ipady=1)
+            
+            # 右下のフレーム作成
+            self.right_lower_frame = tk.Frame(main_frame, bg="#fffff1", bd=5, relief="ridge", borderwidth=5, height=360, width=700)
+            self.right_lower_frame.pack(side=tk.TOP, padx=(30, 30), pady=(30, 0), ipadx=10, ipady=10)
+            
+            
+            
+    # ランキングに表示する難易度が選ばれたことを取得
+    def on_ranking_difficulty_click(self, event):
+        listbox_ranking_item_index = self.listbox_ranking.nearest(event.y) # クリックされたアイテムのインデックスを取得
+        listbox_ranking_item = self.listbox_ranking.get(listbox_ranking_item_index) # インデックスからアイテムの内容を取得
+        #print(listbox_ranking_item)
+        if listbox_ranking_item:
+            if listbox_ranking_item == self.item_1:
+                print(listbox_ranking_item)
+            elif listbox_ranking_item == self.item_2:
+                print(listbox_ranking_item)
+            elif listbox_ranking_item == self.item_3:
+                print(listbox_ranking_item)
+            else:
+                print("Error")
+                return 10
+            
+            
+            
+            
             
             
     # ランキングが開けない注意ウィンドウを閉じる
