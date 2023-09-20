@@ -1387,19 +1387,50 @@ class Application(tk.Frame):
             button.pack(side=tk.LEFT, padx=(40, 30), pady=(5, 5), ipadx=5, ipady=1)
             
             # 右下のフレーム作成
-            self.right_lower_frame = tk.Frame(main_frame, bg="#fffff1", bd=5, relief="ridge", borderwidth=5, height=360, width=700)
-            self.right_lower_frame.pack(side=tk.TOP, padx=(30, 30), pady=(30, 0), ipadx=10, ipady=10)
+            right_lower_frame_cover = tk.Frame(main_frame, bg="#fffff1", bd=5, relief="ridge", borderwidth=5, height=360, width=700)
+            right_lower_frame_cover.pack(side=tk.TOP, padx=(30, 30), pady=(30, 0), ipadx=10, ipady=10)
+            scrollbar = tk.Scrollbar(right_lower_frame_cover, orient="vertical")
+            scrollbar.pack(side=tk.LEFT, fill="y")
+            self.right_lower_canvas = tk.Canvas(right_lower_frame_cover, yscrollcommand=scrollbar.set)
+            self.right_lower_canvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+            scrollbar.config(command=self.right_lower_canvas.yview)
+            self.right_lower_frame = tk.Frame(self.right_lower_canvas, bg=ranking_fm_bg)
+            self.right_lower_canvas.create_window((0, 0), window=self.right_lower_frame, anchor="nw")
             
+            # マウスホイールでスクロールできるように設定
+            self.right_lower_canvas.bind("<Configure>", lambda event, canvas=self.right_lower_canvas: self.right_lower_canvas.configure(scrollregion=self.right_lower_canvas.bbox("all")))
+            self.right_lower_canvas.bind_all("<MouseWheel>", self.on_mousewheel)
             
-            
+    def on_mousewheel(self, event):
+        self.right_lower_canvas.yview_scroll(-1 * (event.delta // 120), "units")
+        
     # ランキングに表示する難易度が選ばれたことを取得
-    def on_ranking_difficulty_click(self, event):
+    def on_ranking_difficulty_click(self, event, ):
         listbox_ranking_item_index = self.listbox_ranking.nearest(event.y) # クリックされたアイテムのインデックスを取得
         listbox_ranking_item = self.listbox_ranking.get(listbox_ranking_item_index) # インデックスからアイテムの内容を取得
         #print(listbox_ranking_item)
         if listbox_ranking_item:
             if listbox_ranking_item == self.item_1:
-                print(listbox_ranking_item)
+                self.frame_1_1 = tk.Frame(self.right_lower_frame, bg="#fffff3", bd=5, relief="ridge", borderwidth=5)
+                self.frame_1_1.pack(side=tk.TOP, padx=(30, 50), pady=(20, 0))
+                example_text_1 = "[ランク]"
+                example_text_2 = "[得点]"
+                example_text_3 = "[ニックネーム]"
+                example_text_4 = "[お手本]"
+                see_example_btn_text = "観覧"
+                right_upper_frame_bg = "#fffff3"
+                see_example_btn_bg = "#ffffe4"
+                label = tk.Label(self.frame_1_1, text=example_text_1, fg="black", bg=right_upper_frame_bg, font=(main_font, 17))
+                label.pack(side=tk.LEFT, padx=(30, 0), pady=(5, 5))
+                label = tk.Label(self.frame_1_1, text=example_text_2, fg="black", bg=right_upper_frame_bg, font=(main_font, 17))
+                label.pack(side=tk.LEFT, padx=(40, 0), pady=(5, 5))
+                label = tk.Label(self.frame_1_1, text=example_text_3, fg="black", bg=right_upper_frame_bg, font=(main_font, 17))
+                label.pack(side=tk.LEFT, padx=(40, 0), pady=(5, 5))
+                label = tk.Label(self.frame_1_1, text=example_text_4, fg="black", bg=right_upper_frame_bg, font=(main_font, 17))
+                label.pack(side=tk.LEFT, padx=(40, 0), pady=(5, 5))
+                button = tk.Button(self.frame_1_1, text=see_example_btn_text, fg="black", bg=see_example_btn_bg, font=(main_font, 15))
+                button.pack(side=tk.LEFT, padx=(40, 30), pady=(5, 5), ipadx=5, ipady=1)
+            
             elif listbox_ranking_item == self.item_2:
                 print(listbox_ranking_item)
             elif listbox_ranking_item == self.item_3:
