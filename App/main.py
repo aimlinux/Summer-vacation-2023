@@ -24,6 +24,9 @@ import sys
 import os 
 
 
+# 開発者名前とパスワード
+debugger_name = "aim"
+debugger_pas = "aimlinux"
 
 # -------- Logの各設定 --------
 #logの出力名を設定
@@ -91,6 +94,7 @@ ranking_fm_bg = "#ffe4e1"
 credit_bg = "#1AE0A3"
 link_bg = "#1AE0A3"
 link_fg = "#191970"
+log_bg = "#1AE0A3"
 
 title_btn_bg = "#7FDBF0"
 choice_btn_bg = "#7CF3CE"
@@ -99,11 +103,13 @@ introduction_btn_bg = "#fff0f5"
 illustration_btn_bg = "#00ced1"
 scoring_btn_bg = "#00ced1"
 ranking_btn_bg = "#00ced1"
+log_btn_bg = "#00ced1"
 
 button1_text = "タイトルへ"
 button2_text = "オプション"
 button3_text = "ランキング"
 button4_text = "クレジット"
+button5_text = "開発者ログ"
 
 TOOLBAR_OPTIONS = { 
     "font" : "main_font, 15",
@@ -119,6 +125,7 @@ scoring_sub_window_size = "600x200+500+320"
 credit_window_size = "600x650+500+100"
 no_ranking_window_size = "850x180+360+360"
 enter_name_window_size = "830x350+360+240"
+log_window_size = "800x650+400+100"
 
 
 #一度きりのイベント
@@ -194,6 +201,8 @@ class Application(tk.Frame):
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
+        toolbar_button5 = tk.Button(fm_toolbar, text=button5_text, **TOOLBAR_OPTIONS, command=self.log_window)
+        toolbar_button5.pack(side=tk.LEFT, padx=2, pady=4)
         
         start_button = tk.Button(bg_frame, text="はじめる", font=(main_font, 20), bg=title_btn_bg, 
                                 width=30, relief="raised", borderwidth=5, command=self.start_App) # reliefによって影を表現
@@ -631,6 +640,8 @@ class Application(tk.Frame):
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
+        toolbar_button5 = tk.Button(fm_toolbar, text=button5_text, **TOOLBAR_OPTIONS, command=self.log_window)
+        toolbar_button5.pack(side=tk.LEFT, padx=2, pady=4)
         
         label = tk.Label(fm_see_model, text="制限時間内にイラストを覚えよう", bg=see_model_fm_bg, font=(main_font, 25))
         label.pack(side=tk.TOP, padx=(0, 0), pady=(20, 0))
@@ -884,6 +895,8 @@ class Application(tk.Frame):
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
+        toolbar_button5 = tk.Button(fm_toolbar, text=button5_text, **TOOLBAR_OPTIONS, command=self.log_window)
+        toolbar_button5.pack(side=tk.LEFT, padx=2, pady=4)
         
         label = tk.Label(fm_illustration, text="制限時間内にイラストを描こう", bg=illustration_fm_bg, font=(main_font, 25))
         label.pack(side=tk.TOP, padx=(0, 0), pady=(10, 0))
@@ -1057,6 +1070,8 @@ class Application(tk.Frame):
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
+        toolbar_button5 = tk.Button(fm_toolbar, text=button5_text, **TOOLBAR_OPTIONS, command=self.log_window)
+        toolbar_button5.pack(side=tk.LEFT, padx=2, pady=4)
         
         #画像の類似度を比較
         image1_path = f'./image/image_{last_photo}.jpg'
@@ -1509,6 +1524,76 @@ class Application(tk.Frame):
         credit_window.destroy()
     
     
+    # 開発者ログ
+    def log_window(self):
+        logger.log(100, "view log_window")
+        
+        global login_window
+        login_window = tk.Toplevel(bg=log_bg, bd=5)
+        login_window.geometry(log_window_size)
+        login_window.title("login")
+        login_window.lift() # 他のウィンドウより前面に固定
+        
+        if login_window:
+            # 上のフレーム
+            upper_frame = tk.Frame(login_window, bg=log_bg)
+            upper_frame.pack(side=tk.TOP, padx=(0, 0), pady=(200, 0))
+            # 開発者ネイむ要求
+            name_label = tk.Label(upper_frame, text="開発者ネーム : ", font=(main_font, 20), bg=log_bg)
+            name_label.pack(side=tk.LEFT, padx=(0, 20), pady=0)
+            self.name_entry = tk.Entry(upper_frame, font=(main_font, 20))
+            self.name_entry.pack(side=tk.LEFT, padx=(0, 0), pady=0)
+            # 下のフレーム
+            lower_frame = tk.Frame(login_window, bg=log_bg)
+            lower_frame.pack(side=tk.TOP, padx=(0, 0), pady=(30, 0))
+            # 開発者パスワード要求
+            pas_label = tk.Label(lower_frame, text="開発者パスワード : ", font=(main_font, 20), bg=log_bg)
+            pas_label.pack(side=tk.LEFT, padx=(0, 20), pady=0)
+            self.pas_entry = tk.Entry(lower_frame, show="*", font=(main_font, 20))
+            self.pas_entry.pack(side=tk.LEFT, padx=(0, 0), pady=0)
+            
+            login_button = tk.Button(login_window, text="ログイン", bg=log_btn_bg, font=(main_font, 20), command=self.login_log)
+            login_button.pack(side=tk.TOP, padx=(0, 0), pady=(30, 0))
+            
+    def login_log(self):
+        name = None
+        pas = None
+        name = self.name_entry.get()
+        pas = self.pas_entry.get()
+        # 名前かパスワードが入力されていなかった場合
+        if not name or not pas:
+            login_window.destroy()
+            messagebox.showwarning("warning", "名前とパスワードを正しく入力して下さい")
+            logger.log(100, "loginError : {name} : {pas}")
+            return 10
+        elif name == debugger_name and pas == debugger_pas:
+            login_window.destroy()
+            messagebox.showinfo("warning", "開発者としてログインしました。")
+            logger.log(100, "loginComplete : {name} : {pas}")
+            if name and pas:
+                # logウィンドウ
+                log_window = tk.Toplevel(bg=log_bg, bd=5)
+                log_window.geometry(log_window_size)
+                log_window.title("log")
+                log_window.lift() # 他のウィンドウより前面に固定
+                
+                log_frame = tk.Frame(log_window, bd=5, borderwidth=10, bg="#ffffff3", relief="ridge")
+                log_frame.pack(side=tk.TOP, padx=(20, 20), pady=(30, 20), fill="x", expand=True)
+                
+                
+        elif name == debugger_name and pas != debugger_pas:
+            login_window.destroy()
+            messagebox.showerror("warning", "パスワードが正しくありません。")
+            logger.log(100, "loginError : {name} : {pas}")
+            return 10
+        else:
+            login_window.destroy()
+            messagebox.showerror("warning", "名前とパスワードが正しくありません。")
+            logger.log(100, "loginError : {name} : {pas}")
+            return 10
+            
+            
+        
 
     # アプリケーション終了ボタンが日佐れたとき
     def exit_App(self):

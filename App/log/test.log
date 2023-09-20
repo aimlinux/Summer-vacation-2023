@@ -252,3 +252,32 @@
 2023-09-20 08:22:30,732 --- process : 8196 --- message : ranking from title
 2023-09-20 08:35:41,502 --- process : 8424 --- message : App Start
 2023-09-20 08:35:48,415 --- process : 8424 --- message : ranking from title
+2023-09-20 11:47:45,993 --- process : 2812 --- message : App Start
+2023-09-20 11:53:34,685 --- process : 9176 --- message : App Start
+2023-09-20 11:53:37,007 --- process : 9176 --- message : view log_window
+2023-09-20 12:02:02,768 --- process : 1624 --- message : App Start
+2023-09-20 12:02:48,042 --- process : 1624 --- message : SaveFile : ./illustration_image/illustration_28.png
+2023-09-20 12:03:30,815 --- process : 2360 --- message : App Start
+2023-09-20 12:04:01,184 --- process : 2360 --- message : App Start
+2023-09-20 12:04:04,019 --- process : 2360 --- message : view log_window
+2023-09-20 12:25:26,474 --- process : 14860 --- message : App Start
+2023-09-20 12:25:29,200 --- process : 14860 --- message : view log_window
+2023-09-20 12:25:43,965 --- process : 14860 --- message : view log_window
+2023-09-20 12:25:48,071 --- process : 14860 --- message : view log_window
+2023-09-20 12:26:04,976 --- process : 14860 --- message : view log_window
+2023-09-20 12:26:38,451 --- process : 13636 --- message : App Start
+2023-09-20 12:26:40,389 --- process : 13636 --- message : view log_window
+2023-09-20 12:28:07,250 --- process : 13564 --- message : App Start
+2023-09-20 12:28:09,791 --- process : 13564 --- message : view log_window
+2023-09-20 12:29:00,444 --- process : 7392 --- message : App Start
+2023-09-20 12:29:02,997 --- process : 7392 --- message : view log_window
+2023-09-20 12:35:12,476 --- process : 11784 --- message : App Start
+2023-09-20 12:35:17,797 --- process : 11784 --- message : view log_window
+2023-09-20 12:35:28,339 --- process : 11784 --- message : loginComplete : {name} : {pas}
+2023-09-20 12:35:44,955 --- process : 11784 --- message : view log_window
+2023-09-20 12:37:43,087 --- process : 5856 --- message : App Start
+2023-09-20 12:37:45,002 --- process : 5856 --- message : view log_window
+2023-09-20 12:37:58,801 --- process : 5856 --- message : loginComplete : {name} : {pas}
+2023-09-20 12:41:16,729 --- process : 10324 --- message : App Start
+2023-09-20 12:41:18,715 --- process : 10324 --- message : view log_window
+2023-09-20 12:41:26,981 --- process : 10324 --- message : loginComplete : {name} : {pas}
