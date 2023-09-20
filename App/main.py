@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog 
-from tkinter import messagebox
-from tkinter import scrolledtext 
+from tkinter import messagebox 
 from tkinter import PhotoImage
+from tkinter import scrolledtext
 from tkinter import ttk
 import PySimpleGUI as sg
 #import pyautogui as pg # スクショ撮影用 併用するとtkinterのウィンドウが小さくなる（pgモジュールのコードが原因らしい）
@@ -28,6 +28,9 @@ import os
 debugger_name = "aim"
 debugger_pas = "aimlinux"
 
+# logを保存するためのファイル
+log_file_path = './log/test.log'
+
 # -------- Logの各設定 --------
 #logの出力名を設定
 logger = logging.getLogger('Log')
@@ -37,7 +40,7 @@ logger.setLevel(10)
 sh = logging.StreamHandler()
 logger.addHandler(sh)
 #logのファイル出力先設定
-fh = logging.FileHandler('./log/test.log')
+fh = logging.FileHandler(log_file_path)
 logger.addHandler(fh)
 #全てのフォーマットオプションとその役割
 # %(asctime)s	実行時刻
@@ -1555,6 +1558,7 @@ class Application(tk.Frame):
             login_button = tk.Button(login_window, text="ログイン", bg=log_btn_bg, font=(main_font, 20), command=self.login_log)
             login_button.pack(side=tk.TOP, padx=(0, 0), pady=(30, 0))
             
+            
     def login_log(self):
         name = None
         pas = None
@@ -1564,12 +1568,12 @@ class Application(tk.Frame):
         if not name or not pas:
             login_window.destroy()
             messagebox.showwarning("warning", "名前とパスワードを正しく入力して下さい")
-            logger.log(100, "loginError : {name} : {pas}")
+            logger.log(100, f"loginError : {name} : {pas}")
             return 10
         elif name == debugger_name and pas == debugger_pas:
             login_window.destroy()
             messagebox.showinfo("warning", "開発者としてログインしました。")
-            logger.log(100, "loginComplete : {name} : {pas}")
+            logger.log(100, f"loginComplete : {name} : {pas}")
             if name and pas:
                 # logウィンドウ
                 log_window = tk.Toplevel(bg=log_bg, bd=5)
@@ -1577,19 +1581,47 @@ class Application(tk.Frame):
                 log_window.title("log")
                 log_window.lift() # 他のウィンドウより前面に固定
                 
-                log_frame = tk.Frame(log_window, bd=5, borderwidth=10, bg="#ffffff3", relief="ridge")
+                
+                select_frame = tk.LabelFrame(log_window, text="log text disable", bg=log_bg, relief='groove', width=800, height=50)
+                select_frame.pack(side=tk.TOP, fill="x", padx=(20, 20), pady=(30, 20))
+                log_frame = tk.Frame(log_window, bd=5, borderwidth=10, bg="#fffff3", relief="ridge")
                 log_frame.pack(side=tk.TOP, padx=(20, 20), pady=(30, 20), fill="x", expand=True)
+                
+                self.log_txt_fg = "#2f4f4f"
+                self.log_txt_font = "overstrike"
+                self.log_txt = scrolledtext.ScrolledText(
+                    log_frame,
+                    bg="#fff4ff", 
+                    fg=self.log_txt_fg, 
+                    font=(self.log_txt_font, 12, "underline"),
+                    insertbackground="#191970", 
+                    selectbackground="lightblue", 
+                    selectforeground="red",
+                    cursor='clock',
+                    state="normal",
+                    height=500, 
+                    width=500)
+                self.log_txt.pack(fill=tk.BOTH, expand=1)
+                
+                #logファイルから最新の文字列を取得する
+                with open(log_file_path, "r") as log_f:
+                    log_file_text:str = log_f.read()
+                    
+                self.log_txt.delete(1.0, tk.END) # 一度全ての文字を消去
+                self.log_txt.insert(1.0, log_file_text)
+                    
+                
                 
                 
         elif name == debugger_name and pas != debugger_pas:
             login_window.destroy()
             messagebox.showerror("warning", "パスワードが正しくありません。")
-            logger.log(100, "loginError : {name} : {pas}")
+            logger.log(100, f"loginError : {name} : {pas}")
             return 10
         else:
             login_window.destroy()
             messagebox.showerror("warning", "名前とパスワードが正しくありません。")
-            logger.log(100, "loginError : {name} : {pas}")
+            logger.log(100, f"loginError : {name} : {pas}")
             return 10
             
             
