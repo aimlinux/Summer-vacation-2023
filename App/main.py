@@ -35,7 +35,9 @@ log_file_path = './log/test.log'
 #logの出力名を設定
 logger = logging.getLogger('Log')
 #logLevelを設定
-logger.setLevel(10)
+global log_lebel
+log_lebel = 10
+logger.setLevel(log_lebel)
 #logをコンソール出力するための設定
 sh = logging.StreamHandler()
 logger.addHandler(sh)
@@ -1580,13 +1582,26 @@ class Application(tk.Frame):
                 log_window.geometry(log_window_size)
                 log_window.title("log")
                 log_window.lift() # 他のウィンドウより前面に固定
-                
+                # スライダーの値が変更されたとき
+                def log_slider_changed(event):
+                    global log_lebel
+                    log_lebel = log_slider_value
+                    return 0
                 
                 select_frame = tk.LabelFrame(log_window, text="log text disable", bg=log_bg, relief='groove', width=800, height=50)
                 select_frame.pack(side=tk.TOP, fill="x", padx=(20, 20), pady=(30, 20))
+                label = tk.Label(select_frame, text="ログレベルを設定：", bg=log_bg, font=(main_font, 14))
+                label.pack(side=tk.LEFT, padx=(30, 10), pady=(10, 10))
+                log_slider_value = tk.DoubleVar()
+                global log_lebel
+                log_slider_value.set(int(log_lebel)) # 初期値を設定
+                log_slider = tk.Scale(select_frame, from_=0, to=100, bg=log_bg, variable=log_slider_value, font=("arial", 12), orient="horizontal")
+                log_slider.pack(side=tk.LEFT, padx=(0, 0), pady=(10, 10)) 
+                log_slider.bind("<Motion>", log_slider_changed)
+                    
                 log_frame = tk.Frame(log_window, bd=5, borderwidth=10, bg="#fffff3", relief="ridge")
                 log_frame.pack(side=tk.TOP, padx=(20, 20), pady=(30, 20), fill="x", expand=True)
-                
+                # logテキストを表示するスクロールフレーム
                 self.log_txt_fg = "#2f4f4f"
                 self.log_txt_font = "overstrike"
                 self.log_txt = scrolledtext.ScrolledText(
