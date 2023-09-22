@@ -406,3 +406,6 @@
 2023-09-22 16:23:02,196 --- process : 10496 --- message : SaveFile : ./illustration_image/illustration_33.png
 2023-09-22 16:23:50,277 --- process : 14948 --- message : App Start
 2023-09-22 16:23:54,618 --- process : 14948 --- message : ranking from title
+2023-09-22 16:27:04,142 --- process : 7932 --- message : App Start
+2023-09-22 16:29:00,781 --- process : 7932 --- message : SaveFile : ./illustration_image/illustration_34.png
+2023-09-22 16:29:38,233 --- process : 976 --- message : App Start
