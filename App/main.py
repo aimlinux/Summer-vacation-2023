@@ -136,7 +136,7 @@ log_window_size = "800x650+400+100"
 #一度きりのイベント
 the_only_1 = True
 the_only_2 = True
-
+the_only_debugger_login = False
 
 # BackgroundFrameを作成
 class BackgroundFrame(tk.Frame):
@@ -1560,12 +1560,21 @@ class Application(tk.Frame):
             login_button = tk.Button(login_window, text="ログイン", bg=log_btn_bg, font=(main_font, 20), command=self.login_log)
             login_button.pack(side=tk.TOP, padx=(0, 0), pady=(30, 0))
             
+            global the_only_debugger_login
+            if the_only_debugger_login == True:
+                self.master.after(200, self.login_log())
+            
             
     def login_log(self):
+        global the_only_debugger_login
         name = None
         pas = None
         name = self.name_entry.get()
         pas = self.pas_entry.get()
+        if the_only_debugger_login == True:
+            name = debugger_name
+            pas = debugger_pas
+            
         # 名前かパスワードが入力されていなかった場合
         if not name or not pas:
             login_window.destroy()
@@ -1574,6 +1583,7 @@ class Application(tk.Frame):
             return 10
         elif name == debugger_name and pas == debugger_pas:
             login_window.destroy()
+            the_only_debugger_login = True
             messagebox.showinfo("warning", "開発者としてログインしました。")
             logger.log(100, f"loginComplete : {name} : {pas}")
             if name and pas:
@@ -1617,6 +1627,8 @@ class Application(tk.Frame):
                     height=500, 
                     width=500)
                 self.log_txt.pack(fill=tk.BOTH, expand=1)
+                
+                
                 
                 #logファイルから最新の文字列を取得する
                 with open(log_file_path, "r") as log_f:

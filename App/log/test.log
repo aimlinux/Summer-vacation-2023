@@ -350,3 +350,26 @@
 2023-09-21 18:08:26,787 --- process : 18040 --- message : App Start
 2023-09-21 18:08:28,391 --- process : 18040 --- message : view log_window
 2023-09-21 18:08:40,089 --- process : 18040 --- message : loginComplete : aim : aimlinux
+2023-09-22 14:33:59,625 --- process : 15724 --- message : App Start
+2023-09-22 14:34:02,980 --- process : 15724 --- message : view credits
+2023-09-22 14:34:03,292 --- process : 15724 --- message : view credits
+2023-09-22 14:34:07,896 --- process : 15724 --- message : view log_window
+2023-09-22 14:34:19,028 --- process : 15724 --- message : loginComplete : aim : aimlinux
+2023-09-22 14:38:38,580 --- process : 5560 --- message : App Start
+2023-09-22 14:38:42,600 --- process : 5560 --- message : view log_window
+2023-09-22 14:38:50,762 --- process : 5560 --- message : loginComplete : aim : aimlinux
+2023-09-22 14:38:53,688 --- process : 5560 --- message : view log_window
+2023-09-22 14:43:41,608 --- process : 6820 --- message : App Start
+2023-09-22 14:43:44,116 --- process : 6820 --- message : view log_window
+2023-09-22 14:43:53,043 --- process : 6820 --- message : loginComplete : aim : aimlinux
+2023-09-22 14:43:58,653 --- process : 6820 --- message : view log_window
+2023-09-22 14:44:00,265 --- process : 6820 --- message : loginError :  : 
+2023-09-22 14:44:01,568 --- process : 6820 --- message : view log_window
+2023-09-22 14:44:03,090 --- process : 6820 --- message : loginError :  : 
+2023-09-22 14:45:44,936 --- process : 15256 --- message : App Start
+2023-09-22 14:45:48,440 --- process : 15256 --- message : view log_window
+2023-09-22 14:45:56,040 --- process : 15256 --- message : loginComplete : aim : aimlinux
+2023-09-22 14:45:59,519 --- process : 15256 --- message : view log_window
+2023-09-22 14:46:00,925 --- process : 15256 --- message : loginComplete : aim : aimlinux
+2023-09-22 14:46:03,726 --- process : 15256 --- message : view log_window
+2023-09-22 14:46:04,489 --- process : 15256 --- message : loginComplete : aim : aimlinux
