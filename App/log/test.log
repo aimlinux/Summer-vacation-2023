@@ -373,3 +373,27 @@
 2023-09-22 14:46:00,925 --- process : 15256 --- message : loginComplete : aim : aimlinux
 2023-09-22 14:46:03,726 --- process : 15256 --- message : view log_window
 2023-09-22 14:46:04,489 --- process : 15256 --- message : loginComplete : aim : aimlinux
+2023-09-22 15:41:32,873 --- process : 5024 --- message : App Start
+2023-09-22 15:41:53,628 --- process : 5024 --- message : view log_window
+2023-09-22 15:42:04,189 --- process : 5024 --- message : loginComplete : aim : aimlinux
+2023-09-22 15:44:23,571 --- process : 9696 --- message : App Start
+2023-09-22 15:44:26,135 --- process : 9696 --- message : view log_window
+2023-09-22 15:44:34,159 --- process : 9696 --- message : loginComplete : aim : aimlinux
+2023-09-22 15:46:07,886 --- process : 4088 --- message : App Start
+2023-09-22 15:46:10,796 --- process : 4088 --- message : view log_window
+2023-09-22 15:46:19,862 --- process : 4088 --- message : loginComplete : aim : aimlinux
+2023-09-22 15:46:25,898 --- process : 4088 --- message : view log_window
+2023-09-22 15:46:27,122 --- process : 4088 --- message : loginComplete : aim : aimlinux
+2023-09-22 15:46:54,712 --- process : 7236 --- message : App Start
+2023-09-22 15:46:56,630 --- process : 7236 --- message : view log_window
+2023-09-22 15:47:05,812 --- process : 7236 --- message : loginComplete : aim : aimlinux
+2023-09-22 15:52:43,319 --- process : 3452 --- message : App Start
+2023-09-22 15:53:09,834 --- process : 3452 --- message : SaveFile : ./illustration_image/illustration_29.png
+2023-09-22 15:53:47,190 --- process : 16140 --- message : App Start
+2023-09-22 15:54:38,596 --- process : 16140 --- message : SaveFile : ./illustration_image/illustration_30.png
+2023-09-22 15:54:58,683 --- process : 4480 --- message : App Start
+2023-09-22 15:56:09,979 --- process : 4480 --- message : SaveFile : ./illustration_image/illustration_31.png
+2023-09-22 15:56:22,127 --- process : 15796 --- message : App Start
+2023-09-22 15:56:45,855 --- process : 15796 --- message : SaveFile : ./illustration_image/illustration_32.png
+2023-09-22 15:57:02,464 --- process : 16000 --- message : App Start
+2023-09-22 15:57:05,030 --- process : 16000 --- message : view credits

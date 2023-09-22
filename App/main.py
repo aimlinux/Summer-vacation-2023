@@ -25,8 +25,8 @@ import os
 
 
 # 開発者名前とパスワード
-debugger_name = "aim"
-debugger_pas = "aimlinux"
+debugger_name = "a"
+debugger_pas = "a"
 
 # logを保存するためのファイル
 log_file_path = './log/test.log'
@@ -1486,8 +1486,10 @@ class Application(tk.Frame):
         github_owner = "aimlinux"
         github_link = "https://github.com/aimlinux/Summer-vacation-2023/blob/main/App/main.py"
         kousen_link = "https://www.yonago-k.ac.jp/"
-        used_library = "Tkinter, PySimpleGUI, openai, pyautogui, BytesIO, os, logging, speech_recognition, pyaudio, simpleaudio, wave, json, pyttsx3, time, random, sys, atexit, webbrowser, requests"
-        
+        used_library = ["tkinter", "PySimpleGUI", "pyautogui", "cv2", "PIL", "matplotlib", "skimage", "random", "atexit", "webbrowser", "logging", "time", "sys", "os"]
+        used_library_text = ""
+        for i in range len(used_library):
+            
         label = tk.Label(credit_window, text=f"作成者 : {programmer_name}", bg=credit_bg, font=(main_font, 24))
         label.pack(side=tk.TOP, pady=(50, 0))
         label = tk.Label(credit_window, text=f"Githubリンク : {github_owner}", bg=link_bg, fg=link_fg, 
@@ -1503,7 +1505,7 @@ class Application(tk.Frame):
         #オブジェクト配置初期はstateの値を変更できるようにしなければならない
         self.text_new_question_sub1 = scrolledtext.ScrolledText(credit_window, width=40, height=6, font=(main_font, 20), bg="#fff", state="normal")
         self.text_new_question_sub1.pack(side=tk.TOP, padx=(20, 20))
-        self.text_new_question_sub1.insert(tk.END, used_library)
+        self.text_new_question_sub1.insert(tk.END, )
         #stateの値を変更できないよう（normalからtk.DISABLED）に設定
         self.text_new_question_sub1.config(state=tk.DISABLED)
         start_button = tk.Button(credit_window, text="とじる", font=(main_font, 22), bg=title_btn_bg, command=self.exit_credit)
@@ -1608,7 +1610,13 @@ class Application(tk.Frame):
                 log_slider = tk.Scale(select_frame, from_=0, to=100, bg=log_bg, variable=log_slider_value, font=("arial", 12), orient="horizontal")
                 log_slider.pack(side=tk.LEFT, padx=(0, 0), pady=(10, 10)) 
                 log_slider.bind("<Motion>", log_slider_changed)
-                    
+                
+                #LOGを閉じる
+                def exit_log():
+                    log_window.destroy()
+                back_button = tk.Button(select_frame, text="LOGを閉じる", font=(main_font, 14), bg=log_btn_bg, command=exit_log)
+                back_button.pack(side=tk.LEFT, padx=(50, 20), pady=(10, 10))
+                
                 log_frame = tk.Frame(log_window, bd=5, borderwidth=10, bg="#fffff3", relief="ridge")
                 log_frame.pack(side=tk.TOP, padx=(20, 20), pady=(30, 20), fill="x", expand=True)
                 # logテキストを表示するスクロールフレーム
