@@ -83,10 +83,10 @@ last_photo = None # お手本のイラストが選択されているかどうか
 
 main_font = "Helvetica"
 
-main_pw_bg = "#1AE0A3"
-title_fm_bg = "#1AE0A3"
-choice_pw_bg = "#1AE0A3"
-choice_fm_bg = "#1AE0A3"
+main_pw_bg = "#ffe4e1"
+title_fm_bg = "#ffe4e1"
+choice_pw_bg = "#ffe4e1"
+choice_fm_bg = "#ffe4e1"
 see_model_pw_bg = "#ffe4e1"
 see_model_fm_bg = "#ffe4e1"
 illustration_pw_bg = "#ffe4e1"
@@ -1488,8 +1488,9 @@ class Application(tk.Frame):
         kousen_link = "https://www.yonago-k.ac.jp/"
         used_library = ["tkinter", "PySimpleGUI", "pyautogui", "cv2", "PIL", "matplotlib", "skimage", "random", "atexit", "webbrowser", "logging", "time", "sys", "os"]
         used_library_text = ""
-        for i in range len(used_library):
-            
+        for i in range(len(used_library)):
+            used_library_text = (used_library_text + ", " + used_library[i])
+            i += 1
         label = tk.Label(credit_window, text=f"作成者 : {programmer_name}", bg=credit_bg, font=(main_font, 24))
         label.pack(side=tk.TOP, pady=(50, 0))
         label = tk.Label(credit_window, text=f"Githubリンク : {github_owner}", bg=link_bg, fg=link_fg, 
@@ -1505,7 +1506,7 @@ class Application(tk.Frame):
         #オブジェクト配置初期はstateの値を変更できるようにしなければならない
         self.text_new_question_sub1 = scrolledtext.ScrolledText(credit_window, width=40, height=6, font=(main_font, 20), bg="#fff", state="normal")
         self.text_new_question_sub1.pack(side=tk.TOP, padx=(20, 20))
-        self.text_new_question_sub1.insert(tk.END, )
+        self.text_new_question_sub1.insert(tk.END, used_library_text)
         #stateの値を変更できないよう（normalからtk.DISABLED）に設定
         self.text_new_question_sub1.config(state=tk.DISABLED)
         start_button = tk.Button(credit_window, text="とじる", font=(main_font, 22), bg=title_btn_bg, command=self.exit_credit)

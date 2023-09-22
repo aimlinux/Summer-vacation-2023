@@ -397,3 +397,12 @@
 2023-09-22 15:56:45,855 --- process : 15796 --- message : SaveFile : ./illustration_image/illustration_32.png
 2023-09-22 15:57:02,464 --- process : 16000 --- message : App Start
 2023-09-22 15:57:05,030 --- process : 16000 --- message : view credits
+2023-09-22 16:15:39,225 --- process : 9608 --- message : App Start
+2023-09-22 16:15:43,868 --- process : 9608 --- message : view credits
+2023-09-22 16:16:29,553 --- process : 2592 --- message : App Start
+2023-09-22 16:16:35,167 --- process : 2592 --- message : view credits
+2023-09-22 16:19:29,013 --- process : 15716 --- message : App Start
+2023-09-22 16:20:17,763 --- process : 10496 --- message : App Start
+2023-09-22 16:23:02,196 --- process : 10496 --- message : SaveFile : ./illustration_image/illustration_33.png
+2023-09-22 16:23:50,277 --- process : 14948 --- message : App Start
+2023-09-22 16:23:54,618 --- process : 14948 --- message : ranking from title
