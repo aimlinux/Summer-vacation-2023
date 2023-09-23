@@ -409,3 +409,56 @@
 2023-09-22 16:27:04,142 --- process : 7932 --- message : App Start
 2023-09-22 16:29:00,781 --- process : 7932 --- message : SaveFile : ./illustration_image/illustration_34.png
 2023-09-22 16:29:38,233 --- process : 976 --- message : App Start
+2023-09-23 16:52:58,888 --- process : 17036 --- message : App Start
+2023-09-23 16:54:43,825 --- process : 17036 --- message : view log_window
+2023-09-23 16:54:50,090 --- process : 17036 --- message : loginComplete : a : a
+2023-09-23 16:54:52,869 --- process : 17036 --- message : view log_window
+2023-09-23 16:54:54,037 --- process : 17036 --- message : loginComplete : a : a
+2023-09-23 17:01:59,563 --- process : 17036 --- message : SaveFile : ./illustration_image/illustration_35.png
+2023-09-23 17:05:11,556 --- process : 17672 --- message : App Start
+2023-09-23 17:05:14,635 --- process : 17672 --- message : view credits
+2023-09-23 17:05:18,677 --- process : 17672 --- message : ranking from title
+2023-09-23 17:14:23,012 --- process : 10872 --- message : App Start
+2023-09-23 17:14:26,103 --- process : 10872 --- message : ranking from title
+2023-09-23 17:14:27,711 --- process : 10872 --- message : App Start
+2023-09-23 17:14:29,552 --- process : 10872 --- message : view credits
+2023-09-23 17:14:31,618 --- process : 10872 --- message : ranking from title
+2023-09-23 17:14:32,682 --- process : 10872 --- message : App Start
+2023-09-23 18:06:23,858 --- process : 7492 --- message : App Start
+2023-09-23 18:06:32,499 --- process : 7492 --- message : App Start
+2023-09-23 18:06:33,539 --- process : 7492 --- message : ranking from title
+2023-09-23 18:06:34,784 --- process : 7492 --- message : App Start
+2023-09-23 18:06:54,835 --- process : 7492 --- message : SaveFile : ./illustration_image/illustration_36.png
+2023-09-23 18:07:05,168 --- process : 7492 --- message : ranking from title
+2023-09-23 18:07:05,950 --- process : 7492 --- message : ranking from title
+2023-09-23 18:07:06,149 --- process : 7492 --- message : ranking from title
+2023-09-23 18:07:06,302 --- process : 7492 --- message : ranking from title
+2023-09-23 18:07:06,613 --- process : 7492 --- message : ranking from title
+2023-09-23 18:07:06,786 --- process : 7492 --- message : ranking from title
+2023-09-23 18:07:07,006 --- process : 7492 --- message : ranking from title
+2023-09-23 18:07:07,395 --- process : 7492 --- message : ranking from title
+2023-09-23 18:07:07,631 --- process : 7492 --- message : ranking from title
+2023-09-23 18:07:07,785 --- process : 7492 --- message : ranking from title
+2023-09-23 18:07:08,019 --- process : 7492 --- message : ranking from title
+2023-09-23 18:08:11,293 --- process : 19848 --- message : App Start
+2023-09-23 18:08:44,843 --- process : 19848 --- message : SaveFile : ./illustration_image/illustration_37.png
+2023-09-23 18:08:55,005 --- process : 19848 --- message : ranking from title
+2023-09-23 18:09:16,354 --- process : 9520 --- message : App Start
+2023-09-23 18:12:16,458 --- process : 9520 --- message : SaveFile : ./illustration_image/illustration_38.png
+2023-09-23 18:12:37,103 --- process : 9520 --- message : ranking from title
+2023-09-23 18:13:29,635 --- process : 18836 --- message : App Start
+2023-09-23 18:14:04,006 --- process : 18836 --- message : SaveFile : ./illustration_image/illustration_39.png
+2023-09-23 18:14:13,578 --- process : 18836 --- message : ranking from title
+2023-09-23 18:15:27,037 --- process : 11196 --- message : App Start
+2023-09-23 18:15:46,152 --- process : 11196 --- message : SaveFile : ./illustration_image/illustration_40.png
+2023-09-23 18:15:55,191 --- process : 11196 --- message : ranking from title
+2023-09-23 18:15:57,223 --- process : 11196 --- message : App Start
+2023-09-23 18:17:33,956 --- process : 17128 --- message : App Start
+2023-09-23 18:17:36,948 --- process : 17128 --- message : ranking from title
+2023-09-23 18:17:38,986 --- process : 13964 --- message : App Start
+2023-09-23 18:17:54,332 --- process : 3916 --- message : App Start
+2023-09-23 18:17:56,898 --- process : 3916 --- message : ranking from title
+2023-09-23 18:17:59,044 --- process : 3916 --- message : App Start
+2023-09-23 18:18:18,515 --- process : 3916 --- message : SaveFile : ./illustration_image/illustration_41.png
+2023-09-23 18:18:31,331 --- process : 3916 --- message : ranking from title
+2023-09-23 18:18:33,850 --- process : 15396 --- message : App Start

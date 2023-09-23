@@ -1003,39 +1003,40 @@ class Application(tk.Frame):
             skip_on_draw = "No"
         print(f"skip_button_draw : " + str(skip_on_draw))
         
-        # --------- スクリーンショット -------
-        # 保存先を決定
-        with open(count_filename, encoding="UTF-8") as f:
-            f_text = f.read()
-        illustration_number = int(f_text) + 1
-        illustration_filename = f'./illustration_image/illustration_{str(illustration_number)}.png'
-        
-        with open(count_filename, mode='w') as f: 
-                f.write(str(illustration_number))
-                
-        logger.log(100, f'SaveFile : {illustration_filename}')
-        # スクショ撮影
-        # top = 260
-        # left = 552
-        # width = 835
-        # height = 540
-        # pg.screenshot(illustration_filename, region=(left, top, width, height)) # pgを使ってのスクショは？
-        screen_shot = ImageGrab.grab()
-        screen_shot.save(illustration_filename)
-        # トリミング
-        image = Image.open(illustration_filename)
-        left = 452
-        upper = 215
-        right = 1487
-        lower = 883
-        im_crop = image.crop((left, upper, right, lower))
-        im_crop.save(illustration_filename)
-        
-        self.master.after(500)
-        
+        if skip_button_draw != "NULL":
+            # --------- スクリーンショット -------
+            # 保存先を決定
+            with open(count_filename, encoding="UTF-8") as f:
+                f_text = f.read()
+            illustration_number = int(f_text) + 1
+            illustration_filename = f'./illustration_image/illustration_{str(illustration_number)}.png'
+            
+            with open(count_filename, mode='w') as f: 
+                    f.write(str(illustration_number))
+                    
+            logger.log(100, f'SaveFile : {illustration_filename}')
+            # スクショ撮影
+            # top = 260
+            # left = 552
+            # width = 835
+            # height = 540
+            # pg.screenshot(illustration_filename, region=(left, top, width, height)) # pgを使ってのスクショは？
+            screen_shot = ImageGrab.grab()
+            screen_shot.save(illustration_filename)
+            # トリミング
+            image = Image.open(illustration_filename)
+            left = 452
+            upper = 215
+            right = 1487
+            lower = 883
+            im_crop = image.crop((left, upper, right, lower))
+            im_crop.save(illustration_filename)
+            
+            self.master.after(500)
+            
         global scoring_sub_window
         #採点中ウィンドウの表示
-        if skip_on != "NULL" and skip_on_draw != "NULL":
+        if skip_on != "NULL" or skip_on_draw != "NULL":
             scoring_sub_window = tk.Toplevel(bg=scoring_fm_bg, bd=5)
             scoring_sub_window.geometry(scoring_sub_window_size)
             scoring_sub_window.title("scoring")
@@ -1071,7 +1072,7 @@ class Application(tk.Frame):
         toolbar_button1.pack(side=tk.LEFT, padx=4, pady=4)
         toolbar_button2 = tk.Button(fm_toolbar, text=button2_text, **TOOLBAR_OPTIONS)
         toolbar_button2.pack(side=tk.LEFT, padx=2, pady=4)
-        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS)
+        toolbar_button3 = tk.Button(fm_toolbar, text=button3_text, **TOOLBAR_OPTIONS, command=lambda: self.ranking("pw_scoring"))
         toolbar_button3.pack(side=tk.LEFT, padx=2, pady=4)
         toolbar_button4 = tk.Button(fm_toolbar, text=button4_text, **TOOLBAR_OPTIONS, command=self.credit)
         toolbar_button4.pack(side=tk.LEFT, padx=2, pady=4)
@@ -1160,7 +1161,7 @@ class Application(tk.Frame):
         
         
         name_ranking_button = tk.Button(fm_scoring_text_right, text="ランキングを見る", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
-                                        relief="raised", borderwidth=5)
+                                        relief="raised", borderwidth=5, command=lambda: self.ranking("pw_scoring"))
         name_ranking_button.pack(side=tk.TOP, padx=(50, 50), pady=(30, 0))
         button = tk.Button(fm_scoring_text_right, text="イラストダウンロード", bg=scoring_btn_bg, fg="black", font=(main_font, 18), width=22, 
                                         relief="raised", borderwidth=5)
@@ -1342,10 +1343,15 @@ class Application(tk.Frame):
             button.pack(side=tk.TOP, padx=(10, 10), pady=(10, 0))
             
             
-        elif ere == "pw_title":
+        elif ere == "pw_title" or ere == "pw_scoring":
+            if ere == "pw_title":
+                ere_return = 0
+                self.master.after(200, pw_title.destroy)
+            elif ere == "pw_scoring":
+                ere_return = 1
+                self.master.after(200, pw_scoring.destroy)
+                
             logger.log(100, "ranking from title")
-            
-            self.master.after(200, pw_title.destroy)
             
             global fm_ranking
             fm_ranking = tk.Frame(self.master, bg=ranking_pw_bg, bd=5, relief="ridge", borderwidth=10)
@@ -1372,7 +1378,7 @@ class Application(tk.Frame):
             self.listbox_ranking = tk.Listbox(listbox_frame, selectbackground="lightblue", font=(main_font, 22), height=5, width=10)
             self.listbox_ranking.pack()
             # 戻るボタン
-            return_button = tk.Button(left_frame, text="戻る", bg=ranking_btn_bg, font=(main_font, 20))
+            return_button = tk.Button(left_frame, text="戻る", bg=ranking_btn_bg, font=(main_font, 20), command=lambda: self.exit_ranking(ere_return))
             return_button.pack(side=tk.BOTTOM, padx=(0, 20), pady=(0, 20), ipadx=10, ipady=0)
             
             self.item_1 = "     初級"
@@ -1424,8 +1430,9 @@ class Application(tk.Frame):
     def on_mousewheel(self, event):
         self.right_lower_canvas.yview_scroll(-1 * (event.delta // 120), "units")
         
+        
     # ランキングに表示する難易度が選ばれたことを取得
-    def on_ranking_difficulty_click(self, event, ):
+    def on_ranking_difficulty_click(self, event):
         listbox_ranking_item_index = self.listbox_ranking.nearest(event.y) # クリックされたアイテムのインデックスを取得
         listbox_ranking_item = self.listbox_ranking.get(listbox_ranking_item_index) # インデックスからアイテムの内容を取得
         #print(listbox_ranking_item)
@@ -1460,7 +1467,23 @@ class Application(tk.Frame):
                 return 10
             
             
+    # ランキングを終了する
+    def exit_ranking(self, h):
+        if h == 0:
+            self.master.after(100, fm_ranking.destroy)
+            self.create_widgets()
+    
+        elif h == 1:
+            self.master.after(100, fm_ranking.destroy)
+            #self.scoring("NULL")
+            #self.create_widgets()
+            self.master.destroy()
+            os.execv(sys.executable, ['python'] + sys.argv)
             
+        else:
+            print("Error")
+            return 10
+        
             
             
             
