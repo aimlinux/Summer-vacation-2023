@@ -462,3 +462,9 @@
 2023-09-23 18:18:18,515 --- process : 3916 --- message : SaveFile : ./illustration_image/illustration_41.png
 2023-09-23 18:18:31,331 --- process : 3916 --- message : ranking from title
 2023-09-23 18:18:33,850 --- process : 15396 --- message : App Start
+2023-09-27 08:48:14,506 --- process : 16016 --- message : App Start
+2023-09-27 08:48:17,533 --- process : 16016 --- message : view log_window
+2023-09-27 08:48:25,304 --- process : 16016 --- message : loginComplete : a : a
+2023-09-27 08:48:35,737 --- process : 16016 --- message : view log_window
+2023-09-27 08:48:37,275 --- process : 16016 --- message : loginComplete : a : a
+2023-09-27 08:51:39,022 --- process : 5284 --- message : App Start
