@@ -100,6 +100,7 @@ credit_bg = "#1AE0A3"
 link_bg = "#1AE0A3"
 link_fg = "#191970"
 log_bg = "#1AE0A3"
+about_this_app_bg = "#1AE0A3"
 
 title_btn_bg = "#7FDBF0"
 choice_btn_bg = "#7CF3CE"
@@ -109,6 +110,7 @@ illustration_btn_bg = "#00ced1"
 scoring_btn_bg = "#00ced1"
 ranking_btn_bg = "#00ced1"
 log_btn_bg = "#00ced1"
+about_this_app_bg = "#00ced1"
 
 button1_text = "タイトルへ"
 button2_text = "オプション"
@@ -131,6 +133,7 @@ credit_window_size = "600x650+500+100"
 no_ranking_window_size = "850x180+360+360"
 enter_name_window_size = "830x350+360+240"
 log_window_size = "800x650+400+100"
+about_this_app_window_size = "1280x800+"
 
 
 #一度きりのイベント
@@ -1684,7 +1687,12 @@ class Application(tk.Frame):
             return 10
             
             
-        
+    def about_this_app(self):
+            about_this_app_window = tk.Toplevel(bg=about_this_app_bg, bd=5)
+            about_this_app_window.geometry(about_this_app_window_size)
+            about_this_app_window.title("about this app")
+            about_this_app_window.lift() # 他のウィンドウより前面に固定
+            
 
     # アプリケーション終了ボタンが日佐れたとき
     def exit_App(self):

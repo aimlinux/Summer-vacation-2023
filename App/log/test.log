@@ -477,3 +477,14 @@
 2023-09-27 08:52:59,104 --- process : 5284 --- message : SaveFile : ./illustration_image/illustration_42.png
 2023-09-27 08:53:24,974 --- process : 5284 --- message : ranking from title
 2023-09-27 08:53:30,382 --- process : 8604 --- message : App Start
+2023-09-28 05:52:53,599 --- process : 12936 --- message : App Start
+2023-09-28 05:52:56,308 --- process : 12936 --- message : view log_window
+2023-09-28 05:53:00,988 --- process : 12936 --- message : loginComplete : a : a
+2023-09-28 05:53:16,376 --- process : 12936 --- message : view log_window
+2023-09-28 05:53:17,826 --- process : 12936 --- message : loginComplete : a : a
+2023-09-28 05:53:27,153 --- process : 12936 --- message : view credits
+2023-09-28 05:53:29,662 --- process : 12936 --- message : ranking from title
+2023-09-28 05:53:31,515 --- process : 12936 --- message : App Start
+2023-09-28 05:53:33,046 --- process : 12936 --- message : ranking from title
+2023-09-28 05:53:54,649 --- process : 12936 --- message : App Start
+2023-09-28 05:53:56,403 --- process : 12936 --- message : App Start
