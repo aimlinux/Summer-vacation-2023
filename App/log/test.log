@@ -488,3 +488,6 @@
 2023-09-28 05:53:33,046 --- process : 12936 --- message : ranking from title
 2023-09-28 05:53:54,649 --- process : 12936 --- message : App Start
 2023-09-28 05:53:56,403 --- process : 12936 --- message : App Start
+2023-09-30 10:07:14,829 --- process : 8148 --- message : App Start
+2023-09-30 10:37:54,815 --- process : 8148 --- message : SaveFile : ./illustration_image/illustration_43.png
+2023-09-30 10:38:30,327 --- process : 1028 --- message : App Start
