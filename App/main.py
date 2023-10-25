@@ -15,6 +15,10 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.animation as animation
 import skimage
 from skimage.metrics import structural_similarity as compare_ssim
+import pygame as pe
+from pydub import AudioSegment
+from pydub.playback import play
+import threading
 import random as rand
 import atexit
 import webbrowser
@@ -141,6 +145,9 @@ the_only_1 = True
 the_only_2 = True
 the_only_debugger_login = False
 
+# サウンド選択
+sound_name = 0
+
 # BackgroundFrameを作成
 class BackgroundFrame(tk.Frame):
     def __init__(self, master=None, bg_image=None, *args, **kwargs):
@@ -168,7 +175,36 @@ class Application(tk.Frame):
 
         self.create_widgets()
         # self.animation_window = None
-    
+        
+    # サウンド再生
+    def sound_start(self):
+        
+        if sound_name == 0: # スタート際のサウンド
+            sound_file_path = "./sound/start.wav"
+            adjusted_sound_file_path = "./sound/start_up.wav"
+        else:
+            return 1
+        
+        # 速度調節がされていなかった場合にする
+        if not os.path.exists(adjusted_sound_file_path):
+            # -------- pydubによる再生速度調節 --------
+            audio = AudioSegment.from_file(sound_file_path)
+            speed_adjustment = 1.3
+            ajusted_audio = audio.speedup(playback_speed=speed_adjustment)
+            ajusted_audio.export(adjusted_sound_file_path, format="wav")
+        sound_file_path = adjusted_sound_file_path
+        
+        # -------- pygameによるサウンド再生 --------
+        pe.init() # pygameを初期化
+        sound_object = pe.mixer.Sound(sound_file_path) # サウンドオブジェクトを作成
+        # playback_speed = 1.2 # 再生速度の倍率（1.0がデフォルト）
+        # sound_object.set_playback_speed(playback_speed)
+        sound_object.play() # サウンドを再生
+        pe.time.wait(int(sound_object.get_length() * 1000)) # 音声再生終了まで待つ
+        pe.quit() # pygameを終了
+
+        
+    # メインウィンドウ作成
     def create_widgets(self):
         
         # Logファイルに記録を残す
@@ -451,6 +487,17 @@ class Application(tk.Frame):
         game_start_window.destroy()
         return 0
 
+    # 並列処理を使ってみたかった
+    def countdown_animation_1_reserve(self):
+        # アニメーションスレッドを開始
+        animation_thread = threading.Thread(target=self.countdown_animation_1)
+        animation_thread.start()
+        global sound_name
+        sound_name = 0
+        # バックグラウンドサウンドを開始
+        sound_thread = threading.Thread(target=self.sound_start)
+        sound_thread.start()
+        
 
 # -------- カウントダウンアニメーション１ --------
     def countdown_animation_1(self):
