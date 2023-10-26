@@ -1748,6 +1748,7 @@ class Application(tk.Frame):
         self.master.quit()
 
 
+
 #アプリケーションが強制的に終了されたとき
 def goodbye():
     # if forced_exit == True:
