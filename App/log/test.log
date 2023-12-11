@@ -513,3 +513,46 @@
 2023-10-25 17:51:11,527 --- process : 17724 --- message : App Start
 2023-10-25 17:51:48,633 --- process : 19760 --- message : App Start
 2023-10-25 17:52:20,638 --- process : 3436 --- message : App Start
+2023-12-11 16:06:41,698 --- process : 10996 --- message : App Start
+2023-12-11 16:07:39,129 --- process : 10996 --- message : SaveFile : ./illustration_image/illustration_45.png
+2023-12-11 16:08:04,106 --- process : 10996 --- message : ranking from title
+2023-12-11 16:08:16,257 --- process : 19944 --- message : App Start
+2023-12-11 16:08:32,033 --- process : 19944 --- message : view credits
+2023-12-11 16:08:36,746 --- process : 19944 --- message : view credits
+2023-12-11 16:08:41,334 --- process : 19944 --- message : view log_window
+2023-12-11 16:08:51,557 --- process : 19944 --- message : loginError : aim : aim
+2023-12-11 16:08:52,614 --- process : 19944 --- message : view log_window
+2023-12-11 16:08:57,540 --- process : 19944 --- message : loginComplete : a : a
+2023-12-11 16:09:06,151 --- process : 19944 --- message : App Start
+2023-12-11 16:21:41,461 --- process : 21356 --- message : App Start
+2023-12-11 16:29:44,708 --- process : 19944 --- message : SaveFile : ./illustration_image/illustration_46.png
+2023-12-11 16:29:52,736 --- process : 8732 --- message : App Start
+2023-12-11 16:29:57,453 --- process : 15116 --- message : App Start
+2023-12-11 16:33:39,570 --- process : 22456 --- message : App Start
+2023-12-11 16:37:32,268 --- process : 8680 --- message : App Start
+2023-12-11 16:37:48,565 --- process : 8680 --- message : view credits
+2023-12-11 16:37:51,619 --- process : 8680 --- message : view log_window
+2023-12-11 16:37:55,504 --- process : 8680 --- message : view log_window
+2023-12-11 16:39:12,230 --- process : 15092 --- message : App Start
+2023-12-11 16:43:56,077 --- process : 19436 --- message : App Start
+2023-12-11 16:48:52,468 --- process : 19828 --- message : App Start
+2023-12-11 16:50:44,984 --- process : 3944 --- message : App Start
+2023-12-11 16:53:47,679 --- process : 19092 --- message : App Start
+2023-12-11 16:54:31,050 --- process : 21672 --- message : App Start
+2023-12-11 16:55:38,295 --- process : 16128 --- message : App Start
+2023-12-11 16:57:26,445 --- process : 12656 --- message : App Start
+2023-12-11 16:58:05,168 --- process : 2884 --- message : App Start
+2023-12-11 16:58:43,116 --- process : 19552 --- message : App Start
+2023-12-11 16:59:29,128 --- process : 5096 --- message : App Start
+2023-12-11 17:00:07,428 --- process : 6548 --- message : App Start
+2023-12-11 17:01:30,069 --- process : 20368 --- message : App Start
+2023-12-11 17:02:09,458 --- process : 17356 --- message : App Start
+2023-12-11 17:02:29,913 --- process : 21044 --- message : App Start
+2023-12-11 17:02:49,075 --- process : 9328 --- message : App Start
+2023-12-11 17:03:06,815 --- process : 8760 --- message : App Start
+2023-12-11 17:03:29,249 --- process : 18116 --- message : App Start
+2023-12-11 17:03:48,377 --- process : 17724 --- message : App Start
+2023-12-11 17:05:02,736 --- process : 21080 --- message : App Start
+2023-12-11 17:08:15,317 --- process : 9868 --- message : App Start
+2023-12-11 17:09:16,527 --- process : 8912 --- message : App Start
+2023-12-11 17:09:34,699 --- process : 21648 --- message : App Start

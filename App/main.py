@@ -114,7 +114,7 @@ illustration_btn_bg = "#00ced1"
 scoring_btn_bg = "#00ced1"
 ranking_btn_bg = "#00ced1"
 log_btn_bg = "#00ced1"
-about_this_app_bg = "#00ced1"
+about_this_app_bg = "#c0c0c0"
 
 button1_text = "タイトルへ"
 button2_text = "オプション"
@@ -137,7 +137,7 @@ credit_window_size = "600x650+500+100"
 no_ranking_window_size = "850x180+360+360"
 enter_name_window_size = "830x350+360+240"
 log_window_size = "800x650+400+100"
-about_this_app_window_size = "1280x800+"
+about_this_app_window_size = "600x650+500+100"
 
 
 #一度きりのイベント
@@ -255,7 +255,8 @@ class Application(tk.Frame):
                                 width=30, relief="raised", borderwidth=5, command=self.exit_App)
         exit_button.pack(side=tk.TOP, padx=(750, 150))
         
-        introduction_button = tk.Button(bg_frame, text="このゲームについて", font=(main_font, 18), bg=introduction_btn_bg, width=30, relief="raised", borderwidth=3)
+        introduction_button = tk.Button(bg_frame, text="このゲームのトリセツ", font=(main_font, 18), bg=introduction_btn_bg, 
+                                        width=30, relief="raised", borderwidth=3, command=self.about_this_app)
         introduction_button.pack(side=tk.TOP, padx=(30, 800), pady=(40, 0))
 
 
@@ -1542,7 +1543,6 @@ class Application(tk.Frame):
         self.master.after(200, no_ranking_window.destroy)
         
         
-        
     # クレジット
     def credit(self):
         
@@ -1734,12 +1734,24 @@ class Application(tk.Frame):
             return 10
             
             
+    # このゲームについて説明
     def about_this_app(self):
-            about_this_app_window = tk.Toplevel(bg=about_this_app_bg, bd=5)
-            about_this_app_window.geometry(about_this_app_window_size)
-            about_this_app_window.title("about this app")
-            about_this_app_window.lift() # 他のウィンドウより前面に固定
-            
+        about_this_app_window = tk.Toplevel(bg=about_this_app_bg, bd=5)
+        about_this_app_window.geometry(about_this_app_window_size)
+        about_this_app_window.title("about this app")
+        about_this_app_window.lift() # 他のウィンドウより前面に固定
+        about_this_app_frame = tk.Frame(about_this_app_window, bg="#fffff3", bd=5, relief="ridge", borderwidth=5)
+        about_this_app_frame.pack(side=tk.TOP, padx=(10, 10), pady=(40, 30), expand=True)
+        title_label = tk.Label(about_this_app_frame, text="     ~~~トリセツ~~~      ", bg="#fffff3", font=(main_font, 23));
+        title_label.pack(side=tk.TOP, padx=(50, 50), pady=(30, 30))
+        label = tk.Label(about_this_app_frame, text=" ・ゲームの目的", bg="#fffff3", font=(main_font, 18));
+        label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 20))
+        label = tk.Label(about_this_app_frame, text=" ・キャラクターの操作方法", bg="#fffff3", font=(main_font, 18));
+        label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 20))
+        label = tk.Label(about_this_app_frame, text=" ・ゲームの動作説明", bg="#fffff3", font=(main_font, 18));
+        label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 20))
+        label = tk.Label(about_this_app_frame, text=" ・対象年齢", bg="#fffff3", font=(main_font, 18));
+        label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 20))
 
     # アプリケーション終了ボタンが日佐れたとき
     def exit_App(self):
