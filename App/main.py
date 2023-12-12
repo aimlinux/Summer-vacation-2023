@@ -1742,16 +1742,31 @@ class Application(tk.Frame):
         about_this_app_window.lift() # 他のウィンドウより前面に固定
         about_this_app_frame = tk.Frame(about_this_app_window, bg="#fffff3", bd=5, relief="ridge", borderwidth=5)
         about_this_app_frame.pack(side=tk.TOP, padx=(10, 10), pady=(40, 30), expand=True)
+        
+        text_1 = "己の短期記憶能力と\nイラストセンスを問う"
+        text_2 = "己の短期記憶能力と\nイラストセンスを問う"
+        text_3 = "己の短期記憶能力と\nイラストセンスを問う"
+        text_4 = "己の短期記憶能力と\nイラストセンスを問う"
+        text_color = "#800000"
+        
         title_label = tk.Label(about_this_app_frame, text="     ~~~トリセツ~~~      ", bg="#fffff3", font=(main_font, 23));
         title_label.pack(side=tk.TOP, padx=(50, 50), pady=(30, 30))
         label = tk.Label(about_this_app_frame, text=" ・ゲームの目的", bg="#fffff3", font=(main_font, 18));
-        label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 20))
+        label.pack(side=tk.TOP, padx=(50, 50), pady=(10, 5))
+        text = tk.Label(about_this_app_frame, text=text_1, bg="#fffff3", fg=text_color, font=(main_font, 13))
+        text.pack(side=tk.TOP, padx=(50, 50), pady=(0, 10))
         label = tk.Label(about_this_app_frame, text=" ・キャラクターの操作方法", bg="#fffff3", font=(main_font, 18));
-        label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 20))
+        label.pack(side=tk.TOP, padx=(50, 50), pady=(10, 5))
+        text = tk.Label(about_this_app_frame, text=text_2, bg="#fffff3", fg=text_color, font=(main_font, 13))
+        text.pack(side=tk.TOP, padx=(50, 50), pady=(0, 10))
         label = tk.Label(about_this_app_frame, text=" ・ゲームの動作説明", bg="#fffff3", font=(main_font, 18));
-        label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 20))
+        label.pack(side=tk.TOP, padx=(50, 50), pady=(10, 5))
+        text = tk.Label(about_this_app_frame, text=text_3, bg="#fffff3", fg=text_color, font=(main_font, 13))
+        text.pack(side=tk.TOP, padx=(50, 50), pady=(0, 10))
         label = tk.Label(about_this_app_frame, text=" ・対象年齢", bg="#fffff3", font=(main_font, 18));
-        label.pack(side=tk.TOP, padx=(50, 50), pady=(20, 20))
+        label.pack(side=tk.TOP, padx=(50, 50), pady=(10, 5))
+        text = tk.Label(about_this_app_frame, text=text_4, bg="#fffff3", fg=text_color, font=(main_font, 13))
+        text.pack(side=tk.TOP, padx=(50, 50), pady=(0, 10))
 
     # アプリケーション終了ボタンが日佐れたとき
     def exit_App(self):
